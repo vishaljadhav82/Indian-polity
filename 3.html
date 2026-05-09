@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSI Mission - Complete Act 1784</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paper: #fffef5;
+            --ink: #1a202c;
+            --margin-red: #ff8a8a;
+            --line: #edf2f7;
+            --highlight: #fff382;
+        }
+
+        body {
+            background: #cbd5e0;
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Kalam', cursive;
+        }
+
+        .notebook-page {
+            width: 100%;
+            max-width: 850px;
+            background: var(--paper);
+            padding: 70px 20px 40px 65px;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            background-image: linear-gradient(var(--line) 1px, transparent 1px);
+            background-size: 100% 32px;
+            line-height: 32px;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .notebook-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 55px;
+            width: 2.5px;
+            height: 100%;
+            background: var(--margin-red);
+            box-shadow: 1px 0 0 white;
+        }
+
+        .psi-badge {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: #d32f2f;
+            color: #fff;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            border: 2px solid #ffd700;
+        }
+
+        h1 { color: #2b6cb0; text-align: center; text-decoration: underline wavy; margin-bottom: 25px; }
+        h2 { color: #c53030; border-bottom: 2px solid #c53030; display: inline-block; margin-top: 25px; }
+        
+        .highlight { background: var(--highlight); padding: 0 4px; border-radius: 3px; }
+        .imp-tag { color: #b30000; font-weight: bold; }
+
+        /* Double Government Box */
+        .double-gov-box {
+            border: 2px solid #2d3748;
+            background: rgba(237, 242, 247, 0.5);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+
+        /* Trigger Section */
+        .trigger-notes {
+            background: #fff5f5;
+            border: 2px dashed #e53e3e;
+            padding: 15px;
+            margin: 30px 0;
+        }
+
+        /* Interactive Timeline */
+        .timeline-trigger {
+            background: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .timeline-content {
+            display: none;
+            padding: 15px;
+            border-left: 3px solid #2b6cb0;
+            margin-bottom: 30px;
+            background: #f8fafc;
+        }
+
+        /* Quiz Box */
+        .quiz-section {
+            background: white;
+            border: 2px solid #2d3748;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 40px;
+        }
+
+        .q-item {
+            color: #4a148c;
+            font-weight: bold;
+            border-bottom: 1px dotted #ccc;
+            margin-bottom: 12px;
+            padding-bottom: 2px;
+        }
+
+        .nav-footer { text-align: right; margin-top: 40px; }
+        .next-link {
+            background: #2b6cb0;
+            color: white !important;
+            text-decoration: none;
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            .notebook-page { padding: 60px 10px 30px 50px; }
+            .notebook-page::before { left: 45px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="notebook-page">
+    <div class="psi-badge">PSI Target 🎯</div>
+
+    <div style="background: #fff9e6; border: 1px solid #f39c12; padding: 10px; text-align: center; font-style: italic; margin-bottom: 20px;">
+        "शिस्त ही ध्येय आणि यशाच्या मधला पूल आहे!"
+    </div>
+
+    <h1>पिट्स इंडिया ॲक्ट, १७८४</h1>
+
+    <div class="notes-content">
+        <p>• १७७३ च्या रेगुलेटिंग ॲक्टमधील दोष सुधारण्यासाठी ब्रिटीश संसदेने <span class="highlight">१७८१ चा दुरुस्ती कायदा</span> (Act of Settlement) संमत केला.</p>
+        <p>• त्यानंतर १७८४ मध्ये 'पिट्स इंडिया ॲक्ट' आला, जो भारतीय प्रशासकीय संरचनेत क्रांतिकारी ठरला.</p>
+
+        <h2>१. दुहेरी शासन (Double Government)</h2>
+        <p>या कायद्याने कंपनीच्या कामांची दोन भागात विभागणी केली:</p>
+        <div class="double-gov-box">
+            <p>१. <b>व्यापारी कार्ये (Commercial):</b> <span class="highlight">कोर्ट ऑफ डायरेक्टर्स</span> (Court of Directors).</p>
+            <p>२. <b>राजकीय कार्ये (Political):</b> <span class="highlight">बोर्ड ऑफ कंट्रोल</span> (Board of Control).</p>
+        </div>
+        <p>• <b>बोर्ड ऑफ कंट्रोल:</b> या नवीन संस्थेला भारतातील नागरी, लष्करी सरकार आणि महसुलावर <span class="imp-tag">देखरेख आणि निर्देश</span> देण्याचे सर्वोच्च अधिकार दिले.</p>
+
+        <h2>२. कायद्याचे विशेष महत्त्व</h2>
+        <p>• भारतातील कंपनीच्या प्रदेशाला प्रथमच <span class="highlight">‘ब्रिटीश पजेशन इन इंडिया’</span> (British possessions in India) असे संबोधिले गेले.</p>
+        <p>• ब्रिटीश सरकारला कंपनीच्या कारभारावर <span class="imp-tag">‘सर्वोच्च नियंत्रण’</span> (Supreme Control) प्राप्त झाले.</p>
+    </div>
+
+    <div class="trigger-notes">
+        <h3 style="margin-top: 0; color: #c53030;">💡 PSI Trigger Points (Quick Revision)</h3>
+        <p>• <b>Act of Settlement:</b> १७८१ चा दुरुस्ती कायदा.</p>
+        <p>• <b>Double Government:</b> १७८४ (राजकीय + व्यापारी विभागणी).</p>
+        <p>• <b>Supreme Control:</b> ब्रिटीश सरकारचा कंपनीवर वरचश्मा.</p>
+        <p>• <b>Possessions:</b> 'ब्रिटीश पजेशन' हा शब्द प्रथम वापरला.</p>
+    </div>
+
+    <div class="timeline-trigger" onclick="toggleTimeline()">📌 रिव्हिजनसाठी टाइमलाईन उघडा</div>
+    <div id="timeline" class="timeline-content">
+        <p>• <b>१७७३:</b> रेगुलेटिंग ॲक्ट (सुरवात).</p>
+        <p>• <b>१७८१:</b> ॲक्ट ऑफ सेटलमेंट (दुरुस्ती).</p>
+        <p>• <b>१७८४:</b> पिट्स इंडिया ॲक्ट (दुहेरी शासन).</p>
+    </div>
+
+    <div class="quiz-section">
+        <h3 style="text-align: center; color: #c53030; margin-top: 0;">अति-कठीण प्रश्न (Notes-Based)</h3>
+        
+        <div class="q-item">१. १७७३ च्या कायद्यातील दोष सुधारण्यासाठी कोणता कायदा करण्यात आला?</div>
+        <div class="q-item">२. 'बोर्ड ऑफ कंट्रोल'ची निर्मिती का करण्यात आली? तिचे मुख्य कार्य काय होते?</div>
+        <div class="q-item">३. १७८४ च्या कायद्याने स्थापित केलेल्या 'दुहेरी शासना'चे दोन स्तंभ कोणते?</div>
+        <div class="q-item">४. 'British possessions in India' हा शब्दप्रयोग कोणत्या तांत्रिक अर्थाने वापरला गेला?</div>
+        <div class="q-item">५. कोर्ट ऑफ डायरेक्टर्सला कोणते व्यवहार सांभाळण्याची मुभा होती?</div>
+        <div class="q-item">६. ब्रिटीश सरकारने कंपनीवर 'सर्वोच्च नियंत्रण' मिळवले हे कोणत्या तरतुदीवरून स्पष्ट होते?</div>
+        <div class="q-item">७. बोर्ड ऑफ कंट्रोलला मिळालेल्या 'सुपरव्हिजन' अधिकाराचे महत्त्व स्पष्ट करा.</div>
+    </div>
+
+    <div class="nav-footer">
+        <a href="charter_act_1833.html" class="next-link">पुढचे पान: चार्टर ॲक्ट १८३३ ➜</a>
+    </div>
+</div>
+
+<script>
+    function toggleTimeline() {
+        var t = document.getElementById("timeline");
+        t.style.display = (t.style.display === "block") ? "none" : "block";
+    }
+</script>
+
+</body>
+</html>

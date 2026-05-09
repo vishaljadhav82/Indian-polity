@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSI Mission - Regulating Act 1773</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paper: #fffef5;
+            --ink: #1a202c;
+            --margin-red: #ff8a8a;
+            --line: #edf2f7;
+            --highlight: #fff382;
+        }
+
+        body {
+            background: #e2e8f0;
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Kalam', cursive;
+        }
+
+        .notebook-page {
+            width: 100%;
+            max-width: 850px;
+            background: var(--paper);
+            padding: 70px 20px 40px 65px;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            background-image: linear-gradient(var(--line) 1px, transparent 1px);
+            background-size: 100% 32px;
+            line-height: 32px;
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .notebook-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 55px;
+            width: 2.5px;
+            height: 100%;
+            background: var(--margin-red);
+            box-shadow: 1px 0 0 white;
+        }
+
+        .psi-badge {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: #1a365d;
+            color: #fff;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            transform: rotate(2deg);
+            border: 2px solid #ffd700;
+        }
+
+        h1 { color: #2b6cb0; text-align: center; font-size: 1.7rem; text-decoration: underline wavy; margin-bottom: 30px; }
+        h2 { color: #c53030; border-bottom: 2px solid #c53030; display: inline-block; margin-top: 25px; }
+        
+        .highlight { background: var(--highlight); padding: 0 4px; border-radius: 3px; }
+        .red-ink { color: #d32f2f; font-weight: bold; }
+        
+        /* Interactive Timeline Section */
+        .timeline-trigger {
+            background: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 20px 0;
+            transition: 0.3s;
+        }
+        .timeline-trigger:hover { background: #1a202c; }
+
+        .timeline-box {
+            display: none;
+            background: #f8fafc;
+            border-left: 4px solid #2b6cb0;
+            padding: 15px;
+            margin-bottom: 25px;
+        }
+
+        /* Hard Questions Grid - High Density */
+        .quiz-container {
+            margin-top: 40px;
+            border: 2px solid #2d3748;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .q-item {
+            color: #4a148c;
+            font-weight: bold;
+            border-bottom: 1px dotted #ccc;
+            margin-bottom: 10px;
+            padding-bottom: 2px;
+        }
+
+        .nav-container { text-align: right; margin-top: 40px; }
+        .next-btn {
+            background: #c53030;
+            color: white !important;
+            text-decoration: none;
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(197, 48, 48, 0.4);
+        }
+
+        @media (max-width: 600px) {
+            .notebook-page { padding: 60px 10px 30px 50px; }
+            .notebook-page::before { left: 45px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="notebook-page">
+    <div class="psi-badge">Target: PSI 2026 👮</div>
+
+    <div style="background: #fff9e6; border: 1px dashed #d35400; padding: 10px; margin-bottom: 20px; text-align: center; font-style: italic;">
+        "खाकी वर्दी मिळवण्यासाठी रक्ताचं पाणी करावं लागतं, सुरुवात इथूनच होते!"
+    </div>
+
+    <h1>१७७३ चा रेगुलेटिंग ॲक्ट (सर्वात महत्त्वाचा कायदा)</h1>
+
+    <div class="section">
+        <h2>१. घटनात्मक महत्त्व (Constitutional Depth)</h2>
+        <p>• ब्रिटीश संसदेने कंपनीच्या व्यवहारांवर <span class="highlight">नियंत्रण (Control)</span> मिळवण्यासाठी उचललेले हे **पहिले कायदेशीर पाऊल** होते.</p>
+        <p>• कंपनीच्या <span class="red-ink">राजकीय (Political)</span> आणि <span class="red-ink">प्रशासकीय (Administrative)</span> कार्यांना प्रथमच अधिकृत मान्यता दिली.</p>
+        <p>• या कायद्याने भारतात <span class="highlight">केंद्रीय प्रशासनाचा (Centralization)</span> पाया रचला.</p>
+    </div>
+
+    <div class="section">
+        <h2>२. महत्त्वाच्या तरतुदी (Key Features)</h2>
+        <p><b>A. गव्हर्नर जनरल ऑफ बंगाल:</b> बंगालच्या गव्हर्नरचे पद बदलून <span class="highlight">‘गव्हर्नर जनरल ऑफ बंगाल’</span> केले. त्याला मदत करण्यासाठी **४ सदस्यांचे कार्यकारी मंडळ** (Executive Council) स्थापले. पहिले गव्हर्नर जनरल: <span class="red-ink">लॉर्ड वॉरन हेस्टिंग्ज</span>.</p>
+        
+        <p><b>B. प्रेसिडेन्सीचे नियंत्रण:</b> मुंबई आणि मद्रास या प्रेसिडेन्सीच्या गव्हर्नरांना बंगालच्या गव्हर्नर जनरलच्या <span class="highlight">अधीन (Subordinate)</span> करण्यात आले. (याआधी तिन्ही प्रेसिडेन्सी स्वतंत्र होत्या).</p>
+        
+        <p><b>C. सर्वोच्च न्यायालय (Supreme Court):</b> १७७४ मध्ये कलकत्ता येथे स्थापना. रचना: <span class="highlight">१ मुख्य न्यायाधीश + ३ इतर न्यायाधीश</span>.</p>
+        
+        <p><b>D. भ्रष्टाचार निर्मूलन:</b> कंपनीच्या कर्मचाऱ्यांना खाजगी व्यापार करण्यास, भारतीयांकडून **भेटवस्तू किंवा लाच (Bribes)** घेण्यास सक्त मनाई केली.</p>
+        
+        <p><b>E. कोर्ट ऑफ डायरेक्टर्स:</b> ब्रिटीश सरकारने या गव्हर्निंग बॉडीला भारतातील <span class="red-ink">महसूल (Revenue), नागरी (Civil) आणि लष्करी (Military)</span> बाबींचा अहवाल देणे सक्तीचे केले.</p>
+    </div>
+
+    <div class="timeline-trigger" onclick="toggleTimeline()">📌 रिव्हिजन टाइमलाईन (कधी काय घडले?)</div>
+    <div id="timeline" class="timeline-box">
+        <p>• <b>१७७३:</b> रेगुलेटिंग ॲक्ट ब्रिटीश संसदेत संमत.</p>
+        <p>• <b>१७७३:</b> वॉरन हेस्टिंग्ज बंगालचे पहिले गव्हर्नर जनरल बनले.</p>
+        <p>• <b>१७७४:</b> कलकत्त्यात सर्वोच्च न्यायालयाची प्रत्यक्ष स्थापना.</p>
+    </div>
+
+    <div class="quiz-container">
+        <h3 style="text-align: center; color: #c53030; margin-top: 0;">अति-कठीण प्रश्न (PSI Level Questions)</h3>
+        
+        <div class="q-item">१. कोणत्या कायद्याने भारतात 'केंद्रीय प्रशासनाचा पाया' रचला?</div>
+        <div class="q-item">२. लॉर्ड वॉरन हेस्टिंग्ज यांच्या मदतीसाठी तयार केलेल्या कार्यकारी मंडळात किती सदस्य होते?</div>
+        <div class="q-item">३. १७७३ च्या कायद्याने मुंबई आणि मद्रासच्या स्वायत्ततेवर (Autonomy) कसा परिणाम झाला?</div>
+        <div class="q-item">४. कलकत्ता सर्वोच्च न्यायालयाच्या स्थापनेचे मूळ वर्ष आणि तरतूद वर्ष सांगा.</div>
+        <div class="q-item">५. 'कोर्ट ऑफ डायरेक्टर्स'ला कोणत्या तीन क्षेत्रांचे अहवाल ब्रिटीश सरकारला देणे बंधनकारक होते?</div>
+        <div class="q-item">६. कंपनीच्या कर्मचाऱ्यांवर लाच घेण्यास बंदी घालण्याचे मुख्य राजकीय कारण काय असावे?</div>
+        <div class="q-item">७. प्रथमच राजकीय आणि प्रशासकीय कार्यांची विभागणी कोणत्या कायद्यात मान्य केली गेली?</div>
+    </div>
+
+    <div class="nav-container">
+        <a href="pitts_india_act_1784.html" class="next-btn">पुढचे पान: पिट्स इंडिया ॲक्ट १७८४ ➜</a>
+    </div>
+</div>
+
+<script>
+    function toggleTimeline() {
+        var x = document.getElementById("timeline");
+        x.style.display = (x.style.display === "block") ? "none" : "block";
+    }
+</script>
+
+</body>
+</html>

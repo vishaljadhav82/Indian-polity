@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Focus Notes - Historical Background</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paper: #fffef5;
+            --ink: #1a202c;
+            --margin-red: #ff8a8a;
+            --line: #edf2f7;
+            --highlight: #fff382;
+        }
+
+        body {
+            background: #f0f2f5;
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Kalam', cursive;
+            transition: background 0.5s;
+        }
+
+        /* Focus Animation: पेज लोड होताना हळूवार वर येईल */
+        .notebook-page {
+            width: 100%;
+            max-width: 800px;
+            background: var(--paper);
+            padding: 60px 20px 40px 65px;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            background-image: linear-gradient(var(--line) 1px, transparent 1px);
+            background-size: 100% 32px;
+            line-height: 32px;
+            animation: slideUp 1s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .notebook-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 55px;
+            width: 2px;
+            height: 100%;
+            background: var(--margin-red);
+        }
+
+        /* Motivation Banner with pulse animation */
+        .motivation-banner {
+            border: 2px solid #f39c12;
+            background: #fff9e6;
+            padding: 10px;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: bold;
+            color: #d35400;
+            animation: pulse 3s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        h1 { color: #2b6cb0; text-align: center; text-decoration: underline wavy; margin: 0 0 30px 0; }
+        h2 { color: #c53030; border-bottom: 2px solid #c53030; display: inline-block; margin-top: 25px; }
+        
+        .highlight { background: var(--highlight); padding: 0 5px; border-radius: 3px; }
+        .important-point { margin-bottom: 20px; position: relative; }
+
+        /* Timeline Trigger - No Distraction */
+        .timeline-section {
+            margin: 30px 0;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .timeline-btn {
+            background: #2d3748;
+            color: white;
+            width: 100%;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            font-family: 'Kalam', cursive;
+            font-size: 1.1rem;
+        }
+
+        .timeline-content {
+            display: none;
+            padding: 15px;
+            background: #f8fafc;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; } to { opacity: 1; }
+        }
+
+        /* Quiz Box - Structured */
+        .quiz-box {
+            margin-top: 40px;
+            padding: 20px;
+            background: #fff;
+            border: 2px solid #2b6cb0;
+            border-radius: 10px;
+            box-shadow: 5px 5px 0px #2b6cb0;
+        }
+
+        .q-item {
+            color: #4a148c;
+            font-weight: bold;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px dotted #ccc;
+            transition: color 0.3s;
+            cursor: help;
+        }
+
+        .q-item:hover { color: #ff0000; }
+
+        .footer-nav {
+            margin-top: 40px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .next-btn {
+            background: #c53030;
+            color: white !important;
+            text-decoration: none;
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .next-btn:hover { background: #9b2c2c; box-shadow: 0 0 15px rgba(197, 48, 48, 0.4); }
+
+        @media (max-width: 600px) {
+            .notebook-page { padding-left: 50px; }
+            .notebook-page::before { left: 45px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="notebook-page">
+    <div class="motivation-banner">
+        "ध्येयासाठी वेडे व्हा, कारण इतिहास वेड्या लोकांनीच घडवला आहे!" 🔥
+    </div>
+
+    <h1>१. ऐतिहासिक पार्श्वभूमी (Historical Background)</h1>
+
+    <div class="important-point">
+        <h2>१. ब्रिटीशांचे आगमन</h2>
+        <p>ब्रिटीश भारतात <span class="highlight">१६०० मध्ये</span> 'ईस्ट इंडिया कंपनी'च्या स्वरूपात आले. राणी एलिझाबेथ पहिलीने त्यांना दिलेल्या सनदेमुळे (Charter) व्यापाराचे विशेष अधिकार प्राप्त झाले होते.</p>
+    </div>
+
+    <div class="important-point">
+        <h2>२. दिवाणी अधिकार (१७६५)</h2>
+        <p>बक्सारच्या युद्धानंतर <span class="highlight">१७६५ मध्ये</span> कंपनीला बंगाल, बिहार आणि ओरिसाचे <span style="border-bottom: 2px solid #2b6cb0;">'दिवाणी' (महसूल आणि दिवाणी न्याय)</span> अधिकार मिळाले. येथूनच कंपनीने 'प्रादेशिक शक्ती' म्हणून आपले स्थान पक्के केले.</p>
+    </div>
+
+    <div class="important-point">
+        <h2>३. ब्रिटीश राजसत्ता (१८५८ - १९४७)</h2>
+        <p>१८५७ च्या उठावानंतर <span class="highlight">१८५८ मध्ये</span> ब्रिटीश राजसत्तेने (The Crown) भारताच्या प्रशासनाची थेट जबाबदारी स्वीकारली. ही व्यवस्था १५ ऑगस्ट १९४७ पर्यंत कायम होती.</p>
+    </div>
+
+    <div class="important-point">
+        <h2>४. राज्यघटना आणि समिती</h2>
+        <p><span class="highlight">१९३४ मध्ये एम.एन. रॉय</span> यांनी प्रथम घटना समितीची संकल्पना मांडली. त्यानुसार १९४६ मध्ये समिती स्थापन झाली आणि अखेर <span class="highlight">२६ जानेवारी १९५०</span> रोजी संविधान अमलात आले.</p>
+    </div>
+
+    <div class="timeline-section">
+        <button class="timeline-btn" onclick="toggleTimeline()">🕒 टाइमलाईन रिव्हिजन (Click to Show/Hide)</button>
+        <div id="timeline" class="timeline-content">
+            <p>• <b>१६००:</b> व्यापारी म्हणून आगमन</p>
+            <p>• <b>१७६५:</b> बंगाल, बिहार, ओरिसाचे दिवाणी अधिकार</p>
+            <p>• <b>१८५८:</b> ब्रिटीश क्राउनचे शासन सुरू</p>
+            <p>• <b>१९३४:</b> घटना समितीची पहिली कल्पना (एम.एन. रॉय)</p>
+            <p>• <b>१९४६:</b> घटना समितीची प्रत्यक्ष स्थापना</p>
+            <p>• <b>१९५०:</b> भारताचे संविधान अमलात आले</p>
+        </div>
+    </div>
+
+    <div class="quiz-box">
+        <h3 style="text-align: center; color: #c53030; margin-top: 0;">विश्लेषणात्मक प्रश्न (Notes-Based)</h3>
+        
+        <div class="q-item" title="Hint: Check Point 1">१. ईस्ट इंडिया कंपनीला व्यापाराचा विशेष अधिकार कोणत्या दस्तऐवजाद्वारे मिळाला?</div>
+        
+        <div class="q-item" title="Hint: Check Point 2">२. १७६५ मधील 'दिवाणी' अधिकाराचा अर्थ प्रशासकीय भाषेत कसा स्पष्ट कराल?</div>
+        
+        <div class="q-item" title="Hint: Check Point 2">३. कंपनीची 'प्रादेशिक शक्ती' म्हणून ओळख निर्माण होण्यास कोणती घटना कारणीभूत ठरली?</div>
+        
+        <div class="q-item" title="Hint: Check Point 3">४. १८५८ मध्ये भारताच्या शासन व्यवस्थेत कोणता ऐतिहासिक बदल झाला?</div>
+        
+        <div class="q-item" title="Hint: Check Point 4">५. भारतातील कम्युनिस्ट चळवळीचे प्रणेते एम.एन. रॉय यांचे संविधानाच्या संदर्भात योगदान काय?</div>
+        
+        <div class="q-item" title="Hint: Check Point 4">६. १९३४ ते १९५० या कालखंडातील घटना समितीच्या प्रवासाचे टप्पे सांगा.</div>
+        
+        <div class="q-item" title="Hint: Check Point 3">७. ब्रिटीश राजसत्तेचे (Crown Rule) भारतात थेट शासन किती वर्षे होते?</div>
+    </div>
+
+    <div class="footer-nav">
+        <a href="2.html" class="next-btn">पुढचे पान: रेगुलेटिंग ॲक्ट १७७३ ➜</a>
+    </div>
+</div>
+
+<script>
+    function toggleTimeline() {
+        var t = document.getElementById("timeline");
+        if (t.style.display === "block") {
+            t.style.display = "none";
+        } else {
+            t.style.display = "block";
+        }
+    }
+</script>
+
+</body>
+</html>
