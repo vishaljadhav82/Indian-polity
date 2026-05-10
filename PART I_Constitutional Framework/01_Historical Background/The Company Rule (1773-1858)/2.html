@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSI Mission - Regulating Act 1773</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paper: #fffef5;
+            --ink: #1a202c;
+            --margin-red: #ff8a8a;
+            --line: #edf2f7;
+            --highlight: #fff382;
+            --primary-blue: #2b6cb0;
+        }
+
+        body {
+            background: #d1d5db;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Kalam', cursive;
+        }
+
+        /* Header Nav for Modals */
+        .header-nav {
+            width: 100%;
+            max-width: 850px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        /* Notebook Page Style */
+        .notebook-page {
+            width: 100%;
+            max-width: 850px;
+            background: var(--paper);
+            padding: 70px 40px 60px 90px;
+            position: relative;
+            box-shadow: 15px 15px 40px rgba(0,0,0,0.1);
+            border-radius: 2px 15px 15px 2px;
+            background-image: 
+                linear-gradient(90deg, transparent 79px, var(--margin-red) 79px, var(--margin-red) 81px, transparent 81px),
+                linear-gradient(var(--line) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 32px;
+            line-height: 32px;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        /* Spiral Binding */
+        .notebook-page::before {
+            content: '';
+            position: absolute;
+            top: 35px;
+            left: 25px;
+            width: 28px;
+            height: 28px;
+            background: #4a5568;
+            border-radius: 50%;
+            box-shadow: 0 64px #4a5568, 0 128px #4a5568, 0 192px #4a5568, 0 256px #4a5568, 0 320px #4a5568, 0 384px #4a5568, 0 448px #4a5568, 0 512px #4a5568, 0 576px #4a5568;
+            opacity: 0.15;
+            z-index: 2;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .psi-badge {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: #1a365d;
+            color: #ffd700;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            transform: rotate(2deg);
+            border: 2px solid #ffd700;
+            font-weight: bold;
+        }
+
+        h1 { color: var(--primary-blue); text-align: center; transform: rotate(-0.5deg); margin-bottom: 40px; }
+        h2 { color: #c53030; border-bottom: 2px solid #feb2b2; display: inline-block; margin-top: 25px; }
+        .highlight { background: var(--highlight); padding: 0 8px; border-radius: 4px; }
+        .red-ink { color: #d32f2f; font-weight: bold; }
+
+        /* Radiating Buttons */
+        .next-btn {
+            text-decoration: none;
+            padding: 10px 22px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white !important;
+            background: #e74c3c;
+            border-radius: 50px;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1;
+            border: none;
+            cursor: pointer;
+            font-family: 'Kalam', cursive;
+        }
+
+        .radiating-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border: 2px solid #e74c3c;
+            border-radius: 50px;
+            z-index: -1;
+            animation: radiate 2s infinite;
+        }
+
+        @keyframes radiate {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.4); opacity: 0; }
+        }
+
+        /* Modal & Iframe */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 2000;
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-box {
+            position: relative;
+            width: 90%;
+            max-width: 900px;
+            height: 85vh;
+            margin: 4vh auto;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px; right: 20px;
+            background: #e74c3c;
+            color: white;
+            width: 35px; height: 35px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 2100;
+            border: 2px solid white;
+        }
+
+        iframe { width: 100%; height: 100%; border: none; }
+
+        /* Quiz Box */
+        .quiz-container {
+            margin-top: 40px;
+            background: #fff;
+            border-left: 6px solid #c53030;
+            padding: 20px;
+            border-radius: 0 10px 10px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .q-item { padding: 8px; border-bottom: 1px solid #edf2f7; cursor: help; }
+        .q-item:hover { background: #f7fafc; padding-left: 15px; transition: 0.3s; }
+
+        .footer-nav { margin-top: 50px; display: flex; justify-content: flex-end; }
+    </style>
+</head>
+<body>
+
+    <!-- Modal for External Timelines -->
+    <div id="iframeModal" class="modal-overlay">
+        <div class="modal-box">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <iframe id="timelineFrame" src=""></iframe>
+        </div>
+    </div>
+
+    <!-- Top Navigation -->
+    <div class="header-nav">
+       <button class="next-btn radiating-btn" onclick="openModal('beginning.html')">🕒 EIC Timeline</button>
+        <button class="next-btn radiating-btn" onclick="openModal('company-rule.html')">🕒 Company Rule Timeline</button>
+        <button class="next-btn radiating-btn" onclick="openModal('crown-rule.html')">🕒 Crown Rule Timeline</button>
+ </div>
+
+    <div class="notebook-page">
+        <div class="psi-badge">Target: PSI 2026 👮</div>
+
+        <div style="background: #fff9e6; border: 1px dashed #d35400; padding: 10px; margin-bottom: 25px; text-align: center; font-style: italic; border-radius: 8px;">
+            "खाकी वर्दी मिळवण्यासाठी रक्ताचं पाणी करावं लागतं, सुरुवात इथूनच होते!"
+        </div>
+
+        <h1>१७७३ चा रेगुलेटिंग ॲक्ट</h1>
+
+        <div class="section">
+            <h2>१. घटनात्मक महत्त्व</h2>
+            <p>• ब्रिटीश संसदेने कंपनीच्या व्यवहारांवर <span class="highlight">नियंत्रण (Control)</span> मिळवण्यासाठी उचललेले हे **पहिले कायदेशीर पाऊल** होते.</p>
+            <p>• कंपनीच्या <span class="red-ink">राजकीय</span> आणि <span class="red-ink">प्रशासकीय</span> कार्यांना प्रथमच अधिकृत मान्यता दिली.</p>
+            <p>• या कायद्याने भारतात <span class="highlight">केंद्रीय प्रशासनाचा</span> पाया रचला.</p>
+        </div>
+
+        <div class="section">
+            <h2>२. महत्त्वाच्या तरतुदी</h2>
+            <p><b>A. गव्हर्नर जनरल:</b> बंगालच्या गव्हर्नरचे पद बदलून <span class="highlight">‘गव्हर्नर जनरल ऑफ बंगाल’</span> केले. पहिले: <span class="red-ink">लॉर्ड वॉरन हेस्टिंग्ज</span>.</p>
+            <p><b>B. सर्वोच्च न्यायालय:</b> १७७४ मध्ये <span class="highlight">कलकत्ता</span> येथे स्थापना. (१ मुख्य न्यायाधीश + ३ इतर न्यायाधीश).</p>
+            <p><b>C. भ्रष्टाचार रोखणे:</b> कर्मचाऱ्यांना खाजगी व्यापार आणि भारतीयांकडून **लाच** घेण्यास सक्त मनाई.</p>
+        </div>
+
+        <div class="quiz-container">
+            <h3 style="margin-top:0; color:#c53030;">PSI Level Quiz</h3>
+            <div class="q-item">१. कोणत्या कायद्याने प्रथमच कंपनीच्या राजकीय कार्यांना मान्यता दिली?</div>
+            <div class="q-item">२. कलकत्ता सर्वोच्च न्यायालयाचे पहिले मुख्य न्यायाधीश कोण होते?</div>
+            <div class="q-item">३. 'केंद्रीय प्रशासनाचा पाया' कोणत्या कायद्याने रचला?</div>
+        </div>
+
+        <div class="footer-nav">
+            <a href="3.html" class="next-btn radiating-btn">पुढचे पान: पिट्स इंडिया ॲक्ट १७८४ ➜</a>
+        </div>
+    </div>
+
+    <script>
+        function openModal(url) {
+            const modal = document.getElementById('iframeModal');
+            const iframe = document.getElementById('timelineFrame');
+            iframe.src = url;
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('iframeModal');
+            const iframe = document.getElementById('timelineFrame');
+            modal.style.display = 'none';
+            iframe.src = "";
+            document.body.style.overflow = 'auto';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('iframeModal');
+            if (event.target == modal) { closeModal(); }
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSI Mission - Pitt's India Act 1784</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paper: #fffef5;
+            --ink: #1a202c;
+            --margin-red: #ff8a8a;
+            --line: #edf2f7;
+            --highlight: #fff382;
+            --primary-blue: #2b6cb0;
+        }
+
+        body {
+            background: #d1d5db;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Kalam', cursive;
+        }
+
+        /* Header Nav for Modals */
+        .header-nav {
+            width: 100%;
+            max-width: 850px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        /* Notebook Page Style */
+        .notebook-page {
+            width: 100%;
+            max-width: 850px;
+            background: var(--paper);
+            padding: 70px 40px 60px 90px;
+            position: relative;
+            box-shadow: 15px 15px 40px rgba(0,0,0,0.1), inset 0 0 100px rgba(0,0,0,0.02);
+            border-radius: 2px 15px 15px 2px;
+            background-image: 
+                linear-gradient(90deg, transparent 79px, var(--margin-red) 79px, var(--margin-red) 81px, transparent 81px),
+                linear-gradient(var(--line) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 32px;
+            line-height: 32px;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        /* Spiral Binding Effect */
+        .notebook-page::before {
+            content: '';
+            position: absolute;
+            top: 35px;
+            left: 25px;
+            width: 28px;
+            height: 28px;
+            background: #4a5568;
+            border-radius: 50%;
+            box-shadow: 0 64px #4a5568, 0 128px #4a5568, 0 192px #4a5568, 0 256px #4a5568, 0 320px #4a5568, 0 384px #4a5568, 0 448px #4a5568, 0 512px #4a5568, 0 576px #4a5568, 0 640px #4a5568;
+            opacity: 0.15;
+            z-index: 2;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .psi-badge {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: #d32f2f;
+            color: #ffd700;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transform: rotate(2deg);
+            border: 2px solid #ffd700;
+        }
+
+        .motivation-banner {
+            border: 2px dashed #f39c12;
+            background: #fff9e6;
+            padding: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: bold;
+            color: #d35400;
+            border-radius: 10px;
+            font-style: italic;
+        }
+
+        h1 { 
+            color: var(--primary-blue); 
+            text-align: center; 
+            text-decoration: underline wavy #cbd5e0; 
+            margin-bottom: 40px;
+            transform: rotate(-0.5deg);
+        }
+
+        h2 { 
+            color: #c53030; 
+            border-bottom: 2px solid #feb2b2; 
+            display: inline-block; 
+            margin-top: 30px;
+            margin-bottom: 10px;
+        }
+
+        .highlight { 
+            background: linear-gradient(104deg, rgba(255,243,130,0.8) 0%, rgba(255,243,130,0.5) 100%);
+            padding: 0px 8px; 
+            border-radius: 5px;
+        }
+
+        .imp-tag { color: #b30000; font-weight: bold; }
+
+        /* Radiating Buttons */
+        .next-btn {
+            text-decoration: none;
+            padding: 10px 22px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white !important;
+            background: #e74c3c;
+            border-radius: 50px;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1;
+            border: none;
+            cursor: pointer;
+            font-family: 'Kalam', cursive;
+        }
+
+        .radiating-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border: 2px solid #e74c3c;
+            border-radius: 50px;
+            z-index: -1;
+            animation: radiate 2s infinite;
+        }
+
+        @keyframes radiate {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.4); opacity: 0; }
+        }
+
+        /* Modal & Iframe */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 2000;
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-box {
+            position: relative;
+            width: 90%;
+            max-width: 900px;
+            height: 85vh;
+            margin: 4vh auto;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px; right: 20px;
+            background: #e74c3c;
+            color: white;
+            width: 35px; height: 35px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 2100;
+            border: 2px solid white;
+        }
+
+        iframe { width: 100%; height: 100%; border: none; }
+
+        /* Custom Box */
+        .double-gov-box {
+            border-left: 5px solid var(--primary-blue);
+            background: rgba(237, 242, 247, 0.5);
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 0 10px 10px 0;
+        }
+
+        /* Timeline Trigger */
+        .timeline-trigger {
+            background: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 30px 0;
+            font-weight: bold;
+        }
+
+        .timeline-content {
+            display: none;
+            padding: 20px;
+            border-left: 5px solid var(--primary-blue);
+            background: #f8fafc;
+            border-radius: 0 10px 10px 0;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Quiz Section */
+        .quiz-section {
+            margin-top: 50px;
+            background: #ffffff;
+            border-top: 5px solid #c53030;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .q-item {
+            color: #4a148c;
+            font-weight: bold;
+            padding: 10px;
+            border-bottom: 1px solid #edf2f7;
+            cursor: help;
+            transition: 0.3s;
+        }
+
+        .q-item:hover {
+            background: #f7fafc;
+            padding-left: 20px;
+            color: #c53030;
+        }
+
+        .nav-footer { text-align: right; margin-top: 50px; }
+    </style>
+</head>
+<body>
+
+    <!-- Modal for External HTML Pages -->
+    <div id="iframeModal" class="modal-overlay">
+        <div class="modal-box">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <iframe id="timelineFrame" src=""></iframe>
+        </div>
+    </div>
+
+    <!-- Top Navigation -->
+    <div class="header-nav">
+        <button class="next-btn radiating-btn" onclick="openModal('begging.html')">🕒 EIC Timeline</button>
+        <button class="next-btn radiating-btn" onclick="openModal('company-rule.html')">🕒 Company Rule Timeline</button>
+    </div>
+
+    <div class="notebook-page">
+        <div class="psi-badge">PSI Target 🎯</div>
+
+        <div class="motivation-banner">
+            "शिस्त ही ध्येय आणि यशाच्या मधला पूल आहे!" 🔥
+        </div>
+
+        <h1>पिट्स इंडिया ॲक्ट, १७८४</h1>
+
+        
+
+        <div class="notes-content">
+            <p>• १७७३ च्या रेगुलेटिंग ॲक्टमधील दोष सुधारण्यासाठी ब्रिटीश संसदेने <span class="highlight">१७८१ चा दुरुस्ती कायदा</span> (Act of Settlement) संमत केला.</p>
+            <p>• त्यानंतर १७८४ मध्ये 'पिट्स इंडिया ॲक्ट' आला, जो भारतीय प्रशासकीय संरचनेत क्रांतिकारी ठरला.</p>
+
+            <h2>१. दुहेरी शासन (Double Government)</h2>
+            <p>या कायद्याने कंपनीच्या कामांची दोन भागात विभागणी केली:</p>
+            <div class="double-gov-box">
+                <p>१. <b>व्यापारी कार्ये (Commercial):</b> <span class="highlight">कोर्ट ऑफ डायरेक्टर्स</span> (Court of Directors).</p>
+                <p>२. <b>राजकीय कार्ये (Political):</b> <span class="highlight">बोर्ड ऑफ कंट्रोल</span> (Board of Control).</p>
+            </div>
+            <p>• <b>बोर्ड ऑफ कंट्रोल:</b> या नवीन संस्थेला भारतातील नागरी, लष्करी सरकार आणि महसुलावर <span class="imp-tag">देखरेख आणि निर्देश</span> देण्याचे सर्वोच्च अधिकार दिले.</p>
+
+            <h2>२. कायद्याचे विशेष महत्त्व</h2>
+            <p>• भारतातील कंपनीच्या प्रदेशाला प्रथमच <span class="highlight">‘ब्रिटीश पजेशन इन इंडिया’</span> असे संबोधिले गेले.</p>
+            <p>• ब्रिटीश सरकारला कंपनीच्या कारभारावर <span class="imp-tag">‘सर्वोच्च नियंत्रण’</span> (Supreme Control) प्राप्त झाले.</p>
+        </div>
+
+        <div class="timeline-trigger" onclick="toggleTimeline()">📌 रिव्हिजनसाठी टाइमलाईन उघडा</div>
+        <div id="timeline" class="timeline-content">
+            <p>• <b>१७७३:</b> रेगुलेटिंग ॲक्ट (सुरुवात).</p>
+            <p>• <b>१७८१:</b> ॲक्ट ऑफ सेटलमेंट (दुरुस्ती).</p>
+            <p>• <b>१७८४:</b> पिट्स इंडिया ॲक्ट (दुहेरी शासन).</p>
+        </div>
+
+        <div class="quiz-section">
+            <h3 style="text-align: center; color: #c53030; margin-top: 0;">अति-कठीण प्रश्न (PSI Level)</h3>
+            <div class="q-item" title="उत्तर: १७८१ चा दुरुस्ती कायदा (Act of Settlement)">१. १७७३ च्या कायद्यातील दोष सुधारण्यासाठी कोणता कायदा करण्यात आला?</div>
+            <div class="q-item" title="उत्तर: राजकीय कार्ये नियंत्रित करण्यासाठी">२. 'बोर्ड ऑफ कंट्रोल'ची निर्मिती का करण्यात आली?</div>
+            <div class="q-item" title="उत्तर: कोर्ट ऑफ डायरेक्टर्स आणि बोर्ड ऑफ कंट्रोल">३. १७८४ च्या कायद्याने स्थापित केलेल्या 'दुहेरी शासना'चे दोन स्तंभ कोणते?</div>
+            <div class="q-item" title="उत्तर: ब्रिटीश पजेशन इन इंडिया">४. कंपनीच्या प्रदेशासाठी प्रथमच कोणता तांत्रिक शब्दप्रयोग वापरला गेला?</div>
+            <div class="q-item" title="उत्तर: व्यापारी व्यवहार">५. कोर्ट ऑफ डायरेक्टर्सला कोणते व्यवहार सांभाळण्याची मुभा होती?</div>
+        </div>
+
+        <div class="nav-footer">
+            <a href="4.html" class="next-btn radiating-btn">पुढचे पान: चार्टर ॲक्ट १८३३ ➜</a>
+        </div>
+    </div>
+
+    <script>
+        function openModal(url) {
+            const modal = document.getElementById('iframeModal');
+            const iframe = document.getElementById('timelineFrame');
+            iframe.src = url;
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('iframeModal');
+            const iframe = document.getElementById('timelineFrame');
+            modal.style.display = 'none';
+            iframe.src = "";
+            document.body.style.overflow = 'auto';
+        }
+
+        function toggleTimeline() {
+            var t = document.getElementById("timeline");
+            t.style.display = (t.style.display === "block") ? "none" : "block";
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('iframeModal');
+            if (event.target == modal) { closeModal(); }
+        }
+    </script>
+
+</body>
+</html>

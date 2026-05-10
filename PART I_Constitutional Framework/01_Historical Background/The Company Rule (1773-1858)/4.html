@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSI Mission - Charter Act 1833</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paper: #fffef5;
+            --ink: #1a202c;
+            --margin-red: #ff8a8a;
+            --line: #edf2f7;
+            --highlight: #fff382;
+            --primary-blue: #2b6cb0;
+        }
+
+        body {
+            background: #d1d5db;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Kalam', cursive;
+        }
+
+        /* Modal Overlay & Iframe Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 2000;
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-box {
+            position: relative;
+            width: 90%;
+            max-width: 900px;
+            height: 85vh;
+            margin: 4vh auto;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px; right: 20px;
+            background: #e74c3c;
+            color: white;
+            width: 35px; height: 35px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 2100;
+            border: 2px solid white;
+        }
+
+        iframe { width: 100%; height: 100%; border: none; }
+
+        /* Navigation Buttons */
+        .header-nav {
+            width: 100%;
+            max-width: 850px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .next-btn {
+            text-decoration: none;
+            padding: 10px 22px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white !important;
+            background: #e74c3c;
+            border-radius: 50px;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1;
+            border: none;
+            cursor: pointer;
+            font-family: 'Kalam', cursive;
+        }
+
+        .radiating-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border: 2px solid #e74c3c;
+            border-radius: 50px;
+            z-index: -1;
+            animation: radiate 2s infinite;
+        }
+
+        @keyframes radiate {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.4); opacity: 0; }
+        }
+
+        /* Notebook Page Style */
+        .notebook-page {
+            width: 100%;
+            max-width: 850px;
+            background: var(--paper);
+            padding: 70px 40px 60px 95px;
+            position: relative;
+            box-shadow: 15px 15px 40px rgba(0,0,0,0.1);
+            border-radius: 2px 15px 15px 2px;
+            background-image: 
+                linear-gradient(90deg, transparent 79px, var(--margin-red) 79px, var(--margin-red) 81px, transparent 81px),
+                linear-gradient(var(--line) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 32px;
+            line-height: 32px;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        /* Spiral Binding Effect */
+        .notebook-page::before {
+            content: '';
+            position: absolute;
+            top: 35px;
+            left: 25px;
+            width: 28px;
+            height: 28px;
+            background: #4a5568;
+            border-radius: 50%;
+            box-shadow: 0 64px #4a5568, 0 128px #4a5568, 0 192px #4a5568, 0 256px #4a5568, 0 320px #4a5568, 0 384px #4a5568, 0 448px #4a5568, 0 512px #4a5568, 0 576px #4a5568, 0 640px #4a5568;
+            opacity: 0.15;
+            z-index: 2;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .psi-badge {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: #1a365d;
+            color: #ffd700;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transform: rotate(2deg);
+            border: 2px solid #ffd700;
+        }
+
+        h1 { color: var(--primary-blue); text-align: center; text-decoration: underline wavy #cbd5e0; margin-bottom: 40px; }
+        h2 { color: #c53030; border-bottom: 2px solid #feb2b2; display: inline-block; margin-top: 30px; }
+        .highlight { background: var(--highlight); padding: 0 8px; border-radius: 4px; }
+        .red-ink { color: #d32f2f; font-weight: bold; }
+
+        .important-box {
+            background: #fff9e6;
+            border: 1px dashed #f39c12;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        /* Quiz Box */
+        .quiz-section {
+            margin-top: 50px;
+            background: #fff;
+            border-top: 5px solid #2b6cb0;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .q-item {
+            padding: 10px;
+            border-bottom: 1px solid #edf2f7;
+            cursor: pointer;
+            font-weight: bold;
+            color: #4a148c;
+        }
+
+        .q-item:hover { background: #f7fafc; padding-left: 20px; transition: 0.3s; }
+
+        .footer-nav { margin-top: 50px; display: flex; justify-content: flex-end; }
+    </style>
+</head>
+<body>
+
+    <!-- Modal for External Timelines -->
+    <div id="iframeModal" class="modal-overlay">
+        <div class="modal-box">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <iframe id="timelineFrame" src=""></iframe>
+        </div>
+    </div>
+
+    <!-- Top Navigation -->
+    <div class="header-nav">
+        <button class="next-btn radiating-btn" onclick="openModal('beginning.html')">🕒 EIC Timeline</button>
+        <button class="next-btn radiating-btn" onclick="openModal('company-rule.html')">🕒 Company Rule Timeline</button>
+    </div>
+
+    <div class="notebook-page">
+        <div class="psi-badge">Target: PSI 👮</div>
+
+        <div class="important-box">
+            "हा कायदा ब्रिटीश भारतातील <b>केंद्रीकरणाच्या (Centralisation)</b> दिशेने उचललेले अंतिम पाऊल होते." 🔥
+        </div>
+
+        <h1>चार्टर ॲक्ट १८३३</h1>
+
+        <div class="content">
+            <h2>१. भारताचा गव्हर्नर-जनरल</h2>
+            <p>• बंगालच्या गव्हर्नर-जनरलला <span class="highlight">‘भारताचा गव्हर्नर-जनरल’</span> बनवण्यात आले.</p>
+            <p>• त्याच्याकडे सर्व नागरी आणि लष्करी अधिकार सोपवण्यात आले. अशाप्रकारे, प्रथमच संपूर्ण ब्रिटीश ताब्यातील प्रदेशासाठी 'भारत सरकार' निर्माण झाले.</p>
+            <p>• <span class="red-ink">लॉर्ड विल्यम बेंटिक</span> हे भारताचे पहिले गव्हर्नर-जनरल ठरले.</p>
+
+            <h2>२. कायदेविषयक अधिकार (Legislative)</h2>
+            <p>• मुंबई आणि मद्रासच्या गव्हर्नरांचे <span class="red-ink">कायदे करण्याचे अधिकार काढून घेतले</span> गेले.</p>
+            <p>• भारताच्या गव्हर्नर-जनरलला संपूर्ण ब्रिटीश भारतासाठी विशेष कायदेविषयक अधिकार देण्यात आले.</p>
+            <p>• आधीच्या कायद्यांना **'Regulations'** म्हटले जायचे, पण या कायद्याखालील कायद्यांना <span class="highlight">**'Acts' (अधिनियम)**</span> म्हटले गेले.</p>
+
+            <h2>३. कंपनीची बदललेली भूमिका</h2>
+            <p>• ईस्ट इंडिया कंपनीची 'व्यापारी संस्था' म्हणून असलेली ओळख संपली.</p>
+            <p>• कंपनी आता पूर्णपणे <span class="highlight">प्रशासकीय संस्था (Administrative Body)</span> बनली.</p>
+            <p>• भारतातील प्रदेश आता 'ब्रिटीश सम्राट आणि त्यांच्या वारसांच्या' नावाने विश्वस्त (In Trust) म्हणून सांभाळले जाणार होते.</p>
+
+            <h2>४. नागरी सेवा (Civil Services)</h2>
+            <p>• या कायद्याने नागरी सेवांसाठी <span class="red-ink">मुक्त स्पर्धेची</span> (Open Competition) पद्धत सुरू करण्याचा प्रयत्न केला.</p>
+            <p>• भारतीयांना कंपनीच्या नोकरीत प्रवेश नाकारला जाऊ नये, अशी तरतूद यात होती. परंतु, **'कोर्ट ऑफ डायरेक्टर्स'** च्या विरोधामुळे ही तरतूद रद्द करण्यात आली.</p>
+        </div>
+
+        <!-- Quiz Section -->
+        <div class="quiz-section">
+            <h3 style="margin-top:0; color:var(--primary-blue);">स्वयं-अध्ययन प्रश्न (Notes-Based)</h3>
+            <div class="q-item">१. भारताचा पहिला गव्हर्नर-जनरल कोण होता?</div>
+            <div class="q-item">२. 'केंद्रीकरणाचे अंतिम पाऊल' म्हणून कोणता कायदा ओळखला जातो?</div>
+            <div class="q-item">३. या कायद्याने मुंबई आणि मद्रासच्या अधिकारांवर काय परिणाम केला?</div>
+            <div class="q-item">४. १८३३ च्या कायद्यानुसार 'Regulations' आणि 'Acts' मध्ये काय फरक आहे?</div>
+        </div>
+
+        <div class="footer-nav">
+            <a href="5.html" class="next-btn radiating-btn">पुढचे पान: चार्टर ॲक्ट १८५३ ➜</a>
+        </div>
+    </div>
+
+    <script>
+        function openModal(url) {
+            const modal = document.getElementById('iframeModal');
+            const iframe = document.getElementById('timelineFrame');
+            iframe.src = url;
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('iframeModal');
+            const iframe = document.getElementById('timelineFrame');
+            modal.style.display = 'none';
+            iframe.src = "";
+            document.body.style.overflow = 'auto';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('iframeModal');
+            if (event.target == modal) { closeModal(); }
+        }
+    </script>
+
+</body>
+</html>

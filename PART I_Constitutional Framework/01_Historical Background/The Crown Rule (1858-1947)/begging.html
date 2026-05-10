@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foundation Quest - Vishal PSI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paper: #fffef2;
+            --ink: #1a365d;
+            --gold: #d4af37;
+            --battle-red: #c53030;
+            --path-color: #cbd5e0;
+        }
+
+        body {
+            background: #2d3748;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            font-family: 'Kalam', cursive;
+            color: var(--ink);
+        }
+
+        .notebook-page {
+            width: 100%;
+            max-width: 850px;
+            background: var(--paper);
+            padding: 60px 20px 40px 65px;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            background-image: linear-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 100% 32px;
+            border-radius: 5px;
+        }
+
+        /* Handwritten Margin */
+        .notebook-page::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 55px; width: 2px; height: 100%;
+            background: #ffadad;
+        }
+
+        /* Mission Shield */
+        .mission-shield {
+            background: var(--ink);
+            color: #ffd700;
+            padding: 15px;
+            text-align: center;
+            clip-path: polygon(0% 0%, 100% 0%, 100% 85%, 50% 100%, 0% 85%);
+            margin-bottom: 35px;
+            font-weight: bold;
+            border: 2px solid #ffd700;
+        }
+
+        .game-header {
+            text-align: center;
+            border: 2px dashed var(--ink);
+            padding: 10px;
+            margin-bottom: 40px;
+            background: #fff;
+            transform: rotate(-1deg);
+        }
+
+        /* Interactive Timeline Path */
+        .quest-map {
+            position: relative;
+            margin-left: 20px;
+            border-left: 4px dashed var(--path-color);
+            padding-left: 30px;
+        }
+
+        .level-node {
+            position: relative;
+            margin-bottom: 35px;
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .level-node:hover {
+            transform: scale(1.05) translateX(10px);
+        }
+
+        .year-badge {
+            position: absolute;
+            left: -53px;
+            width: 45px;
+            height: 45px;
+            background: var(--ink);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            border: 2px solid #fff;
+            transition: 0.3s;
+        }
+
+        .level-node:hover .year-badge {
+            background: var(--battle-red);
+            box-shadow: 0 0 15px var(--battle-red);
+        }
+
+        .level-content {
+            background: rgba(255, 255, 255, 0.6);
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 5px solid var(--ink);
+        }
+
+        .key-trigger {
+            display: inline-block;
+            background: #4a5568;
+            color: white;
+            padding: 0 8px;
+            border-radius: 4px;
+            margin: 2px;
+            font-size: 0.85rem;
+        }
+
+        /* Scientific Memory palace */
+        .memory-palace {
+            background: #fff5f5;
+            border: 2px solid var(--battle-red);
+            padding: 15px;
+            margin-top: 40px;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .notebook-page { padding-left: 50px; }
+            .year-badge { left: -48px; width: 40px; height: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="notebook-page">
+    <div class="mission-shield">
+        MISSION PSI: THE FOUNDATION QUEST (1600-1773)
+    </div>
+
+    <div class="game-header">
+        <h1 style="margin:0;">व्यापारी ते प्रशासक प्रवास</h1>
+        <small>— पाया मजबूत करा, वर्दीची स्वप्ने पूर्ण करा —</small>
+    </div>
+
+    <div class="quest-map">
+        
+        <div class="level-node">
+            <div class="year-badge">1600</div>
+            <div class="level-content">
+                <strong>स्थापना (Charter):</strong> <br>
+                <span class="key-trigger">Trade Rights</span> राणी एलिझाबेथ पहिलीकडून सनद मिळाली.
+                <span class="key-trigger">Pure Mercantile</span> केवळ व्यापारासाठी आगमन.
+            </div>
+        </div>
+
+        <div class="level-node">
+            <div class="year-badge">1757</div>
+            <div class="level-content">
+                <strong>प्लासीचे युद्ध (Turning Point):</strong> <br>
+                <span class="key-trigger">Political Seed</span> सत्तेचा पाया रचला गेला.
+                <span class="key-trigger">Siraj-ud-Daulah</span> नबाबाचा पराभव.
+            </div>
+        </div>
+
+        <div class="level-node">
+            <div class="year-badge">1764</div>
+            <div class="level-content">
+                <strong>बक्सारचे युद्ध:</strong> <br>
+                <span class="key-trigger">Military Supremacy</span> लष्करी वर्चस्व सिद्ध झाले.
+                <span class="key-trigger">Combined Forces</span> तीन सत्तांचा पराभव.
+            </div>
+        </div>
+
+        <div class="level-node">
+            <div class="year-badge">1765</div>
+            <div class="level-content">
+                <strong>दिवाणी अधिकार (The Change):</strong> <br>
+                <span class="key-trigger">Revenue Power</span> महसूल गोळा करण्याचे हक्क मिळाले.
+                <span class="key-trigger">B-B-O</span> बंगाल, बिहार आणि ओरिसा.
+            </div>
+        </div>
+
+        <div class="level-node">
+            <div class="year-badge">1765+</div>
+            <div class="level-content">
+                <strong>दुहेरी शासन (Dual Govt):</strong> <br>
+                <span class="key-trigger">Robert Clive</span> सत्तेचा गैरवापर सुरू.
+                <span class="key-trigger">Corruption</span> अतोनात भ्रष्टाचार आणि गोंधळ.
+            </div>
+        </div>
+
+        <div class="level-node" style="border-bottom: 2px solid var(--battle-red); padding-bottom: 10px;">
+            <div class="year-badge" style="background:var(--battle-red);">1773</div>
+            <div class="level-content">
+                <strong>नियंत्रणाची गरज:</strong> <br>
+                भ्रष्टाचारामुळे ब्रिटीश सरकारला हस्तक्षेप करावा लागला. 
+                <span class="highlight"><b>रेगुलेटिंग ॲक्ट</b></span> कडे वाटचाल.
+            </div>
+        </div>
+
+    </div>
+
+    <div class="memory-palace">
+        <h4>🧠 Scientific Memory Trigger (Pre-Regulating Flow)</h4>
+        <p>हस्तांतरण असे लक्षात ठेव:</p>
+        <p><b>व्यापार (1600)</b> → <b>राजकीय प्रवेश (1757)</b> → <b>लष्करी विजय (1764)</b> → <b>आर्थिक सत्ता (1765)</b> → <b>अराजकता (1772)</b></p>
+    </div>
+
+    <p style="text-align: center; margin-top: 30px; font-size: 0.95rem; color: #718096; font-style: italic;">
+        "इतिहास हा फक्त वाचण्यासाठी नसतो, तो समजून घेऊन भविष्य घडवण्यासाठी असतो!" 👮‍♂️
+    </p>
+</div>
+
+</body>
+</html>

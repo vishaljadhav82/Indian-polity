@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crown Rule Conquest - Vishal PSI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paper: #fffcf0; /* जुन्या दस्तऐवजाचा रंग */
+            --ink: #1a202c;
+            --crown-red: #b30000;
+            --royal-gold: #c6a006;
+            --path-color: #cbd5e0;
+        }
+
+        body {
+            background: #1a202c;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            font-family: 'Kalam', cursive;
+        }
+
+        .notebook-page {
+            width: 100%;
+            max-width: 850px;
+            background: var(--paper);
+            padding: 60px 20px 40px 65px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            background-image: linear-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 100% 32px;
+            border-radius: 2px;
+        }
+
+        /* Handwritten Margin */
+        .notebook-page::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 55px;
+            width: 2px;
+            height: 100%;
+            background: #ffadad;
+        }
+
+        /* Royal Header Shield */
+        .crown-shield {
+            background: var(--crown-red);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            clip-path: polygon(0% 0%, 100% 0%, 100% 90%, 50% 100%, 0% 90%);
+            margin-bottom: 35px;
+            font-weight: bold;
+            border-bottom: 4px solid var(--royal-gold);
+            letter-spacing: 1px;
+        }
+
+        .game-header {
+            text-align: center;
+            border: 2px solid var(--crown-red);
+            padding: 10px;
+            margin-bottom: 40px;
+            background: #fff;
+            box-shadow: 4px 4px 0px var(--royal-gold);
+        }
+
+        /* The Quest Map (Timeline) */
+        .quest-map {
+            position: relative;
+            margin-left: 20px;
+            border-left: 4px solid var(--path-color);
+            padding-left: 30px;
+        }
+
+        .level-node {
+            position: relative;
+            margin-bottom: 35px;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .level-node:hover {
+            transform: scale(1.03) translateX(10px);
+        }
+
+        .year-badge {
+            position: absolute;
+            left: -55px;
+            width: 48px;
+            height: 48px;
+            background: var(--crown-red);
+            color: white;
+            border-radius: 10px; /* Square with rounded corners for Crown look */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: bold;
+            border: 2px solid var(--royal-gold);
+            transform: rotate(-5deg);
+        }
+
+        .level-node:hover .year-badge {
+            background: var(--royal-gold);
+            transform: rotate(0deg);
+            box-shadow: 0 0 15px var(--royal-gold);
+        }
+
+        .level-content {
+            background: rgba(255, 255, 255, 0.5);
+            padding: 12px;
+            border-radius: 5px;
+            border-left: 5px solid var(--crown-red);
+        }
+
+        /* Memory Triggers (Mnemonic Buttons) */
+        .key-trigger {
+            display: inline-block;
+            background: #2d3748;
+            color: #fff;
+            padding: 0 8px;
+            border-radius: 4px;
+            margin: 2px;
+            font-size: 0.85rem;
+        }
+
+        /* Scientific Mnemonic Palace */
+        .memory-palace {
+            background: #fff5f5;
+            border: 2px dashed var(--crown-red);
+            padding: 15px;
+            margin-top: 40px;
+            border-radius: 10px;
+        }
+
+        .memory-palace h4 { margin: 0 0 10px 0; color: var(--crown-red); }
+
+        @media (max-width: 600px) {
+            .notebook-page { padding-left: 50px; }
+            .notebook-page::before { left: 45px; }
+            .year-badge { left: -50px; width: 40px; height: 40px; font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="notebook-page">
+    <div class="crown-shield">
+        MISSION PSI: THE CROWN RULE CONQUEST (1858-1947)
+    </div>
+
+    <div class="game-header">
+        <h1 style="margin:0; color:var(--crown-red);">ब्रिटीश राजसत्ता कालक्रम</h1>
+        <small>— थेट राणीचे शासन, स्वातंत्र्याकडे वाटचाल —</small>
+    </div>
+
+    <div class="quest-map">
+        
+        <div class="level-node">
+            <div class="year-badge">1858</div>
+            <div class="level-content">
+                <strong>भारत सरकार कायदा:</strong> <br>
+                <span class="key-trigger">End of EIC</span> कंपनी राजवट संपली. 
+                <span class="key-trigger">Viceroy</span> लॉर्ड कॅनिंग (पहिले वायसराय).
+            </div>
+        </div>
+
+        <div class="level-node">
+            <div class="year-badge">1909</div>
+            <div class="level-content">
+                <strong>मोर्ले-मिंटो सुधारणा:</strong> <br>
+                <span class="key-trigger">Communal Electorate</span> मुस्लिमांसाठी स्वतंत्र मतदारसंघ. 
+                <span class="key-trigger">Father of Communalism</span> लॉर्ड मिंटो.
+            </div>
+        </div>
+
+        <div class="level-node">
+            <div class="year-badge">1919</div>
+            <div class="level-content">
+                <strong>माँटेग्यू-चेम्सफोर्ड सुधारणा:</strong> <br>
+                <span class="key-trigger">Dyarchy in Provinces</span> प्रांतांत द्विदल शासन. 
+                <span class="key-trigger">Bicameralism</span> केंद्रात द्विगृही कायदेमंडळ.
+            </div>
+        </div>
+
+        <div class="level-node">
+            <div class="year-badge">1935</div>
+            <div class="level-content">
+                <strong>भारत सरकार कायदा (Master Act):</strong> <br>
+                <span class="key-trigger">Provincial Autonomy</span> प्रांतांना स्वायत्तता. 
+                <span class="key-trigger">RBI & Federal Court</span> ची स्थापना.
+            </div>
+        </div>
+
+        <div class="level-node" style="border-bottom: 2px solid var(--royal-gold); padding-bottom: 10px;">
+            <div class="year-badge" style="background:var(--royal-gold);">1947</div>
+            <div class="level-content">
+                <strong>भारतीय स्वातंत्र्य कायदा:</strong> <br>
+                <span class="key-trigger">Independence</span> ब्रिटीश सत्तेचा अंत. 
+                <span class="key-trigger">Partition</span> भारत आणि पाकिस्तान निर्मिती.
+            </div>
+        </div>
+
+    </div>
+
+    <div class="memory-palace">
+        <h4>🧠 Scientific Memory Trigger (Crown Flow)</h4>
+        <p>अभ्यास करताना 'सत्तेचे विकेंद्रीकरण' (Decentralization) असे लक्षात ठेव:</p>
+        <p><b>थेट सत्ता (58)</b> → <b>जातीय फूट (09)</b> → <b>द्विदल शासन (19)</b> → <b>प्रांतीय स्वातंत्र्य (35)</b> → <b>पूर्ण स्वातंत्र्य (47)</b></p>
+    </div>
+
+    <p style="text-align: center; margin-top: 30px; font-size: 0.95rem; color: #718096; font-style: italic;">
+        "खाकी वर्दीतले ते दोन स्टार्स तुझ्या संघर्षाची किंमत फेडतील!"
+    </p>
+</div>
+
+</body>
+</html>

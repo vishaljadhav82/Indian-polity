@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSI Mission - Indian Councils Acts (1861, 1892, 1909)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paper: #fffef5;
+            --ink: #1a202c;
+            --margin-red: #ff8a8a;
+            --line: #edf2f7;
+            --highlight: #fff382;
+            --primary-blue: #2b6cb0;
+        }
+
+        body {
+            background: #d1d5db;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Kalam', cursive;
+        }
+
+        /* Modal & Iframe Overlay */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 2000;
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-box {
+            position: relative;
+            width: 90%;
+            max-width: 900px;
+            height: 85vh;
+            margin: 4vh auto;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px; right: 20px;
+            background: #e74c3c;
+            color: white;
+            width: 35px; height: 35px;
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 24px; cursor: pointer; z-index: 2100; border: 2px solid white;
+        }
+
+        iframe { width: 100%; height: 100%; border: none; }
+
+        /* Navigation */
+        .header-nav {
+            width: 100%;
+            max-width: 850px;
+            display: flex; justify-content: center;
+            gap: 15px; margin-bottom: 25px; flex-wrap: wrap;
+        }
+
+        .next-btn {
+            text-decoration: none; padding: 10px 22px; font-size: 16px; font-weight: bold;
+            color: white !important; background: #e74c3c; border-radius: 50px;
+            position: relative; display: inline-flex; align-items: center; gap: 8px;
+            z-index: 1; border: none; cursor: pointer; font-family: 'Kalam', cursive;
+        }
+
+        .radiating-btn::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            border: 2px solid #e74c3c; border-radius: 50px; z-index: -1;
+            animation: radiate 2s infinite;
+        }
+
+        @keyframes radiate {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.4); opacity: 0; }
+        }
+
+        /* Notebook Page Style */
+        .notebook-page {
+            width: 100%;
+            max-width: 850px;
+            background: var(--paper);
+            padding: 70px 40px 60px 95px;
+            position: relative;
+            box-shadow: 15px 15px 40px rgba(0,0,0,0.1);
+            border-radius: 2px 15px 15px 2px;
+            background-image: 
+                linear-gradient(90deg, transparent 79px, var(--margin-red) 79px, var(--margin-red) 81px, transparent 81px),
+                linear-gradient(var(--line) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 32px;
+            line-height: 32px;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        /* Spiral Binding Effect */
+        .notebook-page::before {
+            content: ''; position: absolute; top: 35px; left: 25px;
+            width: 28px; height: 28px; background: #4a5568; border-radius: 50%;
+            box-shadow: 0 64px #4a5568, 0 128px #4a5568, 0 192px #4a5568, 0 256px #4a5568, 0 320px #4a5568, 0 384px #4a5568, 0 448px #4a5568, 0 512px #4a5568, 0 576px #4a5568, 0 640px #4a5568;
+            opacity: 0.15; z-index: 2;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .law-badge {
+            position: absolute; top: 20px; right: 30px;
+            background: #1a365d; color: #ffd700;
+            padding: 5px 15px; border-radius: 5px;
+            font-size: 0.8rem; font-weight: bold; transform: rotate(2deg);
+            border: 2px solid #ffd700;
+        }
+
+        h1 { color: var(--primary-blue); text-align: center; text-decoration: underline wavy #cbd5e0; margin-bottom: 40px; }
+        h2 { color: #c53030; border-bottom: 2px solid #feb2b2; display: inline-block; margin-top: 30px; margin-bottom: 10px; }
+        .highlight { background: var(--highlight); padding: 0 8px; border-radius: 4px; }
+        .red-ink { color: #d32f2f; font-weight: bold; }
+
+        .act-box {
+            background: #f0f7ff; border-left: 5px solid var(--primary-blue);
+            padding: 15px; margin: 25px 0; border-radius: 0 10px 10px 0;
+        }
+
+        .quiz-section {
+            margin-top: 50px; background: #fff; border-top: 5px solid #c53030;
+            padding: 25px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .q-item { padding: 10px; border-bottom: 1px solid #edf2f7; cursor: help; font-weight: bold; color: #4a148c; }
+        .q-item:hover { background: #f7fafc; padding-left: 20px; transition: 0.3s; }
+
+        .footer-nav { margin-top: 50px; display: flex; justify-content: flex-end; }
+    </style>
+</head>
+<body>
+
+    <!-- Modal for External Timelines -->
+    <div id="iframeModal" class="modal-overlay">
+        <div class="modal-box">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <iframe id="timelineFrame" src=""></iframe>
+        </div>
+    </div>
+
+    <!-- Header Navigation -->
+    <div class="header-nav">
+       <button class="next-btn radiating-btn" onclick="openModal('beginning.html')">🕒 EIC Timeline</button>
+        <button class="next-btn radiating-btn" onclick="openModal('company-rule.html')">🕒 Company Rule Timeline</button>
+        <button class="next-btn radiating-btn" onclick="openModal('crown-rule.html')">🕒 Crown Rule Timeline</button>
+
+    </div>
+
+    <div class="notebook-page">
+        <div class="law-badge">Policy of Association 🤝</div>
+
+        <h1>भारतीय परिषद कायदे (१८६१, १८९२, १९०९)</h1>
+
+        <div class="important-box" style="background: #fff9e6; border: 1px dashed #f39c12; padding: 15px; border-radius: 8px; font-style: italic;">
+            "१८५७ च्या उठावानंतर, भारतीयांच्या सहकार्याशिवाय राज्य करणे कठीण आहे हे ब्रिटीशांना उमजले. त्यातूनच 'सहकार्याचे धोरण' (Policy of Association) जन्माला आले."
+        </div>
+
+        <div class="act-box">
+            <h2>📜 भारतीय परिषद कायदा, १८६१</h2>
+            <p>• **प्रतिनिधी संस्थांची सुरुवात:** भारतीयांना कायद्याच्या प्रक्रियेत स्थान मिळाले. लॉर्ड कॅनिंगने १८६२ मध्ये <span class="highlight">बनारसचे राजा, पतियाळाचे महाराजा आणि सर दिनकर राव</span> यांना नामांकित केले.</p>
+            <p>• **विकेंद्रीकरण (Decentralisation):** १८३३ चे केंद्रीकरण मोडून काढत मुंबई आणि मद्रासच्या गव्हर्नरांना त्यांचे कायदे करण्याचे अधिकार परत दिले.</p>
+            <p>• **पोर्टफोलिओ (Portfolio) पद्धत:** लॉर्ड कॅनिंगने १८५९ मध्ये सुरू केलेल्या खात्यांच्या वाटणीला कायदेशीर मान्यता मिळाली.</p>
+            <p>• **अध्यादेश (Ordinance):** आणीबाणीच्या काळात ६ महिने टिकणारे अध्यादेश काढण्याचे अधिकार व्हाइसरॉयला मिळाले.</p>
+        </div>
+
+        <div class="act-box" style="border-left-color: #38a169; background: #f0fff4;">
+            <h2>📜 भारतीय परिषद कायदा, १८९२</h2>
+            <p>• **बजेटवर चर्चा:** कायदेमंडळाला <span class="highlight">बजेटवर चर्चा करण्याचा</span> आणि कार्यकारी मंडळाला प्रश्न विचारण्याचा अधिकार मिळाला.</p>
+            <p>• **अप्रत्यक्ष निवडणूक:** 'निवडणूक' हा शब्द वापरला नसला तरी, काही सदस्यांच्या निवडीसाठी शिफारसींची पद्धत सुरू झाली.</p>
+        </div>
+
+        <div class="act-box" style="border-left-color: #c53030; background: #fff5f5;">
+            <h2>📜 भारतीय परिषद कायदा, १९०९ (मोर्ले-मिंटो सुधारणा)</h2>
+            <p>• **मुस्लिमांसाठी स्वतंत्र मतदारसंघ:** <span class="red-ink">'स्वतंत्र मतदारसंघ'</span> (Separate Electorate) संकल्पनेद्वारे जातीय प्रतिनिधित्वाची सुरुवात झाली. लॉर्ड मिंटोला <span class="highlight">जातीय मतदारसंघाचे जनक</span> म्हटले जाते.</p>
+            <p>• **कार्यकारी मंडळात भारतीयांचे आगमन:** व्हाइसरॉयच्या कार्यकारी मंडळात सामील होणारे पहिले भारतीय <span class="red-ink">सत्येंद्र प्रसाद सिन्हा</span> (विधी सदस्य) ठरले.</p>
+            <p>• **आकारातील वाढ:** मध्यवर्ती विधान परिषदेची सदस्य संख्या १६ वरून ६० करण्यात आली.</p>
+        </div>
+
+        <!-- Quiz Section -->
+        <div class="quiz-section">
+            <h3 style="margin-top:0; color:var(--primary-blue);">महत्त्वाचे सराव प्रश्न</h3>
+            <div class="q-item">१. व्हाइसरॉयच्या कार्यकारी मंडळात स्थान मिळवणारे पहिले भारतीय कोण?</div>
+            <div class="q-item">२. 'जातीय मतदारसंघाचे जनक' (Father of Communal Electorate) कोणाला म्हणतात?</div>
+            <div class="q-item">३. लॉर्ड कॅनिंगने १८६२ मध्ये कोणत्या तीन भारतीयांना नामांकित केले होते?</div>
+            <div class="q-item">४. कोणत्या कायद्याने प्रथमच अर्थसंकल्पावर (Budget) चर्चा करण्याचा अधिकार दिला?</div>
+            <div class="q-item">५. 'पोर्टफोलिओ' (Portfolio) पद्धत म्हणजे काय?</div>
+        </div>
+
+        <div class="footer-nav">
+            <a href="3.html" class="next-btn radiating-btn">पुढचे पान: १९१९ चा माँटेग्यू-चेम्सफर्ड कायदा ➜</a>
+        </div>
+    </div>
+
+    <script>
+        function openModal(url) {
+            const modal = document.getElementById('iframeModal');
+            const iframe = document.getElementById('timelineFrame');
+            iframe.src = url;
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('iframeModal');
+            const iframe = document.getElementById('timelineFrame');
+            modal.style.display = 'none';
+            iframe.src = "";
+            document.body.style.overflow = 'auto';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('iframeModal');
+            if (event.target == modal) { closeModal(); }
+        }
+    </script>
+
+</body>
+</html>

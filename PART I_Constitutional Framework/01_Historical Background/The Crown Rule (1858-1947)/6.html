@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSI Mission - Interim Govt & First Cabinet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paper: #fffef5;
+            --ink: #1a202c;
+            --margin-red: #ff8a8a;
+            --line: #edf2f7;
+            --highlight: #fff382;
+            --primary-blue: #2b6cb0;
+        }
+
+        body {
+            background: #d1d5db;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Kalam', cursive;
+        }
+
+        /* Modal Overlay & Iframe */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 2000;
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-box {
+            position: relative;
+            width: 90%;
+            max-width: 900px;
+            height: 85vh;
+            margin: 4vh auto;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px; right: 20px;
+            background: #e74c3c;
+            color: white;
+            width: 35px; height: 35px;
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 24px; cursor: pointer; z-index: 2100; border: 2px solid white;
+        }
+
+        iframe { width: 100%; height: 100%; border: none; }
+
+        /* Navigation */
+        .header-nav {
+            width: 100%;
+            max-width: 850px;
+            display: flex; justify-content: center;
+            gap: 15px; margin-bottom: 25px; flex-wrap: wrap;
+        }
+
+        .next-btn {
+            text-decoration: none; padding: 10px 22px; font-size: 16px; font-weight: bold;
+            color: white !important; background: #e74c3c; border-radius: 50px;
+            position: relative; display: inline-flex; align-items: center; gap: 8px;
+            z-index: 1; border: none; cursor: pointer; font-family: 'Kalam', cursive;
+        }
+
+        .radiating-btn::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            border: 2px solid #e74c3c; border-radius: 50px; z-index: -1;
+            animation: radiate 2s infinite;
+        }
+
+        @keyframes radiate {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.4); opacity: 0; }
+        }
+
+        /* Notebook Page Style */
+        .notebook-page {
+            width: 100%;
+            max-width: 900px;
+            background: var(--paper);
+            padding: 70px 40px 60px 95px;
+            position: relative;
+            box-shadow: 15px 15px 40px rgba(0,0,0,0.1);
+            border-radius: 2px 15px 15px 2px;
+            background-image: 
+                linear-gradient(90deg, transparent 79px, var(--margin-red) 79px, var(--margin-red) 81px, transparent 81px),
+                linear-gradient(var(--line) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 32px;
+            line-height: 32px;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .notebook-page::before {
+            content: ''; position: absolute; top: 35px; left: 25px;
+            width: 28px; height: 28px; background: #4a5568; border-radius: 50%;
+            box-shadow: 0 64px #4a5568, 0 128px #4a5568, 0 192px #4a5568, 0 256px #4a5568, 0 320px #4a5568, 0 384px #4a5568, 0 448px #4a5568, 0 512px #4a5568, 0 576px #4a5568, 0 640px #4a5568;
+            opacity: 0.15; z-index: 2;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 { color: var(--primary-blue); text-align: center; text-decoration: underline wavy #cbd5e0; margin-bottom: 40px; }
+        h2 { color: #c53030; border-bottom: 2px solid #feb2b2; display: inline-block; margin-top: 30px; margin-bottom: 15px; }
+
+        /* Tables Style */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+            background: rgba(255, 255, 255, 0.5);
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: var(--primary-blue);
+            color: white;
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #cbd5e0;
+        }
+
+        td {
+            padding: 8px 10px;
+            border: 1px solid #cbd5e0;
+            color: var(--ink);
+        }
+
+        tr:nth-child(even) {
+            background: rgba(237, 242, 247, 0.6);
+        }
+
+        .highlight-name { font-weight: bold; color: #2d3748; }
+
+        .note-box {
+            background: #fff9e6; border-left: 5px solid #f39c12;
+            padding: 15px; margin: 20px 0; border-radius: 0 10px 10px 0;
+            font-size: 0.9rem;
+        }
+
+        .footer-nav { margin-top: 50px; display: flex; justify-content: flex-end; }
+    </style>
+</head>
+<body>
+
+    <div id="iframeModal" class="modal-overlay">
+        <div class="modal-box">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <iframe id="timelineFrame" src=""></iframe>
+        </div>
+    </div>
+
+    <div class="header-nav">
+        <button class="next-btn radiating-btn" onclick="openModal('beginning.html')">🕒 EIC Timeline</button>
+        <button class="next-btn radiating-btn" onclick="openModal('company-rule.html')">🕒 Company Rule Timeline</button>
+        <button class="next-btn radiating-btn" onclick="openModal('crown-rule.html')">🕒 Crown Rule Timeline</button>
+</div>
+
+    <div class="notebook-page">
+        <h1>महत्वाची मंत्रिमंडळे (१९४६ आणि १९४७)</h1>
+
+        <h2>तक्ता १.१: अंतरिम सरकार (१९४६)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>क्र.</th>
+                    <th>सदस्य</th>
+                    <th>पोर्टफोलिओ (खाते)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>१</td><td class="highlight-name">जवाहरलाल नेहरू</td><td>परराष्ट्र व्यवहार आणि कॉमनवेल्थ संबंध</td></tr>
+                <tr><td>२</td><td class="highlight-name">सरदार वल्लभभाई पटेल</td><td>गृह, माहिती आणि प्रसारण</td></tr>
+                <tr><td>३</td><td class="highlight-name">डॉ. राजेंद्र प्रसाद</td><td>अन्न आणि कृषी</td></tr>
+                <tr><td>४</td><td class="highlight-name">डॉ. जॉन मथाई</td><td>उद्योग आणि पुरवठा</td></tr>
+                <tr><td>५</td><td class="highlight-name">जगजीवन राम</td><td>कामगार</td></tr>
+                <tr><td>६</td><td class="highlight-name">सरदार बलदेव सिंह</td><td>संरक्षण</td></tr>
+                <tr><td>७</td><td class="highlight-name">सी.एच. भाभा</td><td>कामे, खाणी आणि ऊर्जा</td></tr>
+                <tr><td>८</td><td class="highlight-name">लियाकत अली खान</td><td>वित्त (Finance)</td></tr>
+                <tr><td>९</td><td class="highlight-name">अब्दुर रब निश्तार</td><td>टपाल आणि हवाई</td></tr>
+                <tr><td>१०</td><td class="highlight-name">असफ अली</td><td>रेल्वे आणि वाहतूक</td></tr>
+                <tr><td>११</td><td class="highlight-name">सी. राजगोपालाचारी</td><td>शिक्षण आणि कला</td></tr>
+                <tr><td>१२</td><td class="highlight-name">आय.आय. चुंद्रीगर</td><td>वाणिज्य (Commerce)</td></tr>
+                <tr><td>१३</td><td class="highlight-name">गझनफर अली खान</td><td>आरोग्य</td></tr>
+                <tr><td>१४</td><td class="highlight-name">जोगेंद्र नाथ मंडल</td><td>कायदा</td></tr>
+            </tbody>
+        </table>
+
+        <div class="note-box">
+            <b>टीप:</b> अंतरिम सरकारचे सदस्य हे व्हाइसरॉयच्या कार्यकारी परिषदेचे सदस्य होते. व्हाइसरॉय परिषदेचे अध्यक्ष राहिले, पण <b>जवाहरलाल नेहरू</b> यांना परिषदेचे उपाध्यक्ष (Vice-President) म्हणून नियुक्त केले गेले होते.
+        </div>
+
+        <hr style="border: 0; height: 1px; background: #cbd5e0; margin: 40px 0;">
+
+        <h2>तक्ता १.२: स्वतंत्र भारताचे पहिले मंत्रिमंडळ (१९४७)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>क्र.</th>
+                    <th>सदस्य</th>
+                    <th>पोर्टफोलिओ (खाते)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>१</td><td class="highlight-name">जवाहरलाल नेहरू</td><td>पंतप्रधान; परराष्ट्र व्यवहार; वैज्ञानिक संशोधन</td></tr>
+                <tr><td>२</td><td class="highlight-name">सरदार वल्लभभाई पटेल</td><td>गृह, माहिती आणि प्रसारण; घटक राज्ये</td></tr>
+                <tr><td>३</td><td class="highlight-name">डॉ. राजेंद्र प्रसाद</td><td>अन्न आणि कृषी</td></tr>
+                <tr><td>४</td><td class="highlight-name">मौलाना अबुल कलाम आझाद</td><td>शिक्षण</td></tr>
+                <tr><td>५</td><td class="highlight-name">डॉ. जॉन मथाई</td><td>रेल्वे आणि वाहतूक</td></tr>
+                <tr><td>६</td><td class="highlight-name">आर.के. शन्मुखम चेट्टी</td><td>वित्त (Finance)</td></tr>
+                <tr><td>७</td><td class="highlight-name">डॉ. बी.आर. आंबेडकर</td><td>कायदा</td></tr>
+                <tr><td>८</td><td class="highlight-name">जगजीवन राम</td><td>कामगार</td></tr>
+                <tr><td>९</td><td class="highlight-name">सरदार बलदेव सिंह</td><td>संरक्षण</td></tr>
+                <tr><td>१०</td><td class="highlight-name">राजकुमारी अमृत कौर</td><td>आरोग्य</td></tr>
+                <tr><td>११</td><td class="highlight-name">सी.एच. भाभा</td><td>वाणिज्य</td></tr>
+                <tr><td>१२</td><td class="highlight-name">रफी अहमद किडवाई</td><td>दळणवळण (Communication)</td></tr>
+                <tr><td>१३</td><td class="highlight-name">डॉ. श्यामा प्रसाद मुखर्जी</td><td>उद्योग आणि पुरवठा</td></tr>
+                <tr><td>१४</td><td class="highlight-name">व्ही.एन. गाडगीळ</td><td>कामे, खाणी आणि ऊर्जा</td></tr>
+            </tbody>
+        </table>
+
+        <div class="footer-nav">
+            <a href="../02_Making_of_the_Constitution/index.html" class="next-btn radiating-btn">पुढचे प्रकरण: राज्यघटनेची निर्मिती ➜</a>
+        </div>
+    </div>
+
+    <script>
+        function openModal(url) {
+            const modal = document.getElementById('iframeModal');
+            const iframe = document.getElementById('timelineFrame');
+            iframe.src = url;
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('iframeModal');
+            const iframe = document.getElementById('timelineFrame');
+            modal.style.display = 'none';
+            iframe.src = "";
+            document.body.style.overflow = 'auto';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('iframeModal');
+            if (event.target == modal) { closeModal(); }
+        }
+    </script>
+
+</body>
+</html>

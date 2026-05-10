@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PSI Mission - Charter Act 1853</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --paper: #fffef5;
+            --ink: #1a202c;
+            --margin-red: #ff8a8a;
+            --line: #edf2f7;
+            --highlight: #fff382;
+            --primary-blue: #2b6cb0;
+        }
+
+        body {
+            background: #d1d5db;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Kalam', cursive;
+        }
+
+        /* Modal & Iframe Overlay */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 2000;
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-box {
+            position: relative;
+            width: 90%;
+            max-width: 900px;
+            height: 85vh;
+            margin: 4vh auto;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px; right: 20px;
+            background: #e74c3c;
+            color: white;
+            width: 35px; height: 35px;
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 24px; cursor: pointer; z-index: 2100; border: 2px solid white;
+        }
+
+        iframe { width: 100%; height: 100%; border: none; }
+
+        /* Navigation */
+        .header-nav {
+            width: 100%;
+            max-width: 850px;
+            display: flex; justify-content: center;
+            gap: 15px; margin-bottom: 25px; flex-wrap: wrap;
+        }
+
+        .next-btn {
+            text-decoration: none; padding: 10px 22px; font-size: 16px; font-weight: bold;
+            color: white !important; background: #e74c3c; border-radius: 50px;
+            position: relative; display: inline-flex; align-items: center; gap: 8px;
+            z-index: 1; border: none; cursor: pointer; font-family: 'Kalam', cursive;
+        }
+
+        .radiating-btn::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            border: 2px solid #e74c3c; border-radius: 50px; z-index: -1;
+            animation: radiate 2s infinite;
+        }
+
+        @keyframes radiate {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.4); opacity: 0; }
+        }
+
+        /* Notebook Page Style */
+        .notebook-page {
+            width: 100%;
+            max-width: 850px;
+            background: var(--paper);
+            padding: 70px 40px 60px 95px;
+            position: relative;
+            box-shadow: 15px 15px 40px rgba(0,0,0,0.1);
+            border-radius: 2px 15px 15px 2px;
+            background-image: 
+                linear-gradient(90deg, transparent 79px, var(--margin-red) 79px, var(--margin-red) 81px, transparent 81px),
+                linear-gradient(var(--line) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 32px;
+            line-height: 32px;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        /* Spiral Binding Effect */
+        .notebook-page::before {
+            content: ''; position: absolute; top: 35px; left: 25px;
+            width: 28px; height: 28px; background: #4a5568; border-radius: 50%;
+            box-shadow: 0 64px #4a5568, 0 128px #4a5568, 0 192px #4a5568, 0 256px #4a5568, 0 320px #4a5568, 0 384px #4a5568, 0 448px #4a5568, 0 512px #4a5568, 0 576px #4a5568;
+            opacity: 0.15; z-index: 2;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .psi-badge {
+            position: absolute; top: 20px; right: 30px;
+            background: #2b6cb0; color: #ffd700;
+            padding: 5px 15px; border-radius: 5px;
+            font-size: 0.9rem; font-weight: bold; transform: rotate(2deg);
+            border: 2px solid #ffd700;
+        }
+
+        h1 { color: var(--primary-blue); text-align: center; text-decoration: underline wavy #cbd5e0; margin-bottom: 40px; }
+        h2 { color: #c53030; border-bottom: 2px solid #feb2b2; display: inline-block; margin-top: 30px; }
+        .highlight { background: var(--highlight); padding: 0 8px; border-radius: 4px; }
+        .red-ink { color: #d32f2f; font-weight: bold; }
+
+        .important-box {
+            background: #fff9e6; border: 1px dashed #f39c12;
+            padding: 15px; margin: 20px 0; border-radius: 8px;
+        }
+
+        .quiz-section {
+            margin-top: 50px; background: #fff; border-top: 5px solid #c53030;
+            padding: 25px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .q-item { padding: 10px; border-bottom: 1px solid #edf2f7; cursor: help; font-weight: bold; color: #4a148c; }
+        .q-item:hover { background: #f7fafc; padding-left: 20px; transition: 0.3s; }
+
+        .footer-nav { margin-top: 50px; display: flex; justify-content: flex-end; }
+    </style>
+</head>
+<body>
+
+    <!-- Modal for External Timelines -->
+    <div id="iframeModal" class="modal-overlay">
+        <div class="modal-box">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <iframe id="timelineFrame" src=""></iframe>
+        </div>
+    </div>
+
+    <!-- Header Navigation -->
+    <div class="header-nav">
+        <button class="next-btn radiating-btn" onclick="openModal('beginning.html')">🕒 EIC Timeline</button>
+        <button class="next-btn radiating-btn" onclick="openModal('company-rule.html')">🕒 Company Rule Timeline</button>
+    </div>
+
+    <div class="notebook-page">
+        <div class="psi-badge">Target: PSI 👮</div>
+
+        <div class="important-box">
+            "हा कायदा १७९३ ते १८५३ या मालिकेतील <b>शेवटचा चार्टर ॲक्ट</b> होता. हा घटनात्मक इतिहासातील एक महत्त्वाचा टप्पा आहे." 🏛️
+        </div>
+
+        <h1>चार्टर ॲक्ट १८५३</h1>
+
+        <div class="content">
+            <h2>१. कायदेमंडळ आणि कार्यकारी मंडळ विभागणी</h2>
+            <p>• प्रथमच गव्हर्नर-जनरलच्या कौन्सिलची <span class="highlight">विधायी (Legislative)</span> आणि <span class="highlight">कार्यकारी (Executive)</span> कार्ये वेगळी करण्यात आली.</p>
+            <p>• कौन्सिलमध्ये **६ नवीन सदस्य** (विधायी सदस्य) जोडले गेले. यालाच 'भारतीय (मध्यवर्ती) विधान परिषद' असे म्हटले गेले.</p>
+            <p>• हे कायदेमंडळ एका <span class="red-ink">‘मिनी-पार्लमेंट’</span> प्रमाणे काम करू लागले, ज्याने ब्रिटीश संसदेच्या कार्यपद्धतीचा अवलंब केला.</p>
+
+            <h2>२. नागरी सेवा (Open Competition)</h2>
+            <p>• नागरी सेवांसाठी (Civil Services) <span class="highlight">मुक्त स्पर्धात्मक परीक्षा</span> सुरू करण्यात आली. आता या सेवा भारतीयांसाठीही खुल्या झाल्या.</p>
+            <p>• या संदर्भात १८५४ मध्ये <span class="red-ink">मॅकॉले समिती (Macaulay Committee)</span> नियुक्त करण्यात आली.</p>
+
+            <h2>३. कंपनीची अनिश्चित मुदत</h2>
+            <p>• कंपनीला भारतीय प्रदेशावर राज्य करण्याची परवानगी देण्यात आली, पण मागील चार्टर्सप्रमाणे कोणताही <span class="red-ink">विशिष्ट कालावधी (उदा. २० वर्षे) सांगितला नाही.</span></p>
+            <p>• याचा अर्थ असा होता की, ब्रिटीश संसद हवी तेव्हा कंपनीची सत्ता संपुष्टात आणू शकत होती.</p>
+
+            <h2>४. स्थानिक प्रतिनिधित्व (Local Representation)</h2>
+            <p>• भारतीय विधान परिषदेत प्रथमच <span class="highlight">स्थानिक प्रतिनिधित्वाची</span> तरतूद केली गेली.</p>
+            <p>• ६ नवीन सदस्यांपैकी ४ सदस्यांची नियुक्ती **मद्रास, मुंबई, बंगाल आणि आग्रा** येथील स्थानिक प्रांतीय सरकारांकडून केली जाणार होती.</p>
+        </div>
+
+        <!-- Quiz Section -->
+        <div class="quiz-section">
+            <h3 style="margin-top:0; color:var(--primary-blue);">स्मरणशक्ती चाचणी (Revision Quiz)</h3>
+            <div class="q-item">१. कोणत्या कायद्याने 'मिनी-पार्लमेंट'ची संकल्पना मांडली?</div>
+            <div class="q-item">२. १८५४ ची मॅकॉले समिती कोणत्या विषयाशी संबंधित होती?</div>
+            <div class="q-item">३. मध्यवर्ती विधान परिषदेत प्रथमच कोणत्या प्रांतांना प्रतिनिधित्व मिळाले?</div>
+            <div class="q-item">४. १८५३ च्या कायद्यात कंपनीची मुदत का सांगितली गेली नव्हती?</div>
+        </div>
+
+        <div class="footer-nav">
+            <a href="../The Crown Rule (1858-1947)/" class="next-btn radiating-btn">पुढचे पान: १८५८ चा राजसत्तेचा कायदा ➜</a>
+        </div>
+    </div>
+
+    <script>
+        function openModal(url) {
+            const modal = document.getElementById('iframeModal');
+            const iframe = document.getElementById('timelineFrame');
+            iframe.src = url;
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('iframeModal');
+            const iframe = document.getElementById('timelineFrame');
+            modal.style.display = 'none';
+            iframe.src = "";
+            document.body.style.overflow = 'auto';
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('iframeModal');
+            if (event.target == modal) { closeModal(); }
+        }
+    </script>
+
+</body>
+</html>
