@@ -1,197 +1,283 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="mr">
 <head>
 <meta charset="UTF-8">
-<title>PSI Online Exam</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSI Online Exam Pro - Full Version</title>
 <style>
-body { font-family: 'Segoe UI', sans-serif; background:#fdf6e3; margin:0; text-align:center; }
-.container { max-width:900px; margin:20px auto; background:#fff; padding:20px; border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.2); }
-h1 { color:#2c3e50; margin-bottom:15px; font-size:28px; }
-#instruction { font-size:16px; margin-bottom:15px; color:#555; text-align:left; line-height:1.4; }
-.question { font-size:20px; margin-bottom:10px; text-align:left; }
-.options { text-align:left; display:flex; flex-wrap:wrap; justify-content:flex-start; gap:10px; }
-.options button { padding:12px; font-size:16px; border:none; border-radius:8px; cursor:pointer; transition:0.2s; text-align:left; flex:1 1 calc(45% - 10px); min-width:140px; }
-.options button:hover { transform:scale(1.02); background:#e6f0ff; }
-.selected { border:3px solid #2c3e50; background:#d0ebff; }
-.nav-btn { padding:12px 25px; font-size:18px; border:none; border-radius:10px; background:#2c3e50; color:white; cursor:pointer; margin-top:20px; }
-.match-item, .seq-item { padding:10px; margin:5px; border-radius:8px; background:#f7f3ea; cursor:pointer; display:inline-block; min-width:120px; }
-.correct { background:green; color:white; }
-.wrong { background:red; color:white; }
-.review-correct { border-left:4px solid green; background:#e6ffe6; padding:12px; margin:12px 0; border-radius:8px; }
-.review-wrong { border-left:4px solid red; background:#ffe6e6; padding:12px; margin:12px 0; border-radius:8px; }
-.scoreBox { font-size:20px; margin-top:20px; text-align:left; line-height:1.5; }
-@media (max-width:600px){
-    h1 { font-size:22px; }
-    .question { font-size:18px; }
-    .options button { flex:1 1 100%; font-size:16px; }
-    #instruction { font-size:14px; }
-    .match-item, .seq-item { min-width:100px; font-size:14px; padding:8px; }
-}
+    :root {
+        --primary: #4f46e5;
+        --bg: #f8fafc;
+        --text: #1e293b;
+        --success: #16a34a;
+        --error: #dc2626;
+        --p0: #fee2e2; --p1: #fef3c7; --p2: #dcfce7; --p3: #e0e7ff;
+    }
+
+    body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 10px; }
+    .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
+
+    .header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
+    .progress-bar { height: 8px; background: #e2e8f0; border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
+    #progress-fill { height: 100%; background: var(--primary); width: 0%; transition: 0.4s ease; }
+
+    #instruction { font-size: 13px; color: #64748b; background: #eff6ff; padding: 12px; border-radius: 8px; margin-bottom: 15px; border-left: 5px solid var(--primary); font-weight: 500; }
+    .question { font-size: 1.15rem; font-weight: bold; margin-bottom: 20px; line-height: 1.5; color: #0f172a; }
+
+    .options-grid { display: flex; flex-direction: column; gap: 12px; }
+    .match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .column { display: flex; flex-direction: column; gap: 10px; }
+
+    /* Buttons */
+    .opt-btn { 
+        width: 100%; padding: 15px; border: 2px solid #e2e8f0; border-radius: 12px; 
+        background: white; cursor: pointer; text-align: left; font-size: 15px; transition: 0.2s;
+        display: flex; align-items: center; justify-content: space-between;
+    }
+    .opt-btn:hover { border-color: #cbd5e1; background: #fdfdfd; }
+    .opt-btn.selected { border-color: var(--primary); background: #eef2ff; font-weight: bold; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.1); }
+    
+    .match-item { 
+        padding: 14px 10px; border: 2px solid #e2e8f0; border-radius: 10px; text-align: center; 
+        cursor: pointer; font-size: 14px; min-height: 50px; display: flex; align-items: center; justify-content: center;
+        background: white; font-weight: 500; transition: 0.2s;
+    }
+    .match-item.active { border-color: var(--primary); background: #f5f3ff; transform: scale(1.02); }
+
+    /* Pair Colors */
+    .pair-0 { background: var(--p0) !important; border-color: #fca5a5 !important; color: #991b1b; }
+    .pair-1 { background: var(--p1) !important; border-color: #fcd34d !important; color: #92400e; }
+    .pair-2 { background: var(--p2) !important; border-color: #86efac !important; color: #166534; }
+    .pair-3 { background: var(--p3) !important; border-color: #a5b4fc !important; color: #3730a3; }
+
+    .badge { background: var(--primary); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; margin-right: 12px; font-weight: bold; }
+
+    .nav-btn { width: 100%; padding: 18px; background: #1e293b; color: white; border: none; border-radius: 14px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 25px; transition: 0.3s; }
+    .nav-btn:active { transform: scale(0.98); }
+
+    /* Results UI */
+    .res-card { padding: 18px; border-radius: 14px; margin-top: 15px; border: 1px solid #e2e8f0; border-left-width: 6px; }
+    .res-correct { border-left-color: var(--success); background: #f0fdf4; }
+    .res-wrong { border-left-color: var(--error); background: #fef2f2; }
+    .res-label { font-size: 11px; font-weight: 800; text-transform: uppercase; color: #64748b; display: block; margin-top: 10px; }
+    .res-val { font-size: 15px; margin-top: 2px; }
+    .text-success { color: var(--success); font-weight: 700; }
+    .text-error { color: var(--error); font-weight: 700; }
+    .match-feedback-row { padding: 10px; border-radius: 10px; background: white; margin-bottom: 8px; border: 1px dashed #cbd5e1; }
 </style>
 </head>
 <body>
 
 <div class="container">
-<h1>🧠 PSI Online Exam</h1>
-<div id="quizPage">
-    <div id="instruction"></div>
-    <div class="question" id="q"></div>
-    <div class="options" id="options"></div>
-    <button class="nav-btn" id="nextBtn" onclick="nextQ()">Next ➜</button>
-</div>
-<div id="resultPage" class="scoreBox" style="display:none;"></div>
+    <div class="header">
+        <h2 style="margin:0; color:var(--primary);">🛡️ PSI सराव चाचणी</h2>
+    </div>
+    <div class="progress-bar"><div id="progress-fill"></div></div>
+
+    <div id="quiz-ui">
+        <div id="instruction"></div>
+        <div class="question" id="q-text"></div>
+        <div id="options-area"></div>
+        <button class="nav-btn" onclick="nextQuestion()">पुढील प्रश्न ➜</button>
+    </div>
+
+    <div id="result-ui" style="display:none;"></div>
 </div>
 
 <script>
-let questions = [
-  { type:"mcq", q:"वास्को-द-गामा भारतात कोणत्या वर्षी आणि कुठे आला?", options:["१४९८, कोझिकोड","१४९२, गोवा","१५०२, मद्रास","१४९८, मुंबई"], answer:0 },
-  { type:"mcq", q:"डच ईस्ट इंडिया कंपनीची स्थापना आणि मुख्य व्यापार कोणता होता?", options:["१६०२, मसाले","१६००, कापड","१६०२, रेशीम","१६०५, मसाले"], answer:0 },
-  { type:"mcq", q:"सर थॉमस रो भारतात कोणत्या वर्षी आला?", options:["१६१५","१६०८","१६२०","१६१०"], answer:0 },
-  { type:"match", q:"युरोपीय राष्ट्र व भारतातील आगमनाची जोडी करा:", A:["पोर्तुगीज","डच","इंग्रज","फ्रेंच"], B:["१६००","१४९८","१६०२","१७२०s"], answer:[1,2,0,3] },
-  { type:"sequence", q:"इंग्रजांचे प्रमुख वखारी योग्य क्रम लावा:", items:["सुरत","मुंबई","मद्रास","कलकत्ता"], answer:[0,1,2,3] },
-  { type:"assertion-reason", q:"Assertion (A): प्लासी लढाईत इंग्रजांचा विजय मीर जाफरमुळे झाला. Reason (R): इंग्रजांची सेना खूप मोठी होती.", options:["A & R correct, R explains A","A correct, R wrong","A wrong, R correct","Both wrong"], answer:1 },
-  { type:"case-study", q:"कर्नाटक युद्धांदरम्यान इंग्रज व फ्रेंच साम्राज्य यांचा संघर्ष झाला. त्यानंतर इंग्रजांचे वर्चस्व वाढले. इंग्रजांचे वर्चस्व कसे बदलले?", options:["वाढले","कमी झाले","फ्रेंचांचा प्रभाव वाढला","पोर्तुगीजांचा प्रभाव वाढला"], answer:0 }
+const questions = [
+    { 
+        type: "mcq", 
+        q: "१. विधवा विवाहासाठी प्रयत्न करणारे समाजसुधारक कोण होते?", 
+        options: ["विष्णुशास्त्री पंडित", "महात्मा गांधी", "बाळ गंगाधर टिळक", "गोपाळ कृष्ण गोखले"], 
+        answer: 0 
+    },
+    {
+        type: "multi",
+        q: "२. डॉ. बाबासाहेब आंबेडकरांनी सुरू केलेली वृत्तपत्रे कोणती?",
+        options: ["मूकनायक", "बहिष्कृत भारत", "जनता", "केसरी"],
+        answer: [0, 1, 2]
+    },
+    {
+        type: "order",
+        q: "३. खालील घटनांचा कालानुक्रमे योग्य क्रम लावा:",
+        options: ["पुणे करार (Pune Pact)", "मिठाचा सत्याग्रह", "जालियनवाला बाग हत्याकांड", "स्वदेशी चळवळ"],
+        answer: [3, 2, 1, 0] // स्वदेशी (1905) -> जालियनवाला (1919) -> मीठ (1930) -> पुणे (1932)
+    },
+    { 
+        type: "match", 
+        q: "४. जोड्या लावा (समाजसुधारक व त्यांचे कार्य/संस्था):", 
+        A: ["महात्मा फुले", "न्या. रानडे", "आगरकर", "महर्षी कर्वे"], 
+        B: ["सत्यशोधक समाज", "पुणे सार्वजनिक सभा", "सुधारक", "अनाथ बालिकाश्रम"], 
+        answer: [0, 1, 2, 3] 
+    }
 ];
 
-let index=0, answers=[];
+let currentIdx = 0;
+let userAnswers = [];
+let tempLeft = null;
 
-function loadQuestion(){
-    let q = questions[index];
-    document.getElementById("q").innerText = q.q;
-    let instr = "";
-    if(q.type==="mcq" || q.type==="assertion-reason") instr = "✅ योग्य उत्तरावर क्लिक करा.";
-    else if(q.type==="match") instr = "🔗 A आणि B मधील योग्य जोडी क्लिक करा.";
-    else if(q.type==="sequence") instr = "🔢 घटक योग्य क्रमाने क्लिक करा.";
-    else if(q.type==="case-study") instr = "📖 वाचून योग्य उत्तर निवडा.";
-    document.getElementById("instruction").innerText = instr;
-
-    let opts = document.getElementById("options");
-    opts.innerHTML="";
-
-    if(q.type==="mcq" || q.type==="assertion-reason" || q.type==="case-study"){
-        q.options.forEach((o,i)=>{
-            let btn = document.createElement("button");
-            btn.innerText = o;
-            btn.onclick = ()=>{ answers[index]=i; highlightSelection(); };
-            opts.appendChild(btn);
+function render() {
+    const q = questions[currentIdx];
+    const area = document.getElementById("options-area");
+    const prog = document.getElementById("progress-fill");
+    
+    prog.style.width = `${(currentIdx / questions.length) * 100}%`;
+    document.getElementById("q-text").innerText = q.q;
+    area.innerHTML = "";
+    area.className = (q.type === "match") ? "" : "options-grid";
+    
+    if(q.type === "mcq") {
+        document.getElementById("instruction").innerText = "🎯 योग्य पर्यायाची निवड करा.";
+        q.options.forEach((opt, i) => {
+            const btn = document.createElement("button");
+            btn.className = `opt-btn ${userAnswers[currentIdx] === i ? 'selected' : ''}`;
+            btn.innerText = opt;
+            btn.onclick = () => { userAnswers[currentIdx] = i; render(); };
+            area.appendChild(btn);
+        });
+    } 
+    else if(q.type === "multi") {
+        document.getElementById("instruction").innerText = "✅ सर्व बरोबर विधाने निवडा (Multiple Choice).";
+        let selections = userAnswers[currentIdx] || [];
+        q.options.forEach((opt, i) => {
+            const isSel = selections.includes(i);
+            const btn = document.createElement("button");
+            btn.className = `opt-btn ${isSel ? 'selected' : ''}`;
+            btn.innerHTML = `<span>${opt}</span> <span>${isSel ? '☑️' : '⬜'}</span>`;
+            btn.onclick = () => {
+                if(isSel) selections = selections.filter(it => it !== i);
+                else selections.push(i);
+                userAnswers[currentIdx] = [...selections].sort();
+                render();
+            };
+            area.appendChild(btn);
         });
     }
-    else if(q.type==="match"){
-        let selectedA=null;
-        q.A.forEach((a,i)=>{
-            let btn = document.createElement("button");
-            btn.innerText = a;
-            btn.classList.add("match-item");
-            btn.onclick = ()=>{ selectedA=i; highlightMatch(); };
-            opts.appendChild(btn);
+    else if(q.type === "order") {
+        document.getElementById("instruction").innerText = "🔢 योग्य कालानुक्रम लावण्यासाठी पर्यायांवर क्लिक करा.";
+        let currentOrder = userAnswers[currentIdx] || [];
+        q.options.forEach((opt, i) => {
+            const ordIdx = currentOrder.indexOf(i);
+            const btn = document.createElement("button");
+            btn.className = `opt-btn ${ordIdx !== -1 ? 'selected' : ''}`;
+            btn.innerHTML = ordIdx !== -1 
+                ? `<span><span class="badge">${ordIdx + 1}</span> ${opt}</span>`
+                : `<span>${opt}</span>`;
+            btn.onclick = () => {
+                if(ordIdx === -1) currentOrder.push(i);
+                else currentOrder.splice(ordIdx, 1);
+                userAnswers[currentIdx] = [...currentOrder];
+                render();
+            };
+            area.appendChild(btn);
         });
-        opts.appendChild(document.createElement("br"));
-        q.B.forEach((b,i)=>{
-            let btn = document.createElement("button");
-            btn.innerText = b;
-            btn.classList.add("match-item");
-            btn.onclick = ()=>{
-                if(selectedA!=null){
-                    answers[index]=answers[index]||[];
-                    answers[index][selectedA]=i;
-                    selectedA=null;
-                    highlightMatch();
+    }
+    else if(q.type === "match") {
+        document.getElementById("instruction").innerText = "🔗 डावीकडील पर्याय निवडून उजवीकडील जोडीवर क्लिक करा.";
+        const grid = document.createElement("div"); grid.className = "match-grid";
+        const colA = document.createElement("div"); colA.className="column";
+        const colB = document.createElement("div"); colB.className="column";
+        let pairs = userAnswers[currentIdx] || Array(q.A.length).fill(null);
+
+        q.A.forEach((text, i) => {
+            const div = document.createElement("div");
+            div.className = `match-item ${tempLeft === i ? 'active' : ''} ${pairs[i] !== null ? 'pair-'+i : ''}`;
+            div.innerText = text;
+            div.onclick = () => { tempLeft = i; render(); };
+            colA.appendChild(div);
+        });
+
+        q.B.forEach((text, i) => {
+            const div = document.createElement("div");
+            div.className = "match-item";
+            const pIdx = pairs.indexOf(i);
+            if(pIdx !== -1) div.classList.add(`pair-${pIdx}`);
+            div.innerText = text;
+            div.onclick = () => {
+                if(tempLeft !== null) {
+                    pairs[tempLeft] = i;
+                    userAnswers[currentIdx] = [...pairs];
+                    tempLeft = null;
+                    render();
                 }
             };
-            opts.appendChild(btn);
+            colB.appendChild(div);
         });
-        highlightMatch();
-    }
-    else if(q.type==="sequence"){
-        let userSeq = answers[index]||[];
-        q.items.forEach((item,i)=>{
-            let btn = document.createElement("button");
-            btn.innerText = item;
-            btn.classList.add("seq-item");
-            if(userSeq.includes(i)) btn.classList.add("selected");
-            btn.onclick = ()=>{
-                if(!userSeq.includes(i)) userSeq.push(i);
-                else userSeq = userSeq.filter(x=>x!==i);
-                answers[index]=userSeq;
-                highlightSequence();
-            };
-            opts.appendChild(btn);
-        });
+        grid.append(colA, colB);
+        area.appendChild(grid);
     }
 }
 
-function highlightSelection(){
-    let buttons = document.querySelectorAll(".options button");
-    buttons.forEach((b,i)=> b.classList.toggle("selected", answers[index]===i));
+function nextQuestion() {
+    if(currentIdx < questions.length - 1) {
+        currentIdx++;
+        tempLeft = null;
+        render();
+    } else {
+        showResults();
+    }
 }
 
-function highlightMatch(){
-    let q=questions[index];
-    let ans=answers[index]||[];
-    let items=document.querySelectorAll(".match-item");
-    items.forEach(b=>b.classList.remove("selected"));
-    ans.forEach((v,i)=>{
-        if(v!=null){
-            items[i].classList.add("selected");
-            items[q.A.length+v].classList.add("selected");
+function showResults() {
+    document.getElementById("quiz-ui").style.display = "none";
+    const resUi = document.getElementById("result-ui");
+    resUi.style.display = "block";
+    let score = 0;
+    let html = `<h2>📊 निकाल विश्लेषण</h2>`;
+
+    questions.forEach((q, i) => {
+        const uAns = userAnswers[i];
+        const isCorrect = JSON.stringify(uAns) === JSON.stringify(q.answer);
+        if(isCorrect) score++;
+
+        html += `<div class="res-card ${isCorrect ? 'res-correct' : 'res-wrong'}">
+                    <strong style="font-size:16px;">Q${i+1}: ${q.q}</strong><br>`;
+        
+        if(q.type === "mcq") {
+            const uP = uAns !== undefined ? q.options[uAns] : "निवडले नाही";
+            const cP = q.options[q.answer];
+            html += `<span class="res-label">तुमची निवड:</span> <div class="res-val ${isCorrect?'text-success':'text-error'}">${uP} ${isCorrect?'✅':'❌'}</div>
+                     <span class="res-label">योग्य उत्तर:</span> <div class="res-val text-success">${cP}</div>`;
+        } 
+        else if(q.type === "multi") {
+            const uP = (uAns || []).map(idx => q.options[idx]).join(", ") || "निवडले नाही";
+            const cP = q.answer.map(idx => q.options[idx]).join(", ");
+            html += `<span class="res-label">तुमची निवड:</span> <div class="res-val ${isCorrect?'text-success':'text-error'}">${uP}</div>
+                     <span class="res-label">योग्य उत्तरे:</span> <div class="res-val text-success">${cP}</div>`;
         }
-    });
-}
-
-function highlightSequence(){
-    let q=questions[index];
-    let ans=answers[index]||[];
-    let buttons = document.querySelectorAll(".seq-item");
-    buttons.forEach((b,i)=> b.classList.toggle("selected", ans.includes(i)));
-}
-
-function nextQ(){
-    index++;
-    if(index<questions.length) loadQuestion();
-    else showResult();
-}
-
-function showResult(){
-    document.getElementById("quizPage").style.display="none";
-    document.getElementById("resultPage").style.display="block";
-    let score=0;
-    let html = `<h2>🎯 तुमचा स्कोअर:</h2>`;
-    questions.forEach((q,i)=>{
-        let ans=answers[i];
-        let correct=false;
-        if(q.type==="mcq" || q.type==="assertion-reason" || q.type==="case-study") correct = ans===q.answer;
-        else if(q.type==="match" || q.type==="sequence") correct = JSON.stringify(ans)===JSON.stringify(q.answer);
-        if(correct) score++;
-        html += `<div class="${correct?'review-correct':'review-wrong'}">
-                    <div class="question"><b>Q${i+1}:</b> ${q.q}</div>`;
-        if(q.type==="mcq" || q.type==="assertion-reason" || q.type==="case-study"){
-            html += `<div>तुमचे उत्तर: ${ans!=null?q.options[ans]:"न दिलेले"}</div>
-                     <div>योग्य उत्तर: ${q.options[q.answer]}</div>`;
-        } else if(q.type==="match"){
-            html += `<div>तुमचे उत्तर:<br>`;
-            q.A.forEach((a,j)=>{
-                html += `${a} → ${ans && ans[j]!=null?q.B[ans[j]]:"न दिलेले"}<br>`;
+        else if(q.type === "order") {
+            const uText = (uAns || []).map(idx => q.options[idx]).join(" ➔ ") || "निवडले नाही";
+            const cText = q.answer.map(idx => q.options[idx]).join(" ➔ ");
+            html += `<span class="res-label">तुमचा क्रम:</span> <div class="res-val ${isCorrect?'text-success':'text-error'}">${uText}</div>
+                     <span class="res-label">योग्य क्रम:</span> <div class="res-val text-success">${cText}</div>`;
+        }
+        else if(q.type === "match") {
+            q.A.forEach((item, idx) => {
+                const uMatchIdx = uAns ? uAns[idx] : null;
+                const uM = uMatchIdx !== null ? q.B[uMatchIdx] : "निवडले नाही";
+                const cM = q.B[q.answer[idx]];
+                const pairOk = (uMatchIdx === q.answer[idx]);
+                html += `<div class="match-feedback-row">
+                            <span class="res-label" style="margin-top:0">${item} साठी निवड:</span>
+                            <div class="res-val ${pairOk?'text-success':'text-error'}">${uM} ${pairOk?'✅':'❌'}</div>
+                            ${!pairOk ? `<span class="res-label">योग्य जोडी:</span><div class="res-val text-success">${item} → ${cM}</div>` : ''}
+                         </div>`;
             });
-            html += `</div><div>योग्य उत्तर:<br>`;
-            q.A.forEach((a,j)=>{
-                html += `${a} → ${q.B[q.answer[j]]}<br>`;
-            });
-            html += `</div>`;
-        } else if(q.type==="sequence"){
-            html += `<div>तुमची क्रमवारी:<br>`;
-            (ans||[]).forEach(n=> html += `${q.items[n]} → `);
-            html += `</div><div>योग्य क्रमवारी:<br>`;
-            q.answer.forEach(n=> html += `${q.items[n]} → `);
-            html += `</div>`;
         }
         html += `</div>`;
     });
-    html = `<h2>🎯 तुमचा स्कोअर: ${score} / ${questions.length}</h2>` + html;
-    document.getElementById("resultPage").innerHTML = html;
+
+    resUi.innerHTML = `
+        <div style="text-align:center; padding: 20px; background:white; border-radius:16px; margin-bottom:20px; border:2px solid #e2e8f0;">
+            <h1 style="font-size:3.5rem; margin:0; color:var(--primary)">${score}/${questions.length}</h1>
+            <p style="font-weight:bold; color:#64748b; margin-top:5px;">तुमचा एकूण स्कोर</p>
+            <button class="nav-btn" style="margin-top:10px;" onclick="location.reload()">Reset Test</button>
+        </div>
+        ${html}`;
 }
 
-loadQuestion();
+render();
 </script>
 </body>
 </html>
