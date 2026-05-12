@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>PSI Mega MCQ Notebook</title>
+
+<style>
+body{
+    font-family: Arial;
+    background:#f4f6f8;
+    margin:0;
+}
+
+.container{
+    width:90%;
+    margin:auto;
+}
+
+h1{
+    text-align:center;
+    background:#1e4e8c;
+    color:white;
+    padding:15px;
+    border-radius:10px;
+}
+
+.card{
+    background:white;
+    padding:15px;
+    margin:15px 0;
+    border-left:5px solid #1e4e8c;
+    border-radius:10px;
+}
+
+.question{
+    font-weight:bold;
+    margin-bottom:10px;
+}
+
+.options button{
+    display:block;
+    width:100%;
+    margin:5px 0;
+    padding:10px;
+    border:none;
+    background:#eee;
+    cursor:pointer;
+    border-radius:5px;
+    text-align:left;
+}
+
+.options button:hover{
+    background:#d6e4ff;
+}
+
+.correct{
+    background:#2ecc71 !important;
+    color:white;
+}
+
+.wrong{
+    background:#e74c3c !important;
+    color:white;
+}
+
+.next-btn{
+    background:#1e4e8c;
+    color:white;
+    padding:10px;
+    border:none;
+    margin-top:10px;
+    cursor:pointer;
+    border-radius:5px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📘 PSI Mega MCQ Notebook (1600–1947)</h1>
+
+<!-- QUESTION BOX -->
+<div class="card" id="quizBox">
+
+    <div class="question" id="q">Q1. ईस्ट इंडिया कंपनीची स्थापना कधी झाली?</div>
+
+    <div class="options">
+        <button onclick="check(this, false)">1599</button>
+        <button onclick="check(this, true)">1600</button>
+        <button onclick="check(this, false)">1602</button>
+        <button onclick="check(this, false)">1610</button>
+    </div>
+
+    <button class="next-btn" onclick="nextQ()">Next Question</button>
+
+</div>
+
+</div>
+
+<script>
+
+let index = 0;
+
+let questions = [
+
+{
+q:"Q1. ईस्ट इंडिया कंपनीची स्थापना कधी झाली?",
+options:["1599","1600","1602","1610"],
+answer:1
+},
+
+{
+q:"Q2. प्लासीची लढाई कधी झाली?",
+options:["1750","1757","1760","1764"],
+answer:1
+},
+
+{
+q:"Q3. वास्को-द-गामा भारतात कधी आला?",
+options:["1492","1498","1502","1510"],
+answer:1
+},
+
+{
+q:"Q4. कर्नाटक युद्धांची संख्या किती?",
+options:["2","3","4","5"],
+answer:1
+},
+
+{
+q:"Q5. फर्रुखसियरचा फर्मान कोणत्या वर्षी?",
+options:["1710","1717","1720","1730"],
+answer:1
+},
+
+// 👉 येथे पुढे तू 500 MCQs add करू शकतोस
+
+];
+
+function loadQuestion(){
+
+    let q = questions[index];
+
+    document.getElementById("q").innerText = q.q;
+
+    let buttons = document.querySelectorAll(".options button");
+
+    buttons.forEach((btn,i)=>{
+        btn.innerText = q.options[i];
+        btn.className="";
+        btn.onclick = function(){
+            check(this, i === q.answer);
+        }
+    });
+
+}
+
+function check(btn, isCorrect){
+
+    if(isCorrect){
+        btn.classList.add("correct");
+    }else{
+        btn.classList.add("wrong");
+    }
+
+}
+
+function nextQ(){
+
+    index++;
+
+    if(index < questions.length){
+        loadQuestion();
+    }else{
+        alert("🎯 Test Complete! PSI Ready Score Check करा");
+    }
+
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>
