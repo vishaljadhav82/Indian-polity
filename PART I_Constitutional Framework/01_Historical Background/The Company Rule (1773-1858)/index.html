@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Focus Notes - Historical Background</title>
     <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
-    <style>
+  <style>
         :root {
             --paper: #fffef5;
             --ink: #1a202c;
@@ -15,25 +15,53 @@
             --primary-blue: #2b6cb0;
         }
 
+        /* Smooth Scroll साठी */
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             background: #d1d5db;
             margin: 0;
-            padding: 20px;
+            padding: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
             font-family: 'Kalam', cursive;
         }
 
-        /* --- Header Navigation --- */
+        /* --- Header Navigation (Single Row) --- */
         .header-nav {
             width: 100%;
             max-width: 800px;
             display: flex;
-            justify-content: center;
-            gap: 20px;
+            justify-content: flex-start;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: nowrap; /* एकाच ओळीत ठेवण्यासाठी */
+            overflow-x: auto; /* मोबाईलवर आडवे स्क्रोल करण्यासाठी */
+            padding: 10px 5px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* स्क्रोलबार लपवण्यासाठी */
+        .header-nav::-webkit-scrollbar { display: none; }
+        .header-nav { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .header-nav .next-btn {
+            flex: 0 0 auto; /* बटणे बारीक होऊ नयेत म्हणून */
+        }
+
+        /* --- Iframe Styling --- */
+        .full-screen-iframe {
+            width: 100%;
+            max-width: 850px;
+            height: 100vh; /* मोबाईल स्क्रीनची पूर्ण उंची */
+            border: 2px solid #cbd5e0;
+            border-radius: 12px;
             margin-bottom: 30px;
-            flex-wrap: wrap;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background: white;
         }
 
         /* --- Notebook Page Style --- */
@@ -41,37 +69,30 @@
             width: 100%;
             max-width: 800px;
             background: var(--paper);
-            padding: 60px 40px 60px 85px;
+            padding: 60px 20px 60px 70px;
             position: relative;
             box-shadow: 15px 15px 40px rgba(0,0,0,0.1);
             border-radius: 2px 15px 15px 2px;
             background-image: 
-                linear-gradient(90deg, transparent 79px, var(--margin-red) 79px, var(--margin-red) 81px, transparent 81px),
+                linear-gradient(90deg, transparent 64px, var(--margin-red) 64px, var(--margin-red) 66px, transparent 66px),
                 linear-gradient(var(--line) 1px, transparent 1px);
             background-size: 100% 100%, 100% 32px;
             line-height: 32px;
-            animation: slideUp 0.8s ease-out;
         }
 
-        /* Spiral Binding Effect */
+        /* Spiral Effect */
         .notebook-page::before {
             content: '';
             position: absolute;
             top: 30px;
-            left: 25px;
-            width: 25px;
-            height: 25px;
+            left: 15px;
+            width: 20px;
+            height: 20px;
             background: #4a5568;
             border-radius: 50%;
             box-shadow: 0 64px #4a5568, 0 128px #4a5568, 0 192px #4a5568, 0 256px #4a5568, 
                         0 320px #4a5568, 0 384px #4a5568, 0 448px #4a5568, 0 512px #4a5568;
             opacity: 0.15;
-            z-index: 2;
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         /* --- Components --- */
@@ -86,45 +107,24 @@
             border-radius: 10px;
         }
 
-        h1 { color: var(--primary-blue); text-align: center; transform: rotate(-0.5deg); }
-        h2 { color: #c53030; border-bottom: 2px solid #feb2b2; display: inline-block; }
-        .highlight { background: var(--highlight); padding: 0 8px; border-radius: 4px; }
+        h1 { color: var(--primary-blue); text-align: center; }
+        h2 { color: #c53030; border-bottom: 2px solid #feb2b2; display: inline-block; font-size: 20px; }
+        .highlight { background: var(--highlight); padding: 0 5px; border-radius: 4px; }
 
-        /* --- Radiating Buttons --- */
         .next-btn {
             text-decoration: none;
-            padding: 12px 25px;
-            font-size: 16px;
+            padding: 10px 20px;
+            font-size: 14px;
             font-weight: bold;
             color: white !important;
             background: #e74c3c;
             border-radius: 50px;
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 1;
             border: none;
             cursor: pointer;
             font-family: 'Kalam', cursive;
         }
 
-        .radiating-btn::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            border: 2px solid #e74c3c;
-            border-radius: 50px;
-            z-index: -1;
-            animation: radiate 2s infinite;
-        }
-
-        @keyframes radiate {
-            0% { transform: scale(1); opacity: 0.8; }
-            100% { transform: scale(1.5); opacity: 0; }
-        }
-
-        /* --- Modal & Iframe Styles --- */
+        /* --- Modal Styles --- */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -132,66 +132,55 @@
             width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.85);
             z-index: 2000;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(5px);
         }
 
         .modal-box {
             position: relative;
-            width: 90%;
-            max-width: 900px;
-            height: 85vh;
-            margin: 4vh auto;
+            width: 95%;
+            height: 80vh;
+            margin: 10vh auto;
             background: white;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
         }
 
         .close-btn {
             position: absolute;
-            top: 15px;
-            right: 20px;
+            top: 10px;
+            right: 15px;
             background: #e74c3c;
             color: white;
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 28px;
             cursor: pointer;
             z-index: 2100;
-            border: 3px solid white;
         }
-
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        /* --- Interactive Sections --- */
-        .timeline-section { margin: 30px 0; }
-        .timeline-btn {
-            background: #2d3748; color: white; width: 100%;
-            padding: 10px; border: none; cursor: pointer; border-radius: 8px;
-            font-family: 'Kalam', cursive;
-        }
-        .timeline-content { display: none; padding: 15px; background: #f8fafc; border-radius: 0 0 8px 8px; }
 
         .quiz-box {
             margin-top: 40px; padding: 20px;
             background: #fff; border-left: 5px solid var(--primary-blue);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
-        .q-item { padding: 8px; border-bottom: 1px solid #edf2f7; cursor: help; }
-        .q-item:hover { background: #f7fafc; padding-left: 15px; transition: 0.3s; }
-
+        
         .footer-nav { margin-top: 40px; display: flex; justify-content: flex-end; }
     </style>
 </head>
 <body>
+
+ <!-- Header Navigation -->
+    <div class="header-nav">
+                <button class="next-btn" onclick="document.getElementById('notes-section').scrollIntoView()">📝 Notes</button>
+        <button class="next-btn" onclick="openModal('beginning.html')">🕒 EIC Timeline</button>
+        <button class="next-btn" onclick="openModal('company-rule.html')">🕒 Company Rule</button>
+        <button class="next-btn" onclick="openModal('crown-rule.html')">🕒 Crown Rule</button>
+    </div>
+
+    <!-- 100vh Iframe for Making.html -->
+    <iframe src="indexQuiz.html" class="full-screen-iframe" scrolling="yes"></iframe>
 
     <!-- Modal for External HTML Pages -->
     <div id="iframeModal" class="modal-overlay">
