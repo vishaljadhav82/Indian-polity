@@ -84,14 +84,13 @@ h1{
 <!-- QUESTION BOX -->
 <div class="card" id="quizBox">
 
-    <div class="question" id="q">Q1. ईस्ट इंडिया कंपनीची स्थापना कधी झाली?</div>
+    <div class="question" id="q"></div>
 
-    <div class="options">
-        <button onclick="check(this, false)">1599</button>
-        <button onclick="check(this, true)">1600</button>
-        <button onclick="check(this, false)">1602</button>
-        <button onclick="check(this, false)">1610</button>
-    </div>
+    <div class="options" id="options"></div>
+
+    <button class="next-btn" onclick="nextQ()">Next Question</button>
+
+</div>
 
     <button class="next-btn" onclick="nextQ()">Next Question</button>
 
@@ -1076,44 +1075,56 @@ let questions = [
 
   // 👉 100 complete structure
 ]
-function loadQuestion(){
+let index = 0;
+let answered = false;
+
+function loadQuestion() {
+
+    answered = false;
 
     let q = questions[index];
 
-    document.getElementById("q").innerText = q.q;
+    document.getElementById("q").innerText =
+        `Q${q.id}. ${q.question}`;
 
-    let buttons = document.querySelectorAll(".options button");
+    let optionsDiv = document.getElementById("options");
+    optionsDiv.innerHTML = "";
 
-    buttons.forEach((btn,i)=>{
-        btn.innerText = q.options[i];
-        btn.className="";
-        btn.onclick = function(){
-            check(this, i === q.answer);
-        }
+    q.options.forEach((opt, i) => {
+
+        let btn = document.createElement("button");
+        btn.innerText = opt;
+
+        btn.onclick = function () {
+            if (!answered) {
+                check(btn, i === q.answer);
+            }
+        };
+
+        optionsDiv.appendChild(btn);
     });
-
 }
 
-function check(btn, isCorrect){
+function check(btn, isCorrect) {
 
-    if(isCorrect){
+    answered = true;
+
+    if (isCorrect) {
         btn.classList.add("correct");
-    }else{
+    } else {
         btn.classList.add("wrong");
     }
-
 }
 
-function nextQ(){
+function nextQ() {
 
     index++;
 
-    if(index < questions.length){
+    if (index < questions.length) {
         loadQuestion();
-    }else{
+    } else {
         alert("🎯 Test Complete! PSI Ready Score Check करा");
     }
-
 }
 
 loadQuestion();
