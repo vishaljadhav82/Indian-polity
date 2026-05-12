@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>PSI Advanced Exam Simulator</title>
+<title>PSI Study Quiz</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
+
 body {
     font-family:'Patrick Hand', cursive;
     background:#fdf6e3;
@@ -38,46 +39,43 @@ h1 {
     border-radius:8px;
     font-size:18px;
     cursor:pointer;
-    transition:0.2s;
     text-align:left;
+    transition:0.2s;
 }
-.options button:hover {
-    transform:scale(1.02);
-    background:#e6f0ff;
-}
+.options button:hover {background:#e6f0ff; transform:scale(1.02);}
 .correct {background:#b7f7c1 !important;}
 .wrong {background:#f7b7b7 !important;}
 .selected {border-left:5px solid #2c3e50;}
-.next-btn, .prev-btn {
-    background:#2c3e50;
-    color:white;
-    padding:10px;
-    border:none;
+.nav-btn {
+    background:#2c3e50; color:white;
+    padding:10px; border:none;
     margin:10px 5px 0 0;
-    cursor:pointer;
-    border-radius:8px;
+    cursor:pointer; border-radius:8px;
 }
-.bookmark {float:right; font-size:22px; cursor:pointer;}
 .page {display:none;}
 .active {display:block;}
 .scoreBox {font-size:20px;}
 .review {background:rgba(255,255,255,0.6); padding:12px; margin:10px 0; border-left:4px solid #2c3e50; border-radius:8px;}
-#timer {font-size:18px; float:right;}
+.visit-list {margin:10px 0; display:flex; flex-wrap:wrap; gap:5px;}
+.visit-list button {padding:6px 10px; border-radius:6px; border:none; background:#ccc; cursor:pointer;}
+.visit-list button.active {background:#2c3e50; color:white;}
 </style>
 </head>
 <body>
 
 <div class="container">
-
-<h1>📘 PSI Advanced Exam Simulator</h1>
-<div id="timer"></div>
+<h1>📘 PSI Study Quiz</h1>
 
 <div id="quizPage" class="page active">
-    <div class="bookmark" onclick="toggleBookmark()">🔖</div>
     <div class="question" id="q"></div>
     <div class="options" id="options"></div>
-    <button class="prev-btn" onclick="prevQ()">⬅ Previous</button>
-    <button class="next-btn" onclick="nextQ()">Next ➜</button>
+    
+    <div style="margin-top:10px;">
+        <button class="nav-btn" onclick="prevQ()">⬅ Previous</button>
+        <button class="nav-btn" onclick="nextQ()">Next ➜</button>
+    </div>
+
+    <div class="visit-list" id="visitList"></div>
 </div>
 
 <div id="resultPage" class="page scoreBox"></div>
@@ -85,201 +83,107 @@ h1 {
 </div>
 
 <script>
-/* ================= QUESTIONS ================= */
 let questions = [
- {
-    "id": 1,
-    "question": "ईस्ट इंडिया कंपनीला सनद कोणत्या राणीने दिली?",
-    "options": ["राणी एलिझाबेथ-I", "राणी व्हिक्टोरिया", "जेम्स-I", "चार्ल्स-II"],
-    "answer": 0,
-    "topic": "Company Charter",
-    "level": "Trap",
-    "explain": "सही उत्तर एलिझाबेथ-I; व्हिक्टोरिया नंतरची होती, students गोंधळतात."
+  {
+    "id":1,"question":"ईस्ट इंडिया कंपनीला सनद कोणत्या राणीने दिली?",
+    "options":["राणी एलिझाबेथ-I","राणी व्हिक्टोरिया","जेम्स-I","चार्ल्स-II"],"answer":0
   },
   {
-    "id": 2,
-    "question": "वास्को-द-गामा भारतात कोणत्या वर्षी आला?",
-    "options": ["१४९२", "१४९८", "१५०२", "१५१०"],
-    "answer": 1,
-    "topic": "Portuguese Arrival",
-    "level": "Trap",
-    "explain": "1498 मध्ये आगमन, 1492 नाविक शोध म्हणून फसवणूक तयार करते."
+    "id":2,"question":"वास्को-द-गामा भारतात कोणत्या वर्षी आला?",
+    "options":["१४९२","१४९८","१५०२","१५१०"],"answer":1
   },
   {
-    "id": 3,
-    "question": "इंग्रजांचा पहिला भारत आगमन कोणत्या ठिकाणी झाले?",
-    "options": ["मुंबई", "सुरत", "मद्रास", "कलकत्ता"],
-    "answer": 1,
-    "topic": "English Arrival",
-    "level": "Trap",
-    "explain": "सुरत १६०८; मुंबई / मद्रास नंतर आले."
+    "id":3,"question":"इंग्रजांचा पहिला भारत आगमन कोणत्या ठिकाणी झाले?",
+    "options":["मुंबई","सुरत","मद्रास","कलकत्ता"],"answer":1
   },
   {
-    "id": 4,
-    "question": "मुंबई इंग्रजांना कशी मिळाली?",
-    "options": ["युद्धाद्वारे", "लग्नातील हुंडा", "खरेदी", "विचारणीतून करार"],
-    "answer": 1,
-    "topic": "English Expansion",
-    "level": "Trap",
-    "explain": "लग्नातून मिळाली, students युद्ध किंवा करार म्हणतात."
+    "id":4,"question":"मुंबई इंग्रजांना कशी मिळाली?",
+    "options":["युद्धाद्वारे","लग्नातील हुंडा","खरेदी","विचारणीतून करार"],"answer":1
   },
   {
-    "id": 5,
-    "question": "कलकत्ता स्थापन केल्याचे credited कोणाला आहे?",
-    "options": ["जॉब चार्नॉक", "विल्यम हॉकिन्स", "सर थॉमस रो", "रॉबर्ट क्लाईव्ह"],
-    "answer": 0,
-    "topic": "English Expansion",
-    "level": "Trap",
-    "explain": "Job Charnock 1690; students रो किंवा हॉकिन्स फसतात."
+    "id":5,"question":"कलकत्ता स्थापन केल्याचे credited कोणाला आहे?",
+    "options":["जॉब चार्नॉक","विल्यम हॉकिन्स","सर थॉमस रो","रॉबर्ट क्लाईव्ह"],"answer":0
   },
   {
-    "id": 6,
-    "question": "फर्रुखसियर फर्मानाला काय म्हणतात?",
-    "options": ["Magna Carta of EIC", "Royal Charter", "Trade Act", "Company Treaty"],
-    "answer": 0,
-    "topic": "Company Expansion",
-    "level": "Trap",
-    "explain": "Magna Carta of EIC; Royal Charter १६०० रोजी मिळाली होती."
+    "id":6,"question":"फर्रुखसियर फर्मानाला काय म्हणतात?",
+    "options":["Magna Carta of EIC","Royal Charter","Trade Act","Company Treaty"],"answer":0
   },
   {
-    "id": 7,
-    "question": "कर्नाटक युद्धांचा कालावधी कोणता आहे?",
-    "options": ["१७४०–१७६०", "१७४६–१७६३", "१७५०–१७७०", "१७३५–१७५५"],
-    "answer": 1,
-    "topic": "Carnatic Wars",
-    "level": "Trap",
-    "explain": "१७४६–१७६३; इतर options superficially योग्य वाटतात."
+    "id":7,"question":"कर्नाटक युद्धांचा कालावधी कोणता आहे?",
+    "options":["१७४०–१७६०","१७४६–१७६३","१७५०–१७७०","१७३५–१७५५"],"answer":1
   },
   {
-    "id": 8,
-    "question": "प्लासी लढाईत इंग्रजांचा विजय कसा झाला?",
-    "options": ["मोठी सेना", "हवामान लाभ", "मीर जाफरची फसवणूक", "तंत्रज्ञान superior"],
-    "answer": 2,
-    "topic": "Plassey",
-    "level": "Trap",
-    "explain": "मीर जाफरची फसवणूक मुख्य कारण; विद्यार्थी मोठी सेना किंवा technology वर गोंधळतात."
+    "id":8,"question":"प्लासी लढाईत इंग्रजांचा विजय कसा झाला?",
+    "options":["मोठी सेना","हवामान लाभ","मीर जाफरची फसवणूक","तंत्रज्ञान superior"],"answer":2
   },
   {
-    "id": 9,
-    "question": "विल्यम हॉकिन्सला मुघल दरबारात कोणती पदवी मिळाली?",
-    "options": ["इंग्लिश खान", "Sir", "Governor", "Ambassador"],
-    "answer": 0,
-    "topic": "English Diplomacy",
-    "level": "Trap",
-    "explain": "इंग्लिश खान, students सर किंवा राजदूत म्हणतात."
+    "id":9,"question":"विल्यम हॉकिन्सला मुघल दरबारात कोणती पदवी मिळाली?",
+    "options":["इंग्लिश खान","Sir","Governor","Ambassador"],"answer":0
   },
   {
-    "id": 10,
-    "question": "सर थॉमस रो भारतात कोणत्या वर्षी आला?",
-    "options": ["१६१५", "१६०८", "१६२०", "१६१०"],
-    "answer": 0,
-    "topic": "English Diplomacy",
-    "level": "Trap",
-    "explain": "१६१५; १६०८ हे हॉकिन्सचे आगमन, easy confusion."
+    "id":10,"question":"सर थॉमस रो भारतात कोणत्या वर्षी आला?",
+    "options":["१६१५","१६०८","१६२०","१६१०"],"answer":0
   }
 ];
 
-// ======= Randomize questions and options =======
-questions = shuffleArray(questions);
-questions.forEach(q => { q.options = shuffleArray(q.options); });
+let index=0, answers=[];
 
-function shuffleArray(array){
-    for(let i=array.length-1;i>0;i--){
-        const j=Math.floor(Math.random()*(i+1));
-        [array[i],array[j]] = [array[j],array[i]];
-    }
-    return array;
-}
-
-/* ================= STATE ================= */
-let index=0;
-let score=0;
-let answers=[];
-let bookmarks={};
-let selectedIndex=null;
-let totalTime = 900; // 15 min
-let timerInterval = null;
-
-/* ================= TIMER ================= */
-function startTimer(){
-    timerInterval = setInterval(()=>{
-        let min = Math.floor(totalTime/60);
-        let sec = totalTime%60;
-        document.getElementById("timer").innerText = `⏱ Time Left: ${min}:${sec < 10 ? '0'+sec : sec}`;
-        totalTime--;
-        if(totalTime<0){
-            clearInterval(timerInterval);
-            showResult();
-        }
-    },1000);
-}
-
-/* ================= LOAD ================= */
 function loadQuestion(){
-    selectedIndex=null;
-    let q=questions[index];
-    document.getElementById("q").innerText=`Q${q.id}: ${q.question}`;
-    let opt=document.getElementById("options");
-    opt.innerHTML="";
+    let q = questions[index];
+    document.getElementById("q").innerText = `Q${q.id}: ${q.question}`;
+    let opt = document.getElementById("options");
+    opt.innerHTML = "";
     q.options.forEach((o,i)=>{
-        let btn=document.createElement("button");
-        btn.innerText=o;
-        btn.onclick=()=>{
-            selectedIndex=i;
+        let btn = document.createElement("button");
+        btn.innerText = o;
+        btn.onclick = ()=>{
+            answers[index]=i;
             document.querySelectorAll(".options button").forEach(b=>b.classList.remove("selected"));
             btn.classList.add("selected");
         };
+        if(answers[index]===i) btn.classList.add("selected");
         opt.appendChild(btn);
+    });
+    updateVisitList();
+}
+
+function nextQ(){
+    if(index<questions.length-1){ index++; loadQuestion(); } 
+    else { showResult(); }
+}
+function prevQ(){ if(index>0){ index--; loadQuestion(); } }
+
+function updateVisitList(){
+    let list = document.getElementById("visitList");
+    list.innerHTML="";
+    questions.forEach((q,i)=>{
+        let btn = document.createElement("button");
+        btn.innerText=q.id;
+        btn.className = i===index ? "active" : "";
+        btn.onclick=()=>{ index=i; loadQuestion(); };
+        list.appendChild(btn);
     });
 }
 
-/* ================= NEXT & PREV ================= */
-function nextQ(){
-    saveAnswer();
-    if(index<questions.length-1){ index++; loadQuestion(); }
-    else{ showResult(); }
-}
-function prevQ(){
-    if(index>0){ index--; loadQuestion(); }
-}
-
-/* ================= SAVE ANSWER ================= */
-function saveAnswer(){
-    let q=questions[index];
-    let already=answers.find(a=>a.id===q.id);
-    if(already){ already.selected=selectedIndex; }
-    else{ answers.push({id:q.id, question:q.question, selected:selectedIndex, correct:q.answer, options:q.options}); }
-    if(selectedIndex===q.answer){ score=answers.filter(a=>a.selected===a.correct).length; }
-}
-
-/* ================= BOOKMARK ================= */
-function toggleBookmark(){
-    bookmarks[index]=!bookmarks[index];
-    alert(bookmarks[index]?"Bookmarked ✔":"Removed ❌");
-}
-
-/* ================= RESULT ================= */
 function showResult(){
-    clearInterval(timerInterval);
     document.getElementById("quizPage").classList.remove("active");
     document.getElementById("resultPage").classList.add("active");
-    let html=`<h2>🎯 PSI Exam Completed</h2><p><b>Score:</b> ${score} / ${questions.length}</p><h3>📘 Full Review</h3>`;
-    answers.forEach((a,i)=>{
-        html+=`<div class="review"><b>Q${i+1}:</b> ${a.question}<br><br>`;
-        a.options.forEach((o,idx)=>{
+    let score = answers.filter((a,i)=>a===questions[i].answer).length;
+    let html=`<h2>🎯 PSI Quiz Completed</h2><p><b>Score:</b> ${score} / ${questions.length}</p>`;
+    questions.forEach((q,i)=>{
+        html+=`<div class="review"><b>Q${q.id}:</b> ${q.question}<br>`;
+        q.options.forEach((opt,j)=>{
             let style="";
-            if(idx===a.correct) style="color:green;font-weight:bold;";
-            if(idx===a.selected && idx!==a.correct) style="color:red;font-weight:bold;";
-            html+=`<div style="${style}">• ${o}</div>`;
+            if(j===q.answer) style="color:green;font-weight:bold;";
+            if(answers[i]===j && j!==q.answer) style="color:red;font-weight:bold;";
+            html+=`<div style="${style}">• ${opt}</div>`;
         });
         html+="</div>";
     });
-    document.getElementById("resultPage").innerHTML=html;
+    document.getElementById("resultPage").innerHTML = html;
 }
 
-/* ================= START ================= */
 loadQuestion();
-startTimer();
 </script>
 
 </body>
