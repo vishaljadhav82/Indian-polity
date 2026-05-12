@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Focus Notes - Historical Background</title>
     <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
-  <style>
+    <style>
         :root {
             --paper: #fffef5;
             --ink: #1a202c;
@@ -15,10 +15,7 @@
             --primary-blue: #2b6cb0;
         }
 
-        /* Smooth Scroll साठी */
-        html {
-            scroll-behavior: smooth;
-        }
+        html { scroll-behavior: smooth; }
 
         body {
             background: #d1d5db;
@@ -30,38 +27,47 @@
             font-family: 'Kalam', cursive;
         }
 
-        /* --- Header Navigation (Single Row) --- */
+        /* --- Header Navigation (Single Row with Horizontal Scroll) --- */
         .header-nav {
             width: 100%;
-            max-width: 800px;
+            max-width: 850px;
             display: flex;
             justify-content: flex-start;
             gap: 12px;
             margin-bottom: 20px;
-            flex-wrap: nowrap; /* एकाच ओळीत ठेवण्यासाठी */
-            overflow-x: auto; /* मोबाईलवर आडवे स्क्रोल करण्यासाठी */
+            flex-wrap: nowrap;
+            overflow-x: auto;
             padding: 10px 5px;
             -webkit-overflow-scrolling: touch;
         }
 
-        /* स्क्रोलबार लपवण्यासाठी */
         .header-nav::-webkit-scrollbar { display: none; }
         .header-nav { -ms-overflow-style: none; scrollbar-width: none; }
 
         .header-nav .next-btn {
-            flex: 0 0 auto; /* बटणे बारीक होऊ नयेत म्हणून */
+            flex: 0 0 auto;
+            padding: 10px 18px;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            background: #e74c3c;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-family: 'Kalam', cursive;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        /* --- Iframe Styling --- */
+        /* --- Main Making.html Iframe (Standard View) --- */
         .full-screen-iframe {
             width: 100%;
             max-width: 850px;
-            height: 100vh; /* मोबाईल स्क्रीनची पूर्ण उंची */
+            height: 100vh;
             border: 2px solid #cbd5e0;
             border-radius: 12px;
             margin-bottom: 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             background: white;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
 
         /* --- Notebook Page Style --- */
@@ -80,7 +86,7 @@
             line-height: 32px;
         }
 
-        /* Spiral Effect */
+        /* Spiral Rings */
         .notebook-page::before {
             content: '';
             position: absolute;
@@ -95,54 +101,33 @@
             opacity: 0.15;
         }
 
-        /* --- Components --- */
-        .motivation-banner {
-            border: 2px dashed #f39c12;
-            background: #fff9e6;
-            padding: 15px;
-            margin-bottom: 30px;
-            text-align: center;
-            font-weight: bold;
-            color: #d35400;
-            border-radius: 10px;
-        }
-
-        h1 { color: var(--primary-blue); text-align: center; }
-        h2 { color: #c53030; border-bottom: 2px solid #feb2b2; display: inline-block; font-size: 20px; }
-        .highlight { background: var(--highlight); padding: 0 5px; border-radius: 4px; }
-
-        .next-btn {
-            text-decoration: none;
-            padding: 10px 20px;
-            font-size: 14px;
-            font-weight: bold;
-            color: white !important;
-            background: #e74c3c;
-            border-radius: 50px;
-            border: none;
-            cursor: pointer;
-            font-family: 'Kalam', cursive;
-        }
-
-        /* --- Modal Styles --- */
+        /* --- Modal Control (Fix for Full View) --- */
         .modal-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.9);
             z-index: 2000;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px);
         }
 
         .modal-box {
             position: relative;
             width: 95%;
-            height: 80vh;
-            margin: 10vh auto;
+            height: 92vh; /* मोबाईलवर जास्तीत जास्त उंची */
+            margin: 4vh auto;
             background: white;
             border-radius: 15px;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #timelineFrame {
+            width: 100%;
+            flex-grow: 1; /* पूर्ण जागा व्यापण्यासाठी */
+            border: none;
         }
 
         .close-btn {
@@ -151,21 +136,33 @@
             right: 15px;
             background: #e74c3c;
             color: white;
-            width: 35px;
-            height: 35px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
+            font-size: 24px;
             cursor: pointer;
             z-index: 2100;
+            border: 2px solid white;
         }
 
-        .quiz-box {
-            margin-top: 40px; padding: 20px;
-            background: #fff; border-left: 5px solid var(--primary-blue);
+        /* --- Content Styling --- */
+        .motivation-banner {
+            border: 2px dashed #f39c12;
+            background: #fff9e6;
+            padding: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+            border-radius: 10px;
+            color: #d35400;
         }
-        
+
+        h1 { color: var(--primary-blue); font-size: 22px; text-align: center; }
+        h2 { color: #c53030; border-bottom: 2px solid #feb2b2; display: inline-block; font-size: 18px; }
+        .highlight { background: var(--highlight); padding: 0 4px; border-radius: 3px; }
+
         .footer-nav { margin-top: 40px; display: flex; justify-content: flex-end; }
     </style>
 </head>
