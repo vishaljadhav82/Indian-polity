@@ -45,58 +45,13 @@ h1 { color:#2c3e50; margin-bottom:15px; font-size:28px; }
 
 <script>
 let questions = [
-  { "type":"mcq", "q":"वास्को-द-गामा भारतात कोणत्या वर्षी आणि कुठे आला?", "options":["१४९८, कोझिकोड","१४९२, गोवा","१५०२, मद्रास","१४९८, मुंबई"], "answer":0, "category":"Trap" },
-
-  { "type":"mcq", "q":"डच ईस्ट इंडिया कंपनीची स्थापना आणि मुख्य व्यापार कोणता होता?", "options":["१६०२, मसाले","१६००, कापड","१६०२, रेशीम","१६०५, मसाले"], "answer":0, "category":"Trap" },
-
-  { "type":"mcq", "q":"सर थॉमस रो भारतात कोणत्या वर्षी आला?", "options":["१६१५","१६०८","१६२०","१६१०"], "answer":0, "category":"Trap" },
-
-  { "type":"mcq", "q":"मुंबई इंग्रजांना मिळाल्याचे कारण काय?", "options":["लग्नातील हुंडा","युद्धाद्वारे","मुघलांकडून हस्तांतरण","खरेदी करून घेतले"], "answer":0, "category":"Analytical" },
-
-  { "type":"mcq", "q":"प्लासी लढाईत इंग्रजांचा विजय मुख्य कारण काय होते?", "options":["मीर जाफरची फसवणूक","मोठी सेना","तंत्रज्ञान superior","हवामान लाभ"], "answer":0, "category":"Analytical" },
-
-  { "type":"mcq", "q":"ईस्ट इंडिया कंपनीला सनद कोणत्या राणीने दिली?", "options":["राणी एलिझाबेथ-I","राणी व्हिक्टोरिया","जेम्स-I","चार्ल्स-II"], "answer":0, "category":"Confusing" },
-
-  { "type":"mcq", "q":"फर्रुखसियर फर्मानानंतर इंग्रजांना कोणती विशेष सवलत मिळाली?", "options":["बंगालमध्ये करमुक्त व्यापार","दस्तक प्रणाली","सेना तैनात करण्याचा अधिकार","A आणि B दोन्ही"], "answer":3, "category":"Elimination" },
-
-  { "type":"match", "q":"युरोपीय राष्ट्र व भारतातील आगमनाची जोडी करा:", 
-    "A":["पोर्तुगीज","डच","इंग्रज","फ्रेंच"], 
-    "B":["१६००","१४९८","१६०२","१७२०s"], 
-    "answer":[1,2,0,3], "category":"Match" },
-
-  { "type":"match", "q":"इंग्रजांचे प्रमुख वखारी जोडा:", 
-    "A":["सुरत","मुंबई","मद्रास","कलकत्ता"], 
-    "B":["१६६१","१६९०","फोर्ट सेंट जॉर्ज","पहिली वखार"], 
-    "answer":[3,0,2,1], "category":"Match" },
-
-  { "type":"match", "q":"इंग्रजांचे पहिले प्रतिनिधी जोडा:", 
-    "A":["विल्यम हॉकिन्स","सर थॉमस रो"], 
-    "B":["१६०८","१६१५"], 
-    "answer":[0,1], "category":"Match" },
-
-  { "type":"mcq", "q":"कर्नाटक युद्धांचा कालावधी काय होता?", "options":["१७४६–१७६३","१७४०–१७६०","१७५०–१७७०","१७३५–१७५५"], "answer":0, "category":"Ordering / Sequence" },
-
-  { "type":"match", "q":"महत्त्वाच्या घटनांचा कालक्रम जोडा:", 
-    "A":["मुंबई इंग्लंडला मिळाली","फर्रुखसियर फर्मान","कर्नाटक युद्धे","प्लासीची लढाई"], 
-    "B":["१७१७","१७४६–१७६३","१६६१","१७५७"], 
-    "answer":[2,0,1,3], "category":"Ordering / Sequence" },
-
-  { "type":"assertion-reason", "q":"Assertion (A): प्लासी लढाईत इंग्रजांचा विजय मीर जाफरमुळे झाला. Reason (R): इंग्रजांची सेना खूप मोठी होती.", 
-    "options":["A & R correct, R explains A","A correct, R wrong","A wrong, R correct","Both wrong"], "answer":1, "category":"Assertion-Reason" },
-
-  { "type":"assertion-reason", "q":"Assertion (A): सर थॉमस रो भारतात आला. Reason (R): इंग्रजांना सुरत येथे पहिला वखार मिळाला.", 
-    "options":["A & R correct, R explains A","A correct, R wrong","A wrong, R correct","Both wrong"], "answer":1, "category":"Assertion-Reason" },
-
-  { "type":"case-study", "q":"कर्नाटक युद्धांदरम्यान इंग्रज व फ्रेंच साम्राज्य यांचा संघर्ष झाला. त्यानंतर इंग्रजांचे वर्चस्व वाढले. यावर आधारित प्रश्न: इंग्रजांचे वर्चस्व कसे बदलले?", 
-    "options":["वाढले","कमी झाले","फ्रेंचांचा प्रभाव वाढला","पोर्तुगीजांचा प्रभाव वाढला"], "answer":0, "category":"Case Study" },
-
-  { "type":"mcq", "q":"कलकत्ता स्थापनेचे credited व्यक्ती कोण?", "options":["जॉब चार्नॉक","विल्यम हॉकिन्स","सर थॉमस रो","रॉबर्ट क्लाईव्ह"], "answer":0, "category":"Trap" },
-
-  { "type":"mcq", "q":"मुंबई ईस्ट इंडिया कंपनीला कधी दिली?", "options":["१६६८","१६६१","१६७५","१६५०"], "answer":0, "category":"Analytical" },
-
-  { "type":"mcq", "q":"इंग्रजांचा भारतातील पहिला स्थायी व्यापार केंद्र कोणता होता?", "options":["सुरत","मद्रास","मुंबई","कलकत्ता"], "answer":0, "category":"Ordering / Sequence" },
-
-  { "type":"mcq", "q":"डच ईस्ट इंडिया कंपनीचा मुख्य व्यापार कोणता होता?", "options":["मसाले","कापड","रेशीम","चहा"], "answer":0, "category":"Trap" }
+  { type:"mcq", q:"वास्को-द-गामा भारतात कोणत्या वर्षी आणि कुठे आला?", options:["१४९८, कोझिकोड","१४९२, गोवा","१५०२, मद्रास","१४९८, मुंबई"], answer:0 },
+  { type:"mcq", q:"डच ईस्ट इंडिया कंपनीची स्थापना आणि मुख्य व्यापार कोणता होता?", options:["१६०२, मसाले","१६००, कापड","१६०२, रेशीम","१६०५, मसाले"], answer:0 },
+  { type:"mcq", q:"सर थॉमस रो भारतात कोणत्या वर्षी आला?", options:["१६१५","१६०८","१६२०","१६१०"], answer:0 },
+  { type:"match", q:"युरोपीय राष्ट्र व भारतातील आगमनाची जोडी करा:", A:["पोर्तुगीज","डच","इंग्रज","फ्रेंच"], B:["१६००","१४९८","१६०२","१७२०s"], answer:[1,2,0,3] },
+  { type:"sequence", q:"इंग्रजांचे प्रमुख वखारी योग्य क्रम लावा:", items:["सुरत","मुंबई","मद्रास","कलकत्ता"], answer:[0,1,2,3] },
+  { type:"assertion-reason", q:"Assertion (A): प्लासी लढाईत इंग्रजांचा विजय मीर जाफरमुळे झाला. Reason (R): इंग्रजांची सेना खूप मोठी होती.", options:["A & R correct, R explains A","A correct, R wrong","A wrong, R correct","Both wrong"], answer:1 },
+  { type:"case-study", q:"कर्नाटक युद्धांदरम्यान इंग्रज व फ्रेंच साम्राज्य यांचा संघर्ष झाला. त्यानंतर इंग्रजांचे वर्चस्व वाढले. इंग्रजांचे वर्चस्व कसे बदलले?", options:["वाढले","कमी झाले","फ्रेंचांचा प्रभाव वाढला","पोर्तुगीजांचा प्रभाव वाढला"], answer:0 }
 ];
 
 let index=0, answers=[];
@@ -105,29 +60,30 @@ function loadQuestion(){
     let q = questions[index];
     document.getElementById("q").innerText = q.q;
     let instr = "";
-    if(q.type==="mcq" || q.type==="assertion") instr = "✅ खालील योग्य उत्तरावर क्लिक करा.";
+    if(q.type==="mcq" || q.type==="assertion-reason") instr = "✅ योग्य उत्तरावर क्लिक करा.";
     else if(q.type==="match") instr = "🔗 A आणि B मधील योग्य जोडी क्लिक करा.";
     else if(q.type==="sequence") instr = "🔢 घटक योग्य क्रमाने क्लिक करा.";
+    else if(q.type==="case-study") instr = "📖 वाचून योग्य उत्तर निवडा.";
     document.getElementById("instruction").innerText = instr;
 
     let opts = document.getElementById("options");
     opts.innerHTML="";
 
-    if(q.type==="mcq" || q.type==="assertion"){
+    if(q.type==="mcq" || q.type==="assertion-reason" || q.type==="case-study"){
         q.options.forEach((o,i)=>{
             let btn = document.createElement("button");
             btn.innerText = o;
-            btn.onclick = ()=>selectAnswer(i);
-            if(answers[index]===i) btn.classList.add("selected");
+            btn.onclick = ()=>{ answers[index]=i; highlightSelection(); };
             opts.appendChild(btn);
         });
-    } else if(q.type==="match"){
-        let selectedA = null;
+    }
+    else if(q.type==="match"){
+        let selectedA=null;
         q.A.forEach((a,i)=>{
             let btn = document.createElement("button");
             btn.innerText = a;
             btn.classList.add("match-item");
-            btn.onclick = ()=>{ selectedA=i; highlightMatch(selectedA,answers[index]||[]); };
+            btn.onclick = ()=>{ selectedA=i; highlightMatch(); };
             opts.appendChild(btn);
         });
         opts.appendChild(document.createElement("br"));
@@ -137,35 +93,64 @@ function loadQuestion(){
             btn.classList.add("match-item");
             btn.onclick = ()=>{
                 if(selectedA!=null){
-                    answers[index] = answers[index] || [];
+                    answers[index]=answers[index]||[];
                     answers[index][selectedA]=i;
                     selectedA=null;
-                    highlightMatch(null, answers[index]);
+                    highlightMatch();
                 }
             };
             opts.appendChild(btn);
         });
-        highlightMatch(null, answers[index]);
+        highlightMatch();
     }
-}
-
-function highlightMatch(selectedA, ansArr){
-    let items = document.querySelectorAll(".match-item");
-    items.forEach(b=>b.classList.remove("selected"));
-    if(ansArr){
-        ansArr.forEach((b,i)=>{
-            if(b!=null){
-                items[i].classList.add("selected");
-                items[questions[index].A.length+b].classList.add("selected");
-            }
+    else if(q.type==="sequence"){
+        let userSeq = answers[index]||[];
+        q.items.forEach((item,i)=>{
+            let btn = document.createElement("button");
+            btn.innerText = item;
+            btn.classList.add("seq-item");
+            if(userSeq.includes(i)) btn.classList.add("selected");
+            btn.onclick = ()=>{
+                if(!userSeq.includes(i)) userSeq.push(i);
+                else userSeq = userSeq.filter(x=>x!==i);
+                answers[index]=userSeq;
+                highlightSequence();
+            };
+            opts.appendChild(btn);
         });
     }
-    if(selectedA!=null) items[selectedA].classList.add("selected");
 }
 
-function selectAnswer(i){ answers[index]=i; loadQuestion(); }
+function highlightSelection(){
+    let buttons = document.querySelectorAll(".options button");
+    buttons.forEach((b,i)=> b.classList.toggle("selected", answers[index]===i));
+}
 
-function nextQ(){ index++; if(index<questions.length) loadQuestion(); else showResult(); }
+function highlightMatch(){
+    let q=questions[index];
+    let ans=answers[index]||[];
+    let items=document.querySelectorAll(".match-item");
+    items.forEach(b=>b.classList.remove("selected"));
+    ans.forEach((v,i)=>{
+        if(v!=null){
+            items[i].classList.add("selected");
+            items[q.A.length+v].classList.add("selected");
+        }
+    });
+}
+
+function highlightSequence(){
+    let q=questions[index];
+    let ans=answers[index]||[];
+    let buttons = document.querySelectorAll(".seq-item");
+    buttons.forEach((b,i)=> b.classList.toggle("selected", ans.includes(i)));
+}
+
+function nextQ(){
+    index++;
+    if(index<questions.length) loadQuestion();
+    else showResult();
+}
 
 function showResult(){
     document.getElementById("quizPage").style.display="none";
@@ -175,12 +160,12 @@ function showResult(){
     questions.forEach((q,i)=>{
         let ans=answers[i];
         let correct=false;
-        if(q.type==="mcq" || q.type==="assertion") correct = ans===q.answer;
+        if(q.type==="mcq" || q.type==="assertion-reason" || q.type==="case-study") correct = ans===q.answer;
         else if(q.type==="match" || q.type==="sequence") correct = JSON.stringify(ans)===JSON.stringify(q.answer);
         if(correct) score++;
         html += `<div class="${correct?'review-correct':'review-wrong'}">
                     <div class="question"><b>Q${i+1}:</b> ${q.q}</div>`;
-        if(q.type==="mcq" || q.type==="assertion"){
+        if(q.type==="mcq" || q.type==="assertion-reason" || q.type==="case-study"){
             html += `<div>तुमचे उत्तर: ${ans!=null?q.options[ans]:"न दिलेले"}</div>
                      <div>योग्य उत्तर: ${q.options[q.answer]}</div>`;
         } else if(q.type==="match"){
@@ -208,6 +193,5 @@ function showResult(){
 
 loadQuestion();
 </script>
-
 </body>
 </html>
