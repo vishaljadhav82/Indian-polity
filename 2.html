@@ -1,190 +1,697 @@
 <!DOCTYPE html>
 <html lang="mr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PSI Mission - Regulating Act 1773</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Focus Notes - PSI Maharashtra</title>
+
     <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+
     <style>
-        :root {
-            --paper: #fffef5;
-            --ink: #1a202c;
-            --margin-red: #ff8a8a;
-            --line: #edf2f7;
-            --highlight: #fff382;
+
+        :root{
+            --paper:#fffef5;
+            --ink:#1a202c;
+            --margin-red:#ff8a8a;
+            --line:#edf2f7;
+            --highlight:#fff382;
+            --primary-blue:#2b6cb0;
         }
 
-        body {
-            background: #e2e8f0;
-            margin: 0;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-family: 'Kalam', cursive;
+        *{
+            box-sizing:border-box;
         }
 
-        .notebook-page {
-            width: 100%;
-            max-width: 850px;
-            background: var(--paper);
-            padding: 70px 20px 40px 65px;
-            position: relative;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            background-image: linear-gradient(var(--line) 1px, transparent 1px);
-            background-size: 100% 32px;
-            line-height: 32px;
-            animation: fadeIn 1s ease-in;
+        html{
+            scroll-behavior:smooth;
         }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .notebook-page::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 55px;
-            width: 2.5px;
-            height: 100%;
-            background: var(--margin-red);
-            box-shadow: 1px 0 0 white;
+        body{
+            margin:0;
+            padding:20px;
+            background:#d1d5db;
+            font-family:'Kalam', cursive;
         }
 
-        .psi-badge {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            background: #1a365d;
-            color: #fff;
-            padding: 5px 15px;
-            border-radius: 5px;
-            font-size: 0.8rem;
-            transform: rotate(2deg);
-            border: 2px solid #ffd700;
+        /* =========================================================
+           HEADER NAVIGATION
+        ========================================================= */
+
+        .header-nav{
+            width:100%;
+            max-width:1600px;
+
+            display:flex;
+            gap:12px;
+
+            overflow-x:auto;
+            flex-wrap:nowrap;
+
+            padding:10px 5px;
+            margin:0 auto 20px auto;
+
+            -ms-overflow-style:none;
+            scrollbar-width:none;
         }
 
-        h1 { color: #2b6cb0; text-align: center; font-size: 1.7rem; text-decoration: underline wavy; margin-bottom: 30px; }
-        h2 { color: #c53030; border-bottom: 2px solid #c53030; display: inline-block; margin-top: 25px; }
-        
-        .highlight { background: var(--highlight); padding: 0 4px; border-radius: 3px; }
-        .red-ink { color: #d32f2f; font-weight: bold; }
-        
-        /* Interactive Timeline Section */
-        .timeline-trigger {
-            background: #2d3748;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 20px 0;
-            transition: 0.3s;
-        }
-        .timeline-trigger:hover { background: #1a202c; }
-
-        .timeline-box {
-            display: none;
-            background: #f8fafc;
-            border-left: 4px solid #2b6cb0;
-            padding: 15px;
-            margin-bottom: 25px;
+        .header-nav::-webkit-scrollbar{
+            display:none;
         }
 
-        /* Hard Questions Grid - High Density */
-        .quiz-container {
-            margin-top: 40px;
-            border: 2px solid #2d3748;
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
+        .next-btn{
+            flex:0 0 auto;
+
+            padding:12px 20px;
+            border:none;
+            border-radius:50px;
+
+            background:#e74c3c;
+            color:white;
+
+            cursor:pointer;
+
+            font-size:15px;
+            font-weight:bold;
+            font-family:'Kalam', cursive;
+
+            box-shadow:0 3px 8px rgba(0,0,0,0.15);
+
+            transition:0.25s;
         }
 
-        .q-item {
-            color: #4a148c;
-            font-weight: bold;
-            border-bottom: 1px dotted #ccc;
-            margin-bottom: 10px;
-            padding-bottom: 2px;
+        .next-btn:hover{
+            transform:translateY(-2px);
+            background:#c0392b;
         }
 
-        .nav-container { text-align: right; margin-top: 40px; }
-        .next-btn {
-            background: #c53030;
-            color: white !important;
-            text-decoration: none;
-            padding: 10px 25px;
-            border-radius: 30px;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(197, 48, 48, 0.4);
+        /* =========================================================
+           TWO COLUMN LAYOUT
+        ========================================================= */
+
+        .main-layout{
+            width:100%;
+            max-width:1600px;
+
+            margin:auto;
+
+            display:grid;
+            grid-template-columns: 1fr 1fr;
+
+            gap:25px;
+
+            align-items:start;
         }
 
-        @media (max-width: 600px) {
-            .notebook-page { padding: 60px 10px 30px 50px; }
-            .notebook-page::before { left: 45px; }
+        /* =========================================================
+           LEFT COLUMN - IFRAME
+        ========================================================= */
+
+        .iframe-wrapper{
+            position:sticky;
+            top:20px;
         }
+
+        .iframe-toolbar{
+            background:#1f2937;
+            padding:10px 15px;
+
+            border-radius:15px 15px 0 0;
+
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+
+            color:white;
+        }
+
+        .toolbar-left{
+            display:flex;
+            align-items:center;
+            gap:8px;
+        }
+
+        .dot{
+            width:12px;
+            height:12px;
+            border-radius:50%;
+        }
+
+        .red{ background:#ff5f57; }
+        .yellow{ background:#ffbd2e; }
+        .green{ background:#28c840; }
+
+        .toolbar-title{
+            font-size:14px;
+            opacity:0.9;
+        }
+
+        .toolbar-actions{
+            display:flex;
+            gap:10px;
+        }
+
+        .toolbar-btn{
+            padding:6px 12px;
+            border:none;
+            border-radius:8px;
+
+            background:#374151;
+            color:white;
+
+            cursor:pointer;
+
+            font-family:'Kalam', cursive;
+        }
+
+        .toolbar-btn:hover{
+            background:#4b5563;
+        }
+
+        .full-screen-iframe{
+            width:100%;
+            height:88vh;
+
+            border:none;
+
+            background:white;
+
+            border-radius:0 0 15px 15px;
+
+            box-shadow:
+                0 10px 25px rgba(0,0,0,0.12);
+        }
+
+        /* =========================================================
+           RIGHT COLUMN - NOTES
+        ========================================================= */
+
+        .notes-column{
+            width:100%;
+        }
+
+        .notebook-page{
+            width:100%;
+
+            background:var(--paper);
+
+            padding:60px 25px 60px 75px;
+
+            position:relative;
+
+            border-radius:2px 15px 15px 2px;
+
+            box-shadow:
+                15px 15px 40px rgba(0,0,0,0.1);
+
+            background-image:
+                linear-gradient(
+                    90deg,
+                    transparent 64px,
+                    var(--margin-red) 64px,
+                    var(--margin-red) 66px,
+                    transparent 66px
+                ),
+                linear-gradient(
+                    var(--line) 1px,
+                    transparent 1px
+                );
+
+            background-size:
+                100% 100%,
+                100% 32px;
+
+            line-height:32px;
+        }
+
+        .notebook-page::before{
+            content:'';
+
+            position:absolute;
+
+            top:30px;
+            left:15px;
+
+            width:20px;
+            height:20px;
+
+            border-radius:50%;
+
+            background:#4a5568;
+
+            opacity:0.15;
+
+            box-shadow:
+                0 64px #4a5568,
+                0 128px #4a5568,
+                0 192px #4a5568,
+                0 256px #4a5568,
+                0 320px #4a5568,
+                0 384px #4a5568,
+                0 448px #4a5568,
+                0 512px #4a5568,
+                0 576px #4a5568,
+                0 640px #4a5568;
+        }
+
+        /* =========================================================
+           CONTENT
+        ========================================================= */
+
+        .motivation-banner{
+            border:2px dashed #f39c12;
+            background:#fff9e6;
+
+            padding:15px;
+            margin-bottom:30px;
+
+            text-align:center;
+
+            border-radius:10px;
+
+            color:#d35400;
+
+            font-size:18px;
+        }
+
+        h1{
+            color:var(--primary-blue);
+            text-align:center;
+            font-size:28px;
+            margin-bottom:30px;
+        }
+
+        h2{
+            color:#c53030;
+            border-bottom:2px solid #feb2b2;
+            display:inline-block;
+            font-size:22px;
+        }
+
+        p{
+            font-size:18px;
+            color:#2d3748;
+        }
+
+        .highlight{
+            background:var(--highlight);
+            padding:0 5px;
+            border-radius:4px;
+        }
+
+        .important-point{
+            margin-bottom:35px;
+        }
+
+        .footer-nav{
+            margin-top:40px;
+            display:flex;
+            justify-content:flex-end;
+        }
+
+        /* =========================================================
+           MODAL
+        ========================================================= */
+
+        .modal-overlay{
+            display:none;
+
+            position:fixed;
+            top:0;
+            left:0;
+
+            width:100%;
+            height:100%;
+
+            background:rgba(0,0,0,0.9);
+
+            z-index:2000;
+
+            backdrop-filter:blur(8px);
+        }
+
+        .modal-box{
+            position:relative;
+
+            width:95%;
+            height:92vh;
+
+            margin:4vh auto;
+
+            background:white;
+
+            border-radius:15px;
+
+            overflow:hidden;
+
+            display:flex;
+            flex-direction:column;
+        }
+
+        #timelineFrame{
+            width:100%;
+            flex-grow:1;
+            border:none;
+        }
+
+        .close-btn{
+            position:absolute;
+            top:12px;
+            right:15px;
+
+            width:42px;
+            height:42px;
+
+            border-radius:50%;
+
+            background:#e74c3c;
+            color:white;
+
+            display:flex;
+            justify-content:center;
+            align-items:center;
+
+            font-size:26px;
+
+            cursor:pointer;
+
+            z-index:2100;
+
+            border:2px solid white;
+        }
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (max-width:1024px){
+
+            .main-layout{
+                grid-template-columns:1fr;
+            }
+
+            .iframe-wrapper{
+                position:relative;
+                top:0;
+            }
+
+            .full-screen-iframe{
+                height:70vh;
+            }
+        }
+
+        @media (max-width:768px){
+
+            body{
+                padding:10px;
+            }
+
+            .notebook-page{
+                padding:50px 15px 50px 60px;
+            }
+
+            h1{
+                font-size:22px;
+            }
+
+            h2{
+                font-size:18px;
+            }
+
+            p{
+                font-size:16px;
+            }
+
+            .full-screen-iframe{
+                height:60vh;
+            }
+        }
+
     </style>
 </head>
+
 <body>
 
-<div class="notebook-page">
-    <div class="psi-badge">Target: PSI 2026 👮</div>
+    <!-- =========================================================
+         HEADER
+    ========================================================== -->
 
-    <div style="background: #fff9e6; border: 1px dashed #d35400; padding: 10px; margin-bottom: 20px; text-align: center; font-style: italic;">
-        "खाकी वर्दी मिळवण्यासाठी रक्ताचं पाणी करावं लागतं, सुरुवात इथूनच होते!"
+    <div class="header-nav">
+
+        <button class="next-btn"
+            onclick="openModal('beginning.html')">
+            🕒 EIC Timeline
+        </button>
+
+        <button class="next-btn"
+            onclick="openModal('company-rule.html')">
+            🏛️ Company Rule
+        </button>
+
+        <button class="next-btn"
+            onclick="openModal('crown-rule.html')">
+            👑 Crown Rule
+        </button>
+
     </div>
 
-    <h1>१७७३ चा रेगुलेटिंग ॲक्ट (सर्वात महत्त्वाचा कायदा)</h1>
+    <!-- =========================================================
+         MAIN 2 COLUMN LAYOUT
+    ========================================================== -->
 
-    <div class="section">
-        <h2>१. घटनात्मक महत्त्व (Constitutional Depth)</h2>
-        <p>• ब्रिटीश संसदेने कंपनीच्या व्यवहारांवर <span class="highlight">नियंत्रण (Control)</span> मिळवण्यासाठी उचललेले हे **पहिले कायदेशीर पाऊल** होते.</p>
-        <p>• कंपनीच्या <span class="red-ink">राजकीय (Political)</span> आणि <span class="red-ink">प्रशासकीय (Administrative)</span> कार्यांना प्रथमच अधिकृत मान्यता दिली.</p>
-        <p>• या कायद्याने भारतात <span class="highlight">केंद्रीय प्रशासनाचा (Centralization)</span> पाया रचला.</p>
+    <div class="main-layout">
+
+        <!-- =====================================================
+             LEFT COLUMN : IFRAME
+        ====================================================== -->
+
+        <div class="iframe-wrapper">
+
+            <div class="iframe-toolbar">
+
+                <div class="toolbar-left">
+
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+
+                    <span class="toolbar-title">
+                        PSI Maharashtra Study Panel
+                    </span>
+
+                </div>
+
+                <div class="toolbar-actions">
+
+                    <button class="toolbar-btn"
+                        onclick="reloadIframe()">
+                        🔄 Reload
+                    </button>
+
+                    <button class="toolbar-btn"
+                        onclick="toggleFullscreen()">
+                        ⛶ Fullscreen
+                    </button>
+
+                </div>
+
+            </div>
+
+            <iframe
+                id="mainIframe"
+                src="making.html"
+                class="full-screen-iframe"
+                scrolling="yes">
+            </iframe>
+
+        </div>
+
+        <!-- =====================================================
+             RIGHT COLUMN : ORIGINAL NOTES CONTENT
+        ====================================================== -->
+
+        <div class="notes-column">
+
+            <div class="notebook-page">
+
+                <div class="motivation-banner">
+                    "ध्येयासाठी वेडे व्हा, कारण इतिहास वेड्या लोकांनीच घडवला आहे!" 🔥
+                </div>
+
+                <h1>
+                    १. ऐतिहासिक पार्श्वभूमी (१६०० ते १७५७)
+                </h1>
+
+                <div class="important-point">
+
+                    <h2>
+                        १. भारतात युरोपियनांचे आगमन
+                    </h2>
+
+                    <p>
+                        भारतात सर्वात आधी
+                        <span class="highlight">
+                            पोर्तुगीज (१४९८)
+                        </span>
+                        आले, त्यानंतर डच, इंग्रज आणि फ्रेंच आले.
+                    </p>
+
+                </div>
+
+                <div class="important-point">
+
+                    <h2>
+                        २. प्लासीची लढाई (१७५७)
+                    </h2>
+
+                    <p>
+                        <span class="highlight">
+                            २३ जून १७५७
+                        </span>
+                        रोजी रॉबर्ट क्लाईव्हने सिराज-उद-दौलाचा पराभव केला
+                        आणि भारतात इंग्रजी सत्तेचा पाया घातला.
+                    </p>
+
+                </div>
+
+                <div class="important-point">
+
+                    <h2>
+                        ३. बक्सरची लढाई (१७६४)
+                    </h2>
+
+                    <p>
+                        इंग्रजांनी मीर कासिम, शुजा-उद-दौला आणि शाह आलम दुसरा
+                        यांचा पराभव केला.
+                    </p>
+
+                </div>
+
+                <div class="important-point">
+
+                    <h2>
+                        ४. रेग्युलेटिंग अॅक्ट (१७७३)
+                    </h2>
+
+                    <p>
+                        भारताच्या प्रशासनावर नियंत्रण ठेवण्यासाठी
+                        ब्रिटिश संसदेने पहिला महत्त्वाचा कायदा केला.
+                    </p>
+
+                </div>
+
+                <div class="footer-nav">
+
+                    <a href="2.html"
+                       class="next-btn"
+                       style="text-decoration:none;">
+                       पुढचे पान ➜
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
-    <div class="section">
-        <h2>२. महत्त्वाच्या तरतुदी (Key Features)</h2>
-        <p><b>A. गव्हर्नर जनरल ऑफ बंगाल:</b> बंगालच्या गव्हर्नरचे पद बदलून <span class="highlight">‘गव्हर्नर जनरल ऑफ बंगाल’</span> केले. त्याला मदत करण्यासाठी **४ सदस्यांचे कार्यकारी मंडळ** (Executive Council) स्थापले. पहिले गव्हर्नर जनरल: <span class="red-ink">लॉर्ड वॉरन हेस्टिंग्ज</span>.</p>
-        
-        <p><b>B. प्रेसिडेन्सीचे नियंत्रण:</b> मुंबई आणि मद्रास या प्रेसिडेन्सीच्या गव्हर्नरांना बंगालच्या गव्हर्नर जनरलच्या <span class="highlight">अधीन (Subordinate)</span> करण्यात आले. (याआधी तिन्ही प्रेसिडेन्सी स्वतंत्र होत्या).</p>
-        
-        <p><b>C. सर्वोच्च न्यायालय (Supreme Court):</b> १७७४ मध्ये कलकत्ता येथे स्थापना. रचना: <span class="highlight">१ मुख्य न्यायाधीश + ३ इतर न्यायाधीश</span>.</p>
-        
-        <p><b>D. भ्रष्टाचार निर्मूलन:</b> कंपनीच्या कर्मचाऱ्यांना खाजगी व्यापार करण्यास, भारतीयांकडून **भेटवस्तू किंवा लाच (Bribes)** घेण्यास सक्त मनाई केली.</p>
-        
-        <p><b>E. कोर्ट ऑफ डायरेक्टर्स:</b> ब्रिटीश सरकारने या गव्हर्निंग बॉडीला भारतातील <span class="red-ink">महसूल (Revenue), नागरी (Civil) आणि लष्करी (Military)</span> बाबींचा अहवाल देणे सक्तीचे केले.</p>
+    <!-- =========================================================
+         MODAL
+    ========================================================== -->
+
+    <div id="iframeModal" class="modal-overlay">
+
+        <div class="modal-box">
+
+            <span class="close-btn"
+                onclick="closeModal()">
+                &times;
+            </span>
+
+            <iframe
+                id="timelineFrame"
+                src=""
+                scrolling="yes">
+            </iframe>
+
+        </div>
+
     </div>
 
-    <div class="timeline-trigger" onclick="toggleTimeline()">📌 रिव्हिजन टाइमलाईन (कधी काय घडले?)</div>
-    <div id="timeline" class="timeline-box">
-        <p>• <b>१७७३:</b> रेगुलेटिंग ॲक्ट ब्रिटीश संसदेत संमत.</p>
-        <p>• <b>१७७३:</b> वॉरन हेस्टिंग्ज बंगालचे पहिले गव्हर्नर जनरल बनले.</p>
-        <p>• <b>१७७४:</b> कलकत्त्यात सर्वोच्च न्यायालयाची प्रत्यक्ष स्थापना.</p>
-    </div>
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================== -->
 
-    <div class="quiz-container">
-        <h3 style="text-align: center; color: #c53030; margin-top: 0;">अति-कठीण प्रश्न (PSI Level Questions)</h3>
-        
-        <div class="q-item">१. कोणत्या कायद्याने भारतात 'केंद्रीय प्रशासनाचा पाया' रचला?</div>
-        <div class="q-item">२. लॉर्ड वॉरन हेस्टिंग्ज यांच्या मदतीसाठी तयार केलेल्या कार्यकारी मंडळात किती सदस्य होते?</div>
-        <div class="q-item">३. १७७३ च्या कायद्याने मुंबई आणि मद्रासच्या स्वायत्ततेवर (Autonomy) कसा परिणाम झाला?</div>
-        <div class="q-item">४. कलकत्ता सर्वोच्च न्यायालयाच्या स्थापनेचे मूळ वर्ष आणि तरतूद वर्ष सांगा.</div>
-        <div class="q-item">५. 'कोर्ट ऑफ डायरेक्टर्स'ला कोणत्या तीन क्षेत्रांचे अहवाल ब्रिटीश सरकारला देणे बंधनकारक होते?</div>
-        <div class="q-item">६. कंपनीच्या कर्मचाऱ्यांवर लाच घेण्यास बंदी घालण्याचे मुख्य राजकीय कारण काय असावे?</div>
-        <div class="q-item">७. प्रथमच राजकीय आणि प्रशासकीय कार्यांची विभागणी कोणत्या कायद्यात मान्य केली गेली?</div>
-    </div>
+    <script>
 
-    <div class="nav-container">
-        <a href="3.html" class="next-btn">पुढचे पान: पिट्स इंडिया ॲक्ट १७८४ ➜</a>
-    </div>
-</div>
+        function openModal(url){
 
-<script>
-    function toggleTimeline() {
-        var x = document.getElementById("timeline");
-        x.style.display = (x.style.display === "block") ? "none" : "block";
-    }
-</script>
+            const modal =
+                document.getElementById('iframeModal');
+
+            const iframe =
+                document.getElementById('timelineFrame');
+
+            iframe.src = url;
+
+            modal.style.display = 'block';
+
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(){
+
+            const modal =
+                document.getElementById('iframeModal');
+
+            const iframe =
+                document.getElementById('timelineFrame');
+
+            modal.style.display = 'none';
+
+            iframe.src = '';
+
+            document.body.style.overflow = 'auto';
+        }
+
+        window.onclick = function(event){
+
+            const modal =
+                document.getElementById('iframeModal');
+
+            if(event.target == modal){
+                closeModal();
+            }
+        }
+
+        function reloadIframe(){
+
+            const iframe =
+                document.getElementById('mainIframe');
+
+            iframe.src = iframe.src;
+        }
+
+        function toggleFullscreen(){
+
+            const iframe =
+                document.getElementById('mainIframe');
+
+            if(iframe.requestFullscreen){
+
+                iframe.requestFullscreen();
+
+            }else if(iframe.webkitRequestFullscreen){
+
+                iframe.webkitRequestFullscreen();
+
+            }else if(iframe.msRequestFullscreen){
+
+                iframe.msRequestFullscreen();
+            }
+        }
+
+    </script>
 
 </body>
 </html>
