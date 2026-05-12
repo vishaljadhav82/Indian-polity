@@ -367,7 +367,7 @@ function render() {
     area.className = (q.type === "match") ? "" : "options-grid";
     
     if(q.type === "mcq") {
-        document.getElementById("instruction").innerText = "🎯 योग्य पर्यायाची निवड करा.";
+      //  document.getElementById("instruction").innerText = "🎯 योग्य पर्यायाची निवड करा.";
         q.options.forEach((opt, i) => {
             const btn = document.createElement("button");
             btn.className = `opt-btn ${userAnswers[currentIdx] === i ? 'selected' : ''}`;
@@ -377,7 +377,7 @@ function render() {
         });
     } 
     else if(q.type === "multi") {
-        document.getElementById("instruction").innerText = "✅ सर्व बरोबर विधाने निवडा (Multiple Choice).";
+       // document.getElementById("instruction").innerText = "✅ सर्व बरोबर विधाने निवडा (Multiple Choice).";
         let selections = userAnswers[currentIdx] || [];
         q.options.forEach((opt, i) => {
             const isSel = selections.includes(i);
@@ -394,7 +394,7 @@ function render() {
         });
     }
     else if(q.type === "order") {
-        document.getElementById("instruction").innerText = "🔢 योग्य कालानुक्रम लावण्यासाठी पर्यायांवर क्लिक करा.";
+       // document.getElementById("instruction").innerText = "🔢 योग्य कालानुक्रम लावण्यासाठी पर्यायांवर क्लिक करा.";
         let currentOrder = userAnswers[currentIdx] || [];
         q.options.forEach((opt, i) => {
             const ordIdx = currentOrder.indexOf(i);
@@ -413,7 +413,7 @@ function render() {
         });
     }
     else if(q.type === "match") {
-        document.getElementById("instruction").innerText = "🔗 डावीकडील पर्याय निवडून उजवीकडील जोडीवर क्लिक करा.";
+        //document.getElementById("instruction").innerText = "🔗 डावीकडील पर्याय निवडून उजवीकडील जोडीवर क्लिक करा.";
         const grid = document.createElement("div"); grid.className = "match-grid";
         const colA = document.createElement("div"); colA.className="column";
         const colB = document.createElement("div"); colB.className="column";
