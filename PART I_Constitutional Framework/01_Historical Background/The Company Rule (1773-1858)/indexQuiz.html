@@ -1,107 +1,124 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>PSI Mega MCQ Notebook</title>
+<title>PSI Mega Notebook</title>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
+
 body{
-    font-family: Arial;
-    background:#f4f6f8;
+    font-family:'Patrick Hand', cursive;
+    background:#e9e4d8;
     margin:0;
 }
 
 .container{
     width:90%;
     margin:auto;
+    background: repeating-linear-gradient(white, white 28px, #f0f0f0 29px);
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+    min-height:90vh;
 }
 
 h1{
     text-align:center;
-    background:#1e4e8c;
-    color:white;
-    padding:15px;
-    border-radius:10px;
+    border-bottom:2px dashed #666;
+    padding:10px;
 }
 
-.card{
-    background:white;
-    padding:15px;
-    margin:15px 0;
-    border-left:5px solid #1e4e8c;
-    border-radius:10px;
-}
-
+/* typing effect */
 .question{
-    font-weight:bold;
-    margin-bottom:10px;
+    font-size:22px;
+    margin-bottom:15px;
+    white-space:pre-line;
+    animation: fadeIn 0.5s ease-in;
 }
 
+@keyframes fadeIn{
+    from{opacity:0; transform:translateY(10px);}
+    to{opacity:1; transform:translateY(0);}
+}
+
+/* options */
 .options button{
     display:block;
     width:100%;
-    margin:5px 0;
-    padding:10px;
+    margin:8px 0;
+    padding:12px;
     border:none;
-    background:#eee;
+    background:#f7f3ea;
     cursor:pointer;
-    border-radius:5px;
-    text-align:left;
+    border-radius:8px;
+    font-size:18px;
+    transition:0.2s;
 }
 
 .options button:hover{
-    background:#d6e4ff;
+    transform:scale(1.02);
+    background:#e6f0ff;
 }
 
-.correct{
-    background:#2ecc71 !important;
-    color:white;
-}
+.correct{background:#b7f7c1;}
+.wrong{background:#f7b7b7;}
 
-.wrong{
-    background:#e74c3c !important;
-    color:white;
-}
-
+/* buttons */
 .next-btn{
-    background:#1e4e8c;
+    background:#2c3e50;
     color:white;
     padding:10px;
     border:none;
     margin-top:10px;
     cursor:pointer;
-    border-radius:5px;
+    border-radius:8px;
+}
+
+/* bookmark */
+.bookmark{
+    float:right;
+    cursor:pointer;
+    font-size:22px;
+}
+
+/* pages */
+.page{display:none;}
+.active{display:block;}
+
+/* score */
+.scoreBox{
+    text-align:center;
+    font-size:22px;
 }
 </style>
-
 </head>
 
 <body>
 
-<div class="container">
+<div class="container" id="paper">
 
-<h1>📘 PSI Mega MCQ Notebook (1600–1947)</h1>
+<h1>📘 PSI Notebook</h1>
 
-<!-- QUESTION BOX -->
-<div class="card" id="quizBox">
+<!-- QUIZ PAGE -->
+<div id="quizPage" class="page active">
+
+    <div class="bookmark" onclick="toggleBookmark()">🔖</div>
 
     <div class="question" id="q"></div>
 
     <div class="options" id="options"></div>
 
-    <button class="next-btn" onclick="nextQ()">Next Question</button>
-
+    <button class="next-btn" onclick="nextQ()">Next ➜</button>
 </div>
 
-    <button class="next-btn" onclick="nextQ()">Next Question</button>
-
-</div>
+<!-- SCORE PAGE -->
+<div id="scorePage" class="page scoreBox"></div>
 
 </div>
 
 <script>
 
-let index = 0;
-
+/* ✅ QUESTIONS (Assertion + Normal both supported) */
 let questions = [
   {
     "id": 1,
@@ -1075,58 +1092,87 @@ let questions = [
 
   // 👉 100 complete structure
 ]
-let index = 0;
-let answered = false;
 
-function loadQuestion() {
+let index=0;
+let score=0;
+let wrong=[];
+let bookmarks={};
+let answered=false;
 
-    answered = false;
+/* LOAD QUESTION */
+function loadQuestion(){
 
-    let q = questions[index];
+    answered=false;
 
-    document.getElementById("q").innerText =
-        `Q${q.id}. ${q.question}`;
+    let q=questions[index];
 
-    let optionsDiv = document.getElementById("options");
-    optionsDiv.innerHTML = "";
+    document.getElementById("q").innerText=
+    `Q${q.id}\n\n${q.question}`;
 
-    q.options.forEach((opt, i) => {
+    let opt=document.getElementById("options");
+    opt.innerHTML="";
 
-        let btn = document.createElement("button");
-        btn.innerText = opt;
+    q.options.forEach((o,i)=>{
 
-        btn.onclick = function () {
-            if (!answered) {
-                check(btn, i === q.answer);
+        let btn=document.createElement("button");
+        btn.innerText=o;
+
+        btn.onclick=()=>{
+
+            if(answered) return;
+
+            answered=true;
+
+            if(i===q.answer){
+                btn.classList.add("correct");
+                score++;
+            }else{
+                btn.classList.add("wrong");
+                wrong.push(q);
             }
         };
 
-        optionsDiv.appendChild(btn);
+        opt.appendChild(btn);
     });
 }
 
-function check(btn, isCorrect) {
-
-    answered = true;
-
-    if (isCorrect) {
-        btn.classList.add("correct");
-    } else {
-        btn.classList.add("wrong");
-    }
-}
-
-function nextQ() {
+/* NEXT QUESTION */
+function nextQ(){
 
     index++;
 
-    if (index < questions.length) {
+    if(index<questions.length){
         loadQuestion();
-    } else {
-        alert("🎯 Test Complete! PSI Ready Score Check करा");
+    }else{
+        showScore();
     }
 }
 
+/* BOOKMARK */
+function toggleBookmark(){
+    bookmarks[index]=!bookmarks[index];
+    alert(bookmarks[index]?"Bookmarked ✔":"Removed ❌");
+}
+
+/* SCORE PAGE */
+function showScore(){
+
+    document.getElementById("quizPage").classList.remove("active");
+    document.getElementById("scorePage").classList.add("active");
+
+    document.getElementById("scorePage").innerHTML=`
+        🎯 <h2>Test Complete</h2>
+        <p>Score: ${score} / ${questions.length}</p>
+
+        <h3>❌ Wrong Answers</h3>
+        ${wrong.map(q=>`<p>• ${q.question}</p>`).join("")}
+
+        <h3>🔖 Bookmarked</h3>
+        ${questions.map((q,i)=>bookmarks[i]?`<p>• ${q.question}</p>`:"").join("")}
+    `;
+}
+
+/* START */
 loadQuestion();
 
 </script>
