@@ -2,241 +2,194 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>PSI Study Quiz</title>
+<title>PSI Online Exam</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
+/* General */
+body { font-family: 'Segoe UI', sans-serif; background:#fdf6e3; margin:0; text-align:center; }
+.container { max-width:900px; margin:20px auto; background:#fff; padding:20px; border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.2); }
+h1 { color:#2c3e50; margin-bottom:15px; font-size:28px; }
+#instruction { font-size:16px; margin-bottom:15px; color:#555; text-align:left; line-height:1.4; }
+.question { font-size:20px; margin-bottom:10px; text-align:left; }
+.options { text-align:left; display:flex; flex-wrap:wrap; justify-content:flex-start; gap:10px; }
+.options button { padding:12px; font-size:16px; border:none; border-radius:8px; cursor:pointer; transition:0.2s; text-align:left; flex:1 1 calc(45% - 10px); min-width:140px; }
+.options button:hover { transform:scale(1.02); background:#e6f0ff; }
+.selected { border:3px solid #2c3e50; background:#d0ebff; }
+.nav-btn { padding:12px 25px; font-size:18px; border:none; border-radius:10px; background:#2c3e50; color:white; cursor:pointer; margin-top:20px; }
+.match-item, .seq-item { padding:10px; margin:5px; border-radius:8px; background:#f7f3ea; cursor:pointer; display:inline-block; min-width:120px; }
+.correct { background:green; color:white; }
+.wrong { background:red; color:white; }
 
-body {
-    font-family:'Patrick Hand', cursive;
-    background:#fdf6e3;
-    margin:0;
+/* Review Page */
+.review-correct { border-left:4px solid green; background:#e6ffe6; padding:12px; margin:12px 0; border-radius:8px; }
+.review-wrong { border-left:4px solid red; background:#ffe6e6; padding:12px; margin:12px 0; border-radius:8px; }
+.scoreBox { font-size:20px; margin-top:20px; text-align:left; line-height:1.5; }
+
+/* Small screens */
+@media (max-width:600px){
+    h1 { font-size:22px; }
+    .question { font-size:18px; }
+    .options button { flex:1 1 100%; font-size:16px; }
+    #instruction { font-size:14px; }
+    .match-item, .seq-item { min-width:100px; font-size:14px; padding:8px; }
 }
-.container {
-    width:90%;
-    margin:auto;
-    background:repeating-linear-gradient(white, white 28px, #eaeaea 29px);
-    padding:20px;
-    border-radius:12px;
-    box-shadow:0 12px 30px rgba(0,0,0,0.25);
-    min-height:90vh;
-}
-h1 {
-    text-align:center;
-    border-bottom:2px dashed #555;
-    padding:10px;
-    color:#2c3e50;
-}
-.question {
-    font-size:22px;
-    margin-bottom:15px;
-}
-.options button {
-    width:100%;
-    margin:8px 0;
-    padding:12px;
-    border:none;
-    background:#f7f3ea;
-    border-radius:8px;
-    font-size:18px;
-    cursor:pointer;
-    text-align:left;
-    transition:0.2s;
-}
-.options button:hover {background:#e6f0ff; transform:scale(1.02);}
-.correct {background:#b7f7c1 !important;}
-.wrong {background:#f7b7b7 !important;}
-.selected {border-left:5px solid #2c3e50;}
-.nav-btn {
-    background:#2c3e50; color:white;
-    padding:10px; border:none;
-    margin:10px 5px 0 0;
-    cursor:pointer; border-radius:8px;
-}
-.page {display:none;}
-.active {display:block;}
-.scoreBox {font-size:20px;}
-.review {background:rgba(255,255,255,0.6); padding:12px; margin:10px 0; border-left:4px solid #2c3e50; border-radius:8px;}
-.visit-list {margin:10px 0; display:flex; flex-wrap:wrap; gap:5px;}
-.visit-list button {padding:6px 10px; border-radius:6px; border:none; background:#ccc; cursor:pointer;}
-.visit-list button.active {background:#2c3e50; color:white;}
 </style>
 </head>
 <body>
 
 <div class="container">
-<h1>📘 PSI Study Quiz</h1>
-
-<div id="quizPage" class="page active">
+<h1>🧠 PSI Online Exam</h1>
+<div id="quizPage">
+    <div id="instruction"></div>
     <div class="question" id="q"></div>
     <div class="options" id="options"></div>
-    
-    <div style="margin-top:10px;">
-        <button class="nav-btn" onclick="prevQ()">⬅ Previous</button>
-        <button class="nav-btn" onclick="nextQ()">Next ➜</button>
-    </div>
-
-    <div class="visit-list" id="visitList"></div>
+    <button class="nav-btn" id="nextBtn" onclick="nextQ()">Next ➜</button>
 </div>
-
-<div id="resultPage" class="page scoreBox"></div>
-
+<div id="resultPage" class="scoreBox" style="display:none;"></div>
 </div>
 
 <script>
 let questions = [
-  {
-    "id":1,"question":"ईस्ट इंडिया कंपनीला सनद कोणत्या राणीने दिली?",
-    "options":["राणी एलिझाबेथ-I","राणी व्हिक्टोरिया","जेम्स-I","चार्ल्स-II"],"answer":0
-  },
-  {
-    "id":2,"question":"वास्को-द-गामा भारतात कोणत्या वर्षी आला?",
-    "options":["१४९२","१४९८","१५०२","१५१०"],"answer":1
-  },
-  {
-    "id":3,"question":"इंग्रजांचा पहिला भारत आगमन कोणत्या ठिकाणी झाले?",
-    "options":["मुंबई","सुरत","मद्रास","कलकत्ता"],"answer":1
-  },
-  {
-    "id":4,"question":"मुंबई इंग्रजांना कशी मिळाली?",
-    "options":["युद्धाद्वारे","लग्नातील हुंडा","खरेदी","विचारणीतून करार"],"answer":1
-  },
-  {
-    "id":5,"question":"कलकत्ता स्थापन केल्याचे credited कोणाला आहे?",
-    "options":["जॉब चार्नॉक","विल्यम हॉकिन्स","सर थॉमस रो","रॉबर्ट क्लाईव्ह"],"answer":0
-  },
-  {
-    "id":6,"question":"फर्रुखसियर फर्मानाला काय म्हणतात?",
-    "options":["Magna Carta of EIC","Royal Charter","Trade Act","Company Treaty"],"answer":0
-  },
-  {
-    "id":7,"question":"कर्नाटक युद्धांचा कालावधी कोणता आहे?",
-    "options":["१७४०–१७६०","१७४६–१७६३","१७५०–१७७०","१७३५–१७५५"],"answer":1
-  },
-  {
-    "id":8,"question":"प्लासी लढाईत इंग्रजांचा विजय कसा झाला?",
-    "options":["मोठी सेना","हवामान लाभ","मीर जाफरची फसवणूक","तंत्रज्ञान superior"],"answer":2
-  },
-  {
-    "id":9,"question":"विल्यम हॉकिन्सला मुघल दरबारात कोणती पदवी मिळाली?",
-    "options":["इंग्लिश खान","Sir","Governor","Ambassador"],"answer":0
-  },
-  {
-    "id":10,"question":"सर थॉमस रो भारतात कोणत्या वर्षी आला?",
-    "options":["१६१५","१६०८","१६२०","१६१०"],"answer":0
-  },
-    {
-    "id":11,
-    "question":"इंग्रज आणि फ्रेंच यांच्यातील कर्नाटक युद्धांचा परिणाम फ्रेंचांच्या प्रभावावर कसा झाला आणि का?",
-    "options":["फ्रेंचांचा प्रभाव वाढला कारण इंग्रजांनी मीर जाफरला फसवले","फ्रेंचांचा प्रभाव कमी झाला कारण इंग्रजांचे वर्चस्व वाढले","फ्रेंचांचा प्रभाव कायम राहिला कारण युद्धात कोणताही निर्णायक विजय नाही मिळाला","फ्रेंचांचा प्रभाव कमी झाला कारण मुघलांनी फ्रेंचांना समर्थन दिले"],
-    "answer":1,
-    "topic":"Carnatic Wars",
-    "level":"analytical"
-  },
-  {
-    "id":12,
-    "question":"फर्रुखसियर फर्मान (1717) का ‘Magna Carta of East India Company’ म्हणतात?",
-    "options":["कारण फर्मानाने इंग्रजांना युद्ध अधिकार दिले","कारण फर्मानाने बंगालमध्ये करमुक्त व्यापार आणि दस्तक प्रणाली दिली","कारण फर्मानाने इंग्रजांना फक्त पोर्तुगीजांशी लढण्याचा अधिकार दिला","कारण फर्मानाने इंग्रजांना राजकीय सत्ता दिली"],
-    "answer":1,
-    "topic":"Company Expansion",
-    "level":"analytical"
-  },
-  {
-    "id":13,
-    "question":"मुंबई इंग्रजांना मिळाल्याचे मुख्य कारण काय होते?",
-    "options":["इंग्लंडच्या राजाने युद्ध जिंकले","पोर्तुगालची राजकन्या कॅथरीन ऑफ ब्रागांझा हिचा इंग्लंडच्या चार्ल्स-II शी विवाह","इंग्रजांनी खरेदी करून घेतले","मुंबईतील लोकांनी इंग्रजांना आमंत्रित केले"],
-    "answer":1,
-    "topic":"English Expansion",
-    "level":"cause-effect"
-  },
-  {
-    "id":14,
-    "question":"प्लासीच्या लढाईत मीर जाफरच्या फसवणुकीमुळे इंग्रजांचा विजय झाला. यावरून कोणते कारण-परिणामाचे तत्त्व स्पष्ट होते?",
-    "options":["विश्वासघातामुळे युद्धात निर्णय बदलतो","मोठी सेना हि नेहमी विजय मिळवते","हवामान युद्ध परिणामावर परिणाम करते","तंत्रज्ञानाचा वापर नेहमी निर्णायक असतो"],
-    "answer":0,
-    "topic":"Plassey",
-    "level":"reasoning"
-  },
-  {
-    "id":15,
-    "question":"कलकत्ता हे इंग्रजांचे प्रमुख वखार का बनले?",
-    "options":["कारण ते सुरत पेक्षा मोठे शहर होते","कारण जॉब चार्नॉकने येथे स्थिरपणे वसाहत निर्माण केली आणि व्यापार वाढला","कारण बंगालचे नवाब इंग्रजांना प्रेम करत होते","कारण फोर्ट विल्यम निर्माण करण्यास हवामान अनुकूल होते"],
-    "answer":1,
-    "topic":"English Expansion",
-    "level":"analytical"
-  },
-  {
-    "id":16,
-    "question":"सर थॉमस रो यांनी इंग्रजांना व्यापारासाठी सवलती दिल्यामुळे भारतात इंग्रजांचा व्यापार कसा मजबूत झाला?",
-    "options":["कारण सवलतीमुळे इंग्रजांना मुघल दरबारी राजकीय वर्चस्व मिळाले","कारण इंग्रजांनी युद्धाद्वारे व्यापारी केंद्रे जिंकली","कारण इंग्रजांनी फक्त पोर्तुगालशी व्यापार केला","कारण इंग्रजांनी डचांशी गठबंधन केले"],
-    "answer":0,
-    "topic":"English Diplomacy",
-    "level":"cause-effect"
-  },
-  {
-    "id":17,
-    "question":"ईस्ट इंडिया कंपनीने व्यापारी संस्थेतून राजकीय शक्ती कशी मिळवली?",
-    "options":["कारण त्यांनी फक्त व्यापार केला आणि कोणतीही युक्ती वापरली नाही","कारण त्यांनी मीर जाफरचा विश्वासघात आणि फर्मानाचा फायदा घेतला","कारण त्यांनी फ्रेंच सैनिक नेते बनवले","कारण त्यांनी पोर्तुगालवर आक्रमण केले"],
-    "answer":1,
-    "topic":"Company Expansion",
-    "level":"analytical"
-  }
-
+    { type:"mcq", q:"ईस्ट इंडिया कंपनीला सनद कोणत्या राणीने दिली?", options:["राणी एलिझाबेथ-I","राणी व्हिक्टोरिया","जेम्स-I","चार्ल्स-II"], answer:0 },
+    { type:"mcq", q:"वास्को-द-गामा भारतात कोणत्या वर्षी आला?", options:["१४९२","१४९८","१५०२","१५१०"], answer:1 },
+    { type:"mcq", q:"इंग्रजांचा पहिला भारत आगमन कोणत्या ठिकाणी झाले?", options:["मुंबई","सुरत","मद्रास","कलकत्ता"], answer:1 },
+    { type:"mcq", q:"मुंबई इंग्रजांना कशी मिळाली?", options:["युद्धाद्वारे","लग्नातील हुंडा","खरेदी","विचारणीतून करार"], answer:1 },
+    { type:"mcq", q:"कलकत्ता स्थापन केल्याचे credited कोणाला आहे?", options:["जॉब चार्नॉक","विल्यम हॉकिन्स","सर थॉमस रो","रॉबर्ट क्लाईव्ह"], answer:0 },
+    { type:"mcq", q:"फर्रुखसियर फर्मानाला काय म्हणतात?", options:["Magna Carta of EIC","Royal Charter","Trade Act","Company Treaty"], answer:0 },
+    { type:"mcq", q:"कर्नाटक युद्धांचा कालावधी कोणता आहे?", options:["१७४०–१७६०","१७४६–१७६३","१७५०–१७७०","१७३५–१७५५"], answer:1 },
+    { type:"mcq", q:"प्लासी लढाईत इंग्रजांचा विजय कसा झाला?", options:["मोठी सेना","हवामान लाभ","मीर जाफरची फसवणूक","तंत्रज्ञान superior"], answer:2 },
+    { type:"mcq", q:"विल्यम हॉकिन्सला मुघल दरबारात कोणती पदवी मिळाली?", options:["इंग्लिश खान","Sir","Governor","Ambassador"], answer:0 },
+    { type:"mcq", q:"सर थॉमस रो भारतात कोणत्या वर्षी आला?", options:["१६१५","१६०८","१६२०","१६१०"], answer:0 },
+    { type:"mcq", q:"इंग्रज आणि फ्रेंच यांच्यातील कर्नाटक युद्धांचा परिणाम फ्रेंचांच्या प्रभावावर कसा झाला आणि का?", options:["फ्रेंचांचा प्रभाव वाढला कारण इंग्रजांनी मीर जाफरला फसवले","फ्रेंचांचा प्रभाव कमी झाला कारण इंग्रजांचे वर्चस्व वाढले","फ्रेंचांचा प्रभाव कायम राहिला कारण युद्धात कोणताही निर्णायक विजय नाही मिळाला","फ्रेंचांचा प्रभाव कमी झाला कारण मुघलांनी फ्रेंचांना समर्थन दिले"], answer:1 },
+    { type:"mcq", q:"फर्रुखसियर फर्मान (1717) का ‘Magna Carta of East India Company’ म्हणतात?", options:["कारण फर्मानाने इंग्रजांना युद्ध अधिकार दिले","कारण फर्मानाने बंगालमध्ये करमुक्त व्यापार आणि दस्तक प्रणाली दिली","कारण फर्मानाने इंग्रजांना फक्त पोर्तुगीजांशी लढण्याचा अधिकार दिला","कारण फर्मानाने इंग्रजांना राजकीय सत्ता दिली"], answer:1 },
+    { type:"mcq", q:"मुंबई इंग्रजांना मिळाल्याचे मुख्य कारण काय होते?", options:["इंग्लंडच्या राजाने युद्ध जिंकले","पोर्तुगालची राजकन्या कॅथरीन ऑफ ब्रागांझा हिचा इंग्लंडच्या चार्ल्स-II शी विवाह","इंग्रजांनी खरेदी करून घेतले","मुंबईतील लोकांनी इंग्रजांना आमंत्रित केले"], answer:1 },
+    { type:"mcq", q:"प्लासीच्या लढाईत मीर जाफरच्या फसवणुकीमुळे इंग्रजांचा विजय झाला. यावरून कोणते कारण-परिणामाचे तत्त्व स्पष्ट होते?", options:["विश्वासघातामुळे युद्धात निर्णय बदलतो","मोठी सेना हि नेहमी विजय मिळवते","हवामान युद्ध परिणामावर परिणाम करते","तंत्रज्ञानाचा वापर नेहमी निर्णायक असतो"], answer:0 },
+    { type:"mcq", q:"कलकत्ता हे इंग्रजांचे प्रमुख वखार का बनले?", options:["कारण ते सुरत पेक्षा मोठे शहर होते","कारण जॉब चार्नॉकने येथे स्थिरपणे वसाहत निर्माण केली आणि व्यापार वाढला","कारण बंगालचे नवाब इंग्रजांना प्रेम करत होते","कारण फोर्ट विल्यम निर्माण करण्यास हवामान अनुकूल होते"], answer:1 },
+    { type:"mcq", q:"सर थॉमस रो यांनी इंग्रजांना व्यापारासाठी सवलती दिल्यामुळे भारतात इंग्रजांचा व्यापार कसा मजबूत झाला?", options:["कारण सवलतीमुळे इंग्रजांना मुघल दरबारी राजकीय वर्चस्व मिळाले","कारण इंग्रजांनी युद्धाद्वारे व्यापारी केंद्रे जिंकली","कारण इंग्रजांनी फक्त पोर्तुगालशी व्यापार केला","कारण इंग्रजांनी डचांशी गठबंधन केले"], answer:0 },
+    { type:"mcq", q:"ईस्ट इंडिया कंपनीने व्यापारी संस्थेतून राजकीय शक्ती कशी मिळवली?", options:["कारण त्यांनी फक्त व्यापार केला आणि कोणतीही युक्ती वापरली नाही","कारण त्यांनी मीर जाफरचा विश्वासघात आणि फर्मानाचा फायदा घेतला","कारण त्यांनी फ्रेंच सैनिक नेते बनवले","कारण त्यांनी पोर्तुगालवर आक्रमण केले"], answer:1 }
 ];
 
 let index=0, answers=[];
 
 function loadQuestion(){
     let q = questions[index];
-    document.getElementById("q").innerText = `Q${q.id}: ${q.question}`;
-    let opt = document.getElementById("options");
-    opt.innerHTML = "";
-    q.options.forEach((o,i)=>{
-        let btn = document.createElement("button");
-        btn.innerText = o;
-        btn.onclick = ()=>{
-            answers[index]=i;
-            document.querySelectorAll(".options button").forEach(b=>b.classList.remove("selected"));
-            btn.classList.add("selected");
-        };
-        if(answers[index]===i) btn.classList.add("selected");
-        opt.appendChild(btn);
-    });
-    updateVisitList();
+    document.getElementById("q").innerText = q.q;
+    let instr = "";
+    if(q.type==="mcq" || q.type==="assertion") instr = "✅ Click the correct option below.";
+    else if(q.type==="match") instr = "🔗 Click an item on the LEFT, then click the matching item on the RIGHT.";
+    else if(q.type==="sequence") instr = "🔢 Click the items in the correct order.";
+    document.getElementById("instruction").innerText = instr;
+
+    let opts = document.getElementById("options");
+    opts.innerHTML="";
+
+    if(q.type==="mcq" || q.type==="assertion"){
+        q.options.forEach((o,i)=>{
+            let btn = document.createElement("button");
+            btn.innerText = o;
+            btn.onclick = ()=>selectAnswer(i);
+            if(answers[index]===i) btn.classList.add("selected");
+            opts.appendChild(btn);
+        });
+    }
+    else if(q.type==="match"){
+        let selectedA = null;
+        q.A.forEach((a,i)=>{
+            let btn = document.createElement("button");
+            btn.innerText = a;
+            btn.classList.add("match-item");
+            btn.onclick = ()=>{ selectedA=i; highlightMatch(selectedA,answers[index]||[]); };
+            if(answers[index] && answers[index][i]!=null) btn.classList.add("selected");
+            opts.appendChild(btn);
+        });
+        opts.appendChild(document.createElement("br"));
+        q.B.forEach((b,i)=>{
+            let btn = document.createElement("button");
+            btn.innerText = b;
+            btn.classList.add("match-item");
+            btn.onclick = ()=>{
+                if(selectedA!=null){
+                    answers[index] = answers[index] || [];
+                    answers[index][selectedA]=i;
+                    selectedA=null;
+                    loadQuestion();
+                }
+            };
+            if(answers[index] && answers[index].includes(i)) btn.classList.add("selected");
+            opts.appendChild(btn);
+        });
+    }
+    else if(q.type==="sequence"){
+        let order = answers[index] ? [...answers[index]] : [];
+        q.items.forEach((it,i)=>{
+            let btn = document.createElement("button");
+            btn.innerText = it;
+            btn.classList.add("seq-item");
+            if(order.includes(i)) btn.classList.add("selected");
+            btn.onclick = ()=>{
+                if(!order.includes(i)) order.push(i);
+                else order = order.filter(x=>x!==i);
+                answers[index]=order;
+                loadQuestion();
+            };
+            opts.appendChild(btn);
+        });
+    }
 }
 
-function nextQ(){
-    if(index<questions.length-1){ index++; loadQuestion(); } 
-    else { showResult(); }
+function highlightMatch(selectedA, ansArr){
+    document.querySelectorAll(".match-item").forEach(b=>b.classList.remove("selected"));
+    if(ansArr){
+        ansArr.forEach((b,i)=>{
+            if(b!=null){
+                document.querySelectorAll(".match-item")[i].classList.add("selected");
+                document.querySelectorAll(".match-item")[questions[index].A.length+b].classList.add("selected");
+            }
+        });
+    }
+    if(selectedA!=null) document.querySelectorAll(".match-item")[selectedA].classList.add("selected");
 }
-function prevQ(){ if(index>0){ index--; loadQuestion(); } }
 
-function updateVisitList(){
-    let list = document.getElementById("visitList");
-    list.innerHTML="";
-    questions.forEach((q,i)=>{
-        let btn = document.createElement("button");
-        btn.innerText=q.id;
-        btn.className = i===index ? "active" : "";
-        btn.onclick=()=>{ index=i; loadQuestion(); };
-        list.appendChild(btn);
-    });
-}
+function selectAnswer(i){ answers[index]=i; loadQuestion(); }
+
+function nextQ(){ index++; if(index<questions.length) loadQuestion(); else showResult(); }
 
 function showResult(){
-    document.getElementById("quizPage").classList.remove("active");
-    document.getElementById("resultPage").classList.add("active");
-    let score = answers.filter((a,i)=>a===questions[i].answer).length;
-    let html=`<h2>🎯 PSI Quiz Completed</h2><p><b>Score:</b> ${score} / ${questions.length}</p>`;
+    document.getElementById("quizPage").style.display="none";
+    document.getElementById("resultPage").style.display="block";
+    let score=0;
+    let html = `<h2>🎯 तुमचा स्कोअर:</h2>`;
     questions.forEach((q,i)=>{
-        html+=`<div class="review"><b>Q${q.id}:</b> ${q.question}<br>`;
-        q.options.forEach((opt,j)=>{
-            let style="";
-            if(j===q.answer) style="color:green;font-weight:bold;";
-            if(answers[i]===j && j!==q.answer) style="color:red;font-weight:bold;";
-            html+=`<div style="${style}">• ${opt}</div>`;
-        });
-        html+="</div>";
+        let ans=answers[i];
+        let correct=false;
+        if(q.type==="mcq" || q.type==="assertion") correct = ans===q.answer;
+        else if(q.type==="match" || q.type==="sequence") correct = JSON.stringify(ans)===JSON.stringify(q.answer);
+        if(correct) score++;
+        html += `<div class="${correct?'review-correct':'review-wrong'}">
+                    <div class="question"><b>Q${i+1}:</b> ${q.q}</div>`;
+        if(q.type==="mcq" || q.type==="assertion"){
+            html += `<div>तुमचे उत्तर: ${ans!=null?q.options[ans]:"न दिलेले"}</div>
+                     <div>योग्य उत्तर: ${q.options[q.answer]}</div>`;
+        } else if(q.type==="match"){
+            html += `<div>तुमचे उत्तर:<br>`;
+            q.A.forEach((a,j)=>{
+                html += `${a} → ${ans && ans[j]!=null?q.B[ans[j]]:"न दिलेले"}<br>`;
+            });
+            html += `</div><div>योग्य उत्तर:<br>`;
+            q.A.forEach((a,j)=>{
+                html += `${a} → ${q.B[q.answer[j]]}<br>`;
+            });
+            html += `</div>`;
+        } else if(q.type==="sequence"){
+            html += `<div>तुमची क्रमवारी:<br>`;
+            (ans||[]).forEach(n=> html += `${q.items[n]} → `);
+            html += `</div><div>योग्य क्रमवारी:<br>`;
+            q.answer.forEach(n=> html += `${q.items[n]} → `);
+            html += `</div>`;
+        }
+        html += `</div>`;
     });
+    html = `<h2>🎯 तुमचा स्कोअर: ${score} / ${questions.length}</h2>` + html;
     document.getElementById("resultPage").innerHTML = html;
 }
 
