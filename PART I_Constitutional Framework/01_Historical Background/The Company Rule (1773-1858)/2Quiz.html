@@ -1,1 +1,441 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSI Online Exam Pro - Full Version</title>
+<style>
+    :root {
+        --primary: #4f46e5;
+        --bg: #f8fafc;
+        --text: #1e293b;
+        --success: #16a34a;
+        --error: #dc2626;
+        --p0: #fee2e2; --p1: #fef3c7; --p2: #dcfce7; --p3: #e0e7ff;
+    }
 
+    body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 10px; }
+    .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
+
+    .header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px; }
+    .progress-bar { height: 8px; background: #e2e8f0; border-radius: 10px; margin-bottom: 20px; overflow: hidden; }
+    #progress-fill { height: 100%; background: var(--primary); width: 0%; transition: 0.4s ease; }
+
+    #instruction { font-size: 13px; color: #64748b; background: #eff6ff; padding: 12px; border-radius: 8px; margin-bottom: 15px; border-left: 5px solid var(--primary); font-weight: 500; }
+    .question { font-size: 1.15rem; font-weight: bold; margin-bottom: 20px; line-height: 1.5; color: #0f172a; }
+
+    .options-grid { display: flex; flex-direction: column; gap: 12px; }
+    .match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .column { display: flex; flex-direction: column; gap: 10px; }
+
+    /* Buttons */
+    .opt-btn { 
+        width: 100%; padding: 15px; border: 2px solid #e2e8f0; border-radius: 12px; 
+        background: white; cursor: pointer; text-align: left; font-size: 15px; transition: 0.2s;
+        display: flex; align-items: center; justify-content: space-between;
+    }
+    .opt-btn:hover { border-color: #cbd5e1; background: #fdfdfd; }
+    .opt-btn.selected { border-color: var(--primary); background: #eef2ff; font-weight: bold; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.1); }
+    
+    .match-item { 
+        padding: 14px 10px; border: 2px solid #e2e8f0; border-radius: 10px; text-align: center; 
+        cursor: pointer; font-size: 14px; min-height: 50px; display: flex; align-items: center; justify-content: center;
+        background: white; font-weight: 500; transition: 0.2s;
+    }
+    .match-item.active { border-color: var(--primary); background: #f5f3ff; transform: scale(1.02); }
+
+    /* Pair Colors */
+    .pair-0 { background: var(--p0) !important; border-color: #fca5a5 !important; color: #991b1b; }
+    .pair-1 { background: var(--p1) !important; border-color: #fcd34d !important; color: #92400e; }
+    .pair-2 { background: var(--p2) !important; border-color: #86efac !important; color: #166534; }
+    .pair-3 { background: var(--p3) !important; border-color: #a5b4fc !important; color: #3730a3; }
+
+    .badge { background: var(--primary); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; margin-right: 12px; font-weight: bold; }
+
+    .nav-btn { width: 100%; padding: 18px; background: #1e293b; color: white; border: none; border-radius: 14px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 25px; transition: 0.3s; }
+    .nav-btn:active { transform: scale(0.98); }
+
+    /* Results UI */
+    .res-card { padding: 18px; border-radius: 14px; margin-top: 15px; border: 1px solid #e2e8f0; border-left-width: 6px; }
+    .res-correct { border-left-color: var(--success); background: #f0fdf4; }
+    .res-wrong { border-left-color: var(--error); background: #fef2f2; }
+    .res-label { font-size: 11px; font-weight: 800; text-transform: uppercase; color: #64748b; display: block; margin-top: 10px; }
+    .res-val { font-size: 15px; margin-top: 2px; }
+    .text-success { color: var(--success); font-weight: 700; }
+    .text-error { color: var(--error); font-weight: 700; }
+    .match-feedback-row { padding: 10px; border-radius: 10px; background: white; margin-bottom: 8px; border: 1px dashed #cbd5e1; }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="progress-bar"><div id="progress-fill"></div></div>
+
+    <div id="quiz-ui">
+        <div class="question" id="q-text"></div>
+        <div id="options-area"></div>
+        <button class="nav-btn" onclick="nextQuestion()">पुढील प्रश्न ➜</button>
+    </div>
+
+    <div id="result-ui" style="display:none;"></div>
+</div>
+
+<script>
+    /*
+const questions = [
+    { 
+        type: "mcq", 
+        q: "१. विधवा विवाहासाठी प्रयत्न करणारे समाजसुधारक कोण होते?", 
+        options: ["विष्णुशास्त्री पंडित", "महात्मा गांधी", "बाळ गंगाधर टिळक", "गोपाळ कृष्ण गोखले"], 
+        answer: 0 
+    },
+    {
+        type: "multi",
+        q: "२. डॉ. बाबासाहेब आंबेडकरांनी सुरू केलेली वृत्तपत्रे कोणती?",
+        options: ["मूकनायक", "बहिष्कृत भारत", "जनता", "केसरी"],
+        answer: [0, 1, 2]
+    },
+    {
+        type: "order",
+        q: "३. खालील घटनांचा कालानुक्रमे योग्य क्रम लावा:",
+        options: ["पुणे करार (Pune Pact)", "मिठाचा सत्याग्रह", "जालियनवाला बाग हत्याकांड", "स्वदेशी चळवळ"],
+        answer: [3, 2, 1, 0] // स्वदेशी (1905) -> जालियनवाला (1919) -> मीठ (1930) -> पुणे (1932)
+    },
+    { 
+        type: "match", 
+        q: "४. जोड्या लावा (समाजसुधारक व त्यांचे कार्य/संस्था):", 
+        A: ["महात्मा फुले", "न्या. रानडे", "आगरकर", "महर्षी कर्वे"], 
+        B: ["सत्यशोधक समाज", "पुणे सार्वजनिक सभा", "सुधारक", "अनाथ बालिकाश्रम"], 
+        answer: [0, 1, 2, 3] 
+    }
+];
+*/
+const questions = [
+    { 
+        type: "mcq", 
+        q: "१. १७७३ च्या रेग्युलेटिंग ॲक्टनुसार बंगालचा पहिला 'गव्हर्नर जनरल' कोण बनला?", 
+        options: ["रॉबर्ट क्लाईव्ह", "वॉरेन हेस्टिंग्ज", "लॉर्ड कॉर्नवॉलिस", "विलियम बेंटिक"], 
+        answer: 1 
+    },
+    {
+        type: "multi",
+        q: "२. १७७३ च्या रेग्युलेटिंग ॲक्टच्या संदर्भात खालीलपैकी कोणती विधाने बरोबर आहेत?",
+        options: [
+            "हा भारतासाठी ब्रिटिश संसदेने केलेला पहिला घटनात्मक कायदा होता.",
+            "या कायद्याने भारतात केंद्रीय प्रशासनाचा पाया रचला गेला.",
+            "गव्हर्नर जनरलला मदत करण्यासाठी ५ सदस्यांची कार्यकारी परिषद स्थापन केली.",
+            "कंपनीच्या अधिकाऱ्यांना खाजगी व्यापार करण्यास बंदी घालण्यात आली."
+        ],
+        answer: [0, 1, 3]
+    },
+    {
+        type: "order",
+        q: "३. खालील ऐतिहासिक घटनांचा त्यांच्या कालानुक्रमे (जुना ते नवीन) योग्य क्रम लावा:",
+        options: [
+            "कलकत्ता येथे सर्वोच्च न्यायालयाची स्थापना",
+            "प्लासीची लढाई",
+            "रेग्युलेटिंग ॲक्ट मंजूर झाला",
+            "ईस्ट इंडिया कंपनीला दिवाणी अधिकार मिळाले"
+        ],
+        answer: [1, 3, 2, 0] 
+        // स्पष्टीकरण: प्लासी (१७५७) -> दिवाणी अधिकार (१७६५) -> रेग्युलेटिंग ॲक्ट (१७७३) -> सर्वोच्च न्यायालय (१७७४)
+    },
+    { 
+        type: "match", 
+        q: "४. जोड्या लावा (रेग्युलेटिंग ॲक्ट विशेष):", 
+        A: ["पहिले मुख्य न्यायाधीश", "गव्हर्नर जनरलचा कार्यकाळ", "सर्वोच्च न्यायालयाचे ठिकाण", "नियंत्रण करणारी संस्था"], 
+        B: ["सर एलिजा इम्पे", "५ वर्षे", "कलकत्ता", "कोर्ट ऑफ डायरेक्टर्स"], 
+        answer: [0, 1, 2, 3] 
+    },
+    {
+        type: "mcq",
+        q: "५. १७७३ च्या कायद्यान्वये स्थापन झालेल्या सर्वोच्च न्यायालयात मुख्य न्यायाधीशांव्यतिरिक्त इतर किती न्यायाधीश होते?",
+        options: ["२", "३", "४", "५"],
+        answer: 1
+    },
+    {
+        type: "multi",
+        q: "६. रेग्युलेटिंग ॲक्टमधील दोषांमधे (Defects) खालीलपैकी कशाचा समावेश होतो?",
+        options: [
+            "गव्हर्नर जनरल आणि सर्वोच्च न्यायालय यांच्यातील अधिकार स्पष्ट नव्हते.",
+            "गव्हर्नर जनरलला त्याच्या कौन्सिलवर पूर्ण अधिकार (Veto) नव्हता.",
+            "मद्रास आणि बॉम्बे प्रेसिडेन्सी पूर्णपणे स्वतंत्र झाल्या.",
+            "कंपनीचा भ्रष्टाचार पूर्णपणे थांबवण्यात या कायद्याला अपयश आले."
+        ],
+        answer: [0, 1, 3]
+    },
+  { 
+        type: "mcq", 
+        q: "७. १७७३ च्या कायद्यानुसार 'कोर्ट ऑफ डायरेक्टर्स'च्या निवडीसाठी मतदानाचा अधिकार कोणाला देण्यात आला?", 
+        options: ["ज्यांच्याकडे ५०० पौंड शेअर आहेत", "ज्यांच्याकडे १००० पौंड शेअर आहेत", "ज्यांच्याकडे २००० पौंड शेअर आहेत", "सर्व ब्रिटीश नागरिक"], 
+        answer: 1 
+    },
+    {
+        type: "multi",
+        q: "८. रेग्युलेटिंग ॲक्टनुसार स्थापन झालेल्या ४ सदस्यीय कार्यकारी परिषदेत (Executive Council) खालीलपैकी कोणाचा समावेश होता?",
+        options: ["फिलिप फ्रान्सिस", "क्लेव्हरिंग", "मॉन्सन आणि बरवेल", "सर एलिजा इम्पे"],
+        answer: [0, 1, 2]
+    },
+    {
+        type: "mcq", 
+        q: "९. १७७३ च्या कायद्याने 'गव्हर्नर जनरल'ला कोणता विशेष अधिकार दिला होता?", 
+        options: ["नकाराधिकार (Veto)", "निर्णायक मत (Casting Vote)", "अध्यादेश काढण्याचा अधिकार", "संसद बरखास्त करण्याचा अधिकार"], 
+        answer: 1 
+    },
+    {
+        type: "multi",
+        q: "१०. या कायद्याचे प्रमुख उद्दिष्ट काय होते?",
+        options: [
+            "ईस्ट इंडिया कंपनीची मक्तेदारी संपवणे",
+            "कंपनीच्या कारभारावर ब्रिटीश संसदेचे दुहेरी नियंत्रण आणणे",
+            "भारतातील प्रशासकीय गोंधळ आणि भ्रष्टाचार रोखणे",
+            "कंपनीला आर्थिक दिवाळखोरीतून बाहेर काढणे"
+        ],
+        answer: [1, 2, 3]
+    },
+    { 
+        type: "match", 
+        q: "११. योग्य जोड्या लावा (कार्यकारी परिषद व सदस्य):", 
+        A: ["गव्हर्नर जनरल", "परिषद सदस्य १", "परिषद सदस्य २", "परिषद सदस्य ३"], 
+        B: ["वॉरेन हेस्टिंग्ज", "फिलिप फ्रान्सिस", "रिचर्ड बरवेल", "जॉर्ज मॉन्सन"], 
+        answer: [0, 1, 2, 3] 
+    },
+    {
+        type: "mcq",
+        q: "१२. १७७३ च्या कायद्यातील दोषांचे निवारण करण्यासाठी पुढे कोणता 'ॲक्ट' संमत करण्यात आला?",
+        options: ["पिट्स इंडिया ॲक्ट १७८४", "चार्टर ॲक्ट १८१३", "ॲक्ट ऑफ सेटलमेंट १७८१", "भारत सरकार कायदा १८५८"],
+        answer: 2
+    },
+    {
+        type: "multi",
+        q: "१३. कलकत्ता सर्वोच्च न्यायालयाच्या अधिकारक्षेत्राबाबत काय खरे आहे?",
+        options: [
+            "कलकत्त्यातील सर्व रहिवासी त्याच्या कक्षेत होते.",
+            "कंपनीचे सर्व नोकर याच्या कक्षेत येत होते.",
+            "गव्हर्नर जनरल आणि कौन्सिल या न्यायालयाच्या वर होते.",
+            "हे न्यायालय 'कोर्ट ऑफ रेकॉर्ड' म्हणून ओळखले जाई."
+        ],
+        answer: [0, 1, 3]
+    },
+    {
+        type: "order",
+        q: "१४. भारतातील ब्रिटीश सत्तेच्या केंद्रीकरणाच्या प्रक्रियेतील टप्पे लावा:",
+        options: [
+            "मद्रास व बॉम्बेवर बंगालचे नियंत्रण (१७७३)",
+            "पूर्णपणे केंद्रीकृत प्रशासन (१८३३ चा कायदा)",
+            "भारताचा कारभार थेट राणीकडे (१८५८)",
+            "दुहेरी शासन व्यवस्थेची समाप्ती"
+        ],
+        answer: [3, 0, 1, 2]
+    },
+    {
+        type: "mcq",
+        q: "१५. रेग्युलेटिंग ॲक्ट संमत झाला तेव्हा इंग्लंडचे पंतप्रधान कोण होते?",
+        options: ["लॉर्ड नॉर्थ", "विलियम पिट", "रॉबर्ट वॉलपोल", "विन्स्टन चर्चिल"],
+        answer: 0
+    },
+    {
+        type: "multi",
+        q: "१६. १७७३ च्या कायद्याने कंपनीच्या संचालकांना (Directors) कोणते अहवाल ब्रिटीश सरकारला सादर करणे बंधनकारक केले?",
+        options: ["महसूल (Revenue)", "नागरी (Civil)", "लष्करी (Military)", "धार्मिक (Religious)"],
+        answer: [0, 1, 2]
+    },
+    {
+        type: "mcq",
+        q: "१७. १७७३ च्या कायद्यानुसार सर्वोच्च न्यायालयाच्या निर्णयाविरुद्ध अपील कोणाकडे करता येत असे?",
+        options: ["गव्हर्नर जनरल", "ब्रिटीश संसद", "प्रिव्ही कौन्सिल (किंग-इन-कौन्सिल)", "कलकत्ता हायकोर्ट"],
+        answer: 2
+    },
+    {
+        type: "multi",
+        q: "१८. 'गव्हर्नर जनरल ऑफ बंगाल' या पदाच्या निर्मितीमुळे खालीलपैकी कोणत्या प्रेसिडेन्सी दुय्यम (Subordinate) ठरल्या?",
+        options: ["बॉम्बे", "मद्रास", "पंजाब", "सिंध"],
+        answer: [0, 1]
+    },
+    {
+        type: "mcq",
+        q: "१९. १७७३ चा कायदा कोणत्या समितीच्या गोपनीय अहवालावर (Secret Committee Report) आधारित होता?",
+        options: ["हंटर समिती", "लॉर्ड नॉर्थ समिती", "बॅबिंग्टन समिती", "सायमन समिती"],
+        answer: 1
+    },
+    {
+        type: "multi",
+        q: "२०. रेग्युलेटिंग ॲक्टचे सर्वात मोठे घटनात्मक महत्त्व काय आहे?",
+        options: [
+            "याने लिखित राज्यघटनेची सुरुवात केली.",
+            "कंपनीच्या राजकीय कार्यांना पहिल्यांदाच कायदेशीर स्वरूप दिले.",
+            "याने भारतात संसदीय लोकशाही आणली.",
+            "याने ब्रिटीश संसदेला भारतातील सर्वोच्च नियामक संस्था बनवले."
+        ],
+        answer: [1, 3]
+    }
+];
+
+let currentIdx = 0;
+let userAnswers = [];
+let tempLeft = null;
+
+function render() {
+    const q = questions[currentIdx];
+    const area = document.getElementById("options-area");
+    const prog = document.getElementById("progress-fill");
+    
+    prog.style.width = `${((currentIdx + 1) / questions.length) * 100}%`;
+    document.getElementById("q-text").innerText = q.q;
+    area.innerHTML = "";
+    area.className = (q.type === "match") ? "" : "options-grid";
+    
+    if(q.type === "mcq") {
+      //  document.getElementById("instruction").innerText = "🎯 योग्य पर्यायाची निवड करा.";
+        q.options.forEach((opt, i) => {
+            const btn = document.createElement("button");
+            btn.className = `opt-btn ${userAnswers[currentIdx] === i ? 'selected' : ''}`;
+            btn.innerText = opt;
+            btn.onclick = () => { userAnswers[currentIdx] = i; render(); };
+            area.appendChild(btn);
+        });
+    } 
+    else if(q.type === "multi") {
+       // document.getElementById("instruction").innerText = "✅ सर्व बरोबर विधाने निवडा (Multiple Choice).";
+        let selections = userAnswers[currentIdx] || [];
+        q.options.forEach((opt, i) => {
+            const isSel = selections.includes(i);
+            const btn = document.createElement("button");
+            btn.className = `opt-btn ${isSel ? 'selected' : ''}`;
+            btn.innerHTML = `<span>${opt}</span> <span>${isSel ? '☑️' : '⬜'}</span>`;
+            btn.onclick = () => {
+                if(isSel) selections = selections.filter(it => it !== i);
+                else selections.push(i);
+                userAnswers[currentIdx] = [...selections].sort();
+                render();
+            };
+            area.appendChild(btn);
+        });
+    }
+    else if(q.type === "order") {
+       // document.getElementById("instruction").innerText = "🔢 योग्य कालानुक्रम लावण्यासाठी पर्यायांवर क्लिक करा.";
+        let currentOrder = userAnswers[currentIdx] || [];
+        q.options.forEach((opt, i) => {
+            const ordIdx = currentOrder.indexOf(i);
+            const btn = document.createElement("button");
+            btn.className = `opt-btn ${ordIdx !== -1 ? 'selected' : ''}`;
+            btn.innerHTML = ordIdx !== -1 
+                ? `<span><span class="badge">${ordIdx + 1}</span> ${opt}</span>`
+                : `<span>${opt}</span>`;
+            btn.onclick = () => {
+                if(ordIdx === -1) currentOrder.push(i);
+                else currentOrder.splice(ordIdx, 1);
+                userAnswers[currentIdx] = [...currentOrder];
+                render();
+            };
+            area.appendChild(btn);
+        });
+    }
+    else if(q.type === "match") {
+        //document.getElementById("instruction").innerText = "🔗 डावीकडील पर्याय निवडून उजवीकडील जोडीवर क्लिक करा.";
+        const grid = document.createElement("div"); grid.className = "match-grid";
+        const colA = document.createElement("div"); colA.className="column";
+        const colB = document.createElement("div"); colB.className="column";
+        let pairs = userAnswers[currentIdx] || Array(q.A.length).fill(null);
+
+        q.A.forEach((text, i) => {
+            const div = document.createElement("div");
+            div.className = `match-item ${tempLeft === i ? 'active' : ''} ${pairs[i] !== null ? 'pair-'+i : ''}`;
+            div.innerText = text;
+            div.onclick = () => { tempLeft = i; render(); };
+            colA.appendChild(div);
+        });
+
+        q.B.forEach((text, i) => {
+            const div = document.createElement("div");
+            div.className = "match-item";
+            const pIdx = pairs.indexOf(i);
+            if(pIdx !== -1) div.classList.add(`pair-${pIdx}`);
+            div.innerText = text;
+            div.onclick = () => {
+                if(tempLeft !== null) {
+                    pairs[tempLeft] = i;
+                    userAnswers[currentIdx] = [...pairs];
+                    tempLeft = null;
+                    render();
+                }
+            };
+            colB.appendChild(div);
+        });
+        grid.append(colA, colB);
+        area.appendChild(grid);
+    }
+}
+
+function nextQuestion() {
+    if(currentIdx < questions.length - 1) {
+        currentIdx++;
+        tempLeft = null;
+        render();
+    } else {
+        showResults();
+    }
+}
+
+function showResults() {
+    document.getElementById("quiz-ui").style.display = "none";
+    const resUi = document.getElementById("result-ui");
+    resUi.style.display = "block";
+    let score = 0;
+    let html = `<h2>📊 निकाल विश्लेषण</h2>`;
+
+    questions.forEach((q, i) => {
+        const uAns = userAnswers[i];
+        const isCorrect = JSON.stringify(uAns) === JSON.stringify(q.answer);
+        if(isCorrect) score++;
+
+        html += `<div class="res-card ${isCorrect ? 'res-correct' : 'res-wrong'}">
+                    <strong style="font-size:16px;">Q${i+1}: ${q.q}</strong><br>`;
+        
+        if(q.type === "mcq") {
+            const uP = uAns !== undefined ? q.options[uAns] : "निवडले नाही";
+            const cP = q.options[q.answer];
+            html += `<span class="res-label">तुमची निवड:</span> <div class="res-val ${isCorrect?'text-success':'text-error'}">${uP} ${isCorrect?'✅':'❌'}</div>
+                     <span class="res-label">योग्य उत्तर:</span> <div class="res-val text-success">${cP}</div>`;
+        } 
+        else if(q.type === "multi") {
+            const uP = (uAns || []).map(idx => q.options[idx]).join(", ") || "निवडले नाही";
+            const cP = q.answer.map(idx => q.options[idx]).join(", ");
+            html += `<span class="res-label">तुमची निवड:</span> <div class="res-val ${isCorrect?'text-success':'text-error'}">${uP}</div>
+                     <span class="res-label">योग्य उत्तरे:</span> <div class="res-val text-success">${cP}</div>`;
+        }
+        else if(q.type === "order") {
+            const uText = (uAns || []).map(idx => q.options[idx]).join(" ➔ ") || "निवडले नाही";
+            const cText = q.answer.map(idx => q.options[idx]).join(" ➔ ");
+            html += `<span class="res-label">तुमचा क्रम:</span> <div class="res-val ${isCorrect?'text-success':'text-error'}">${uText}</div>
+                     <span class="res-label">योग्य क्रम:</span> <div class="res-val text-success">${cText}</div>`;
+        }
+        else if(q.type === "match") {
+            q.A.forEach((item, idx) => {
+                const uMatchIdx = uAns ? uAns[idx] : null;
+                const uM = uMatchIdx !== null ? q.B[uMatchIdx] : "निवडले नाही";
+                const cM = q.B[q.answer[idx]];
+                const pairOk = (uMatchIdx === q.answer[idx]);
+                html += `<div class="match-feedback-row">
+                            <span class="res-label" style="margin-top:0">${item} साठी निवड:</span>
+                            <div class="res-val ${pairOk?'text-success':'text-error'}">${uM} ${pairOk?'✅':'❌'}</div>
+                            ${!pairOk ? `<span class="res-label">योग्य जोडी:</span><div class="res-val text-success">${item} → ${cM}</div>` : ''}
+                         </div>`;
+            });
+        }
+        html += `</div>`;
+    });
+
+    resUi.innerHTML = `
+        <div style="text-align:center; padding: 20px; background:white; border-radius:16px; margin-bottom:20px; border:2px solid #e2e8f0;">
+            <h1 style="font-size:3.5rem; margin:0; color:var(--primary)">${score}/${questions.length}</h1>
+            <p style="font-weight:bold; color:#64748b; margin-top:5px;">तुमचा एकूण स्कोर</p>
+            <button class="nav-btn" style="margin-top:10px;" onclick="location.reload()">Reset Test</button>
+        </div>
+        ${html}`;
+}
+
+render();
+</script>
+</body>
+</html>
