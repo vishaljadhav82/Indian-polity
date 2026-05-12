@@ -1,194 +1,511 @@
 <!DOCTYPE html>
 <html lang="mr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Focus Notes - Historical Background</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Focus Notes - PSI Maharashtra</title>
+
     <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+
     <style>
-        :root {
-            --paper: #fffef5;
-            --ink: #1a202c;
-            --margin-red: #ff8a8a;
-            --line: #edf2f7;
-            --highlight: #fff382;
-            --primary-blue: #2b6cb0;
+
+        :root{
+            --paper:#fffef5;
+            --ink:#1a202c;
+            --margin-red:#ff8a8a;
+            --line:#edf2f7;
+            --highlight:#fff382;
+            --primary-blue:#2b6cb0;
         }
 
-        html { scroll-behavior: smooth; }
-
-        body {
-            background: #d1d5db;
-            margin: 0;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-family: 'Kalam', cursive;
+        *{
+            box-sizing:border-box;
         }
 
-        /* --- Header Navigation (Single Row with Horizontal Scroll) --- */
-        .header-nav {
-            width: 100%;
-            max-width: 850px;
-            display: flex;
-            justify-content: flex-start;
-            gap: 12px;
-            margin-bottom: 20px;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            padding: 10px 5px;
-            -webkit-overflow-scrolling: touch;
+        html{
+            scroll-behavior:smooth;
         }
 
-        .header-nav::-webkit-scrollbar { display: none; }
-        .header-nav { -ms-overflow-style: none; scrollbar-width: none; }
-
-        .header-nav .next-btn {
-            flex: 0 0 auto;
-            padding: 10px 18px;
-            font-size: 14px;
-            font-weight: bold;
-            color: white;
-            background: #e74c3c;
-            border-radius: 50px;
-            border: none;
-            cursor: pointer;
-            font-family: 'Kalam', cursive;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        body{
+            margin:0;
+            padding:20px;
+            background:#d1d5db;
+            font-family:'Kalam', cursive;
         }
 
-        /* --- Main Making.html Iframe (Standard View) --- */
-        .full-screen-iframe {
-            width: 100%;
-            max-width: 850px;
-            height: 100vh;
-            border: 2px solid #cbd5e0;
-            border-radius: 12px;
-            margin-bottom: 30px;
-            background: white;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        /* =========================================================
+           HEADER NAVIGATION
+        ========================================================= */
+
+        .header-nav{
+            width:100%;
+            max-width:1600px;
+
+            display:flex;
+            gap:12px;
+
+            overflow-x:auto;
+            flex-wrap:nowrap;
+
+            padding:10px 5px;
+            margin:0 auto 20px auto;
+
+            -ms-overflow-style:none;
+            scrollbar-width:none;
         }
 
-        /* --- Notebook Page Style --- */
-        .notebook-page {
-            width: 100%;
-            max-width: 800px;
-            background: var(--paper);
-            padding: 60px 20px 60px 70px;
-            position: relative;
-            box-shadow: 15px 15px 40px rgba(0,0,0,0.1);
-            border-radius: 2px 15px 15px 2px;
-            background-image: 
-                linear-gradient(90deg, transparent 64px, var(--margin-red) 64px, var(--margin-red) 66px, transparent 66px),
-                linear-gradient(var(--line) 1px, transparent 1px);
-            background-size: 100% 100%, 100% 32px;
-            line-height: 32px;
+        .header-nav::-webkit-scrollbar{
+            display:none;
         }
 
-        /* Spiral Rings */
-        .notebook-page::before {
-            content: '';
-            position: absolute;
-            top: 30px;
-            left: 15px;
-            width: 20px;
-            height: 20px;
-            background: #4a5568;
-            border-radius: 50%;
-            box-shadow: 0 64px #4a5568, 0 128px #4a5568, 0 192px #4a5568, 0 256px #4a5568, 
-                        0 320px #4a5568, 0 384px #4a5568, 0 448px #4a5568, 0 512px #4a5568;
-            opacity: 0.15;
+        .next-btn{
+            flex:0 0 auto;
+
+            padding:12px 20px;
+            border:none;
+            border-radius:50px;
+
+            background:#e74c3c;
+            color:white;
+
+            cursor:pointer;
+
+            font-size:15px;
+            font-weight:bold;
+            font-family:'Kalam', cursive;
+
+            box-shadow:0 3px 8px rgba(0,0,0,0.15);
+
+            transition:0.25s;
         }
 
-        /* --- Modal Control (Fix for Full View) --- */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 2000;
-            backdrop-filter: blur(8px);
+        .next-btn:hover{
+            transform:translateY(-2px);
+            background:#c0392b;
         }
 
-        .modal-box {
-            position: relative;
-            width: 95%;
-            height: 92vh; /* मोबाईलवर जास्तीत जास्त उंची */
-            margin: 4vh auto;
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
+        /* =========================================================
+           TWO COLUMN LAYOUT
+        ========================================================= */
+
+        .main-layout{
+            width:100%;
+            max-width:1600px;
+
+            margin:auto;
+
+            display:grid;
+            grid-template-columns: 1fr 1fr;
+
+            gap:25px;
+
+            align-items:start;
         }
 
-        #timelineFrame {
-            width: 100%;
-            flex-grow: 1; /* पूर्ण जागा व्यापण्यासाठी */
-            border: none;
+        /* =========================================================
+           LEFT COLUMN - IFRAME
+        ========================================================= */
+
+        .iframe-wrapper{
+            position:sticky;
+            top:20px;
         }
 
-        .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            background: #e74c3c;
-            color: white;
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-            cursor: pointer;
-            z-index: 2100;
-            border: 2px solid white;
+        .iframe-toolbar{
+            background:#1f2937;
+            padding:10px 15px;
+
+            border-radius:15px 15px 0 0;
+
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+
+            color:white;
         }
 
-        /* --- Content Styling --- */
-        .motivation-banner {
-            border: 2px dashed #f39c12;
-            background: #fff9e6;
-            padding: 15px;
-            margin-bottom: 30px;
-            text-align: center;
-            border-radius: 10px;
-            color: #d35400;
+        .toolbar-left{
+            display:flex;
+            align-items:center;
+            gap:8px;
         }
 
-        h1 { color: var(--primary-blue); font-size: 22px; text-align: center; }
-        h2 { color: #c53030; border-bottom: 2px solid #feb2b2; display: inline-block; font-size: 18px; }
-        .highlight { background: var(--highlight); padding: 0 4px; border-radius: 3px; }
+        .dot{
+            width:12px;
+            height:12px;
+            border-radius:50%;
+        }
 
-        .footer-nav { margin-top: 40px; display: flex; justify-content: flex-end; }
+        .red{ background:#ff5f57; }
+        .yellow{ background:#ffbd2e; }
+        .green{ background:#28c840; }
+
+        .toolbar-title{
+            font-size:14px;
+            opacity:0.9;
+        }
+
+        .toolbar-actions{
+            display:flex;
+            gap:10px;
+        }
+
+        .toolbar-btn{
+            padding:6px 12px;
+            border:none;
+            border-radius:8px;
+
+            background:#374151;
+            color:white;
+
+            cursor:pointer;
+
+            font-family:'Kalam', cursive;
+        }
+
+        .toolbar-btn:hover{
+            background:#4b5563;
+        }
+
+        .full-screen-iframe{
+            width:100%;
+            height:88vh;
+
+            border:none;
+
+            background:white;
+
+            border-radius:0 0 15px 15px;
+
+            box-shadow:
+                0 10px 25px rgba(0,0,0,0.12);
+        }
+
+        /* =========================================================
+           RIGHT COLUMN - NOTES
+        ========================================================= */
+
+        .notes-column{
+            width:100%;
+        }
+
+        .notebook-page{
+            width:100%;
+
+            background:var(--paper);
+
+            padding:60px 25px 60px 75px;
+
+            position:relative;
+
+            border-radius:2px 15px 15px 2px;
+
+            box-shadow:
+                15px 15px 40px rgba(0,0,0,0.1);
+
+            background-image:
+                linear-gradient(
+                    90deg,
+                    transparent 64px,
+                    var(--margin-red) 64px,
+                    var(--margin-red) 66px,
+                    transparent 66px
+                ),
+                linear-gradient(
+                    var(--line) 1px,
+                    transparent 1px
+                );
+
+            background-size:
+                100% 100%,
+                100% 32px;
+
+            line-height:32px;
+        }
+
+        .notebook-page::before{
+            content:'';
+
+            position:absolute;
+
+            top:30px;
+            left:15px;
+
+            width:20px;
+            height:20px;
+
+            border-radius:50%;
+
+            background:#4a5568;
+
+            opacity:0.15;
+
+            box-shadow:
+                0 64px #4a5568,
+                0 128px #4a5568,
+                0 192px #4a5568,
+                0 256px #4a5568,
+                0 320px #4a5568,
+                0 384px #4a5568,
+                0 448px #4a5568,
+                0 512px #4a5568,
+                0 576px #4a5568,
+                0 640px #4a5568;
+        }
+
+        /* =========================================================
+           CONTENT
+        ========================================================= */
+
+        .motivation-banner{
+            border:2px dashed #f39c12;
+            background:#fff9e6;
+
+            padding:15px;
+            margin-bottom:30px;
+
+            text-align:center;
+
+            border-radius:10px;
+
+            color:#d35400;
+
+            font-size:18px;
+        }
+
+        h1{
+            color:var(--primary-blue);
+            text-align:center;
+            font-size:28px;
+            margin-bottom:30px;
+        }
+
+        h2{
+            color:#c53030;
+            border-bottom:2px solid #feb2b2;
+            display:inline-block;
+            font-size:22px;
+        }
+
+        p{
+            font-size:18px;
+            color:#2d3748;
+        }
+
+        .highlight{
+            background:var(--highlight);
+            padding:0 5px;
+            border-radius:4px;
+        }
+
+        .important-point{
+            margin-bottom:35px;
+        }
+
+        .footer-nav{
+            margin-top:40px;
+            display:flex;
+            justify-content:flex-end;
+        }
+
+        /* =========================================================
+           MODAL
+        ========================================================= */
+
+        .modal-overlay{
+            display:none;
+
+            position:fixed;
+            top:0;
+            left:0;
+
+            width:100%;
+            height:100%;
+
+            background:rgba(0,0,0,0.9);
+
+            z-index:2000;
+
+            backdrop-filter:blur(8px);
+        }
+
+        .modal-box{
+            position:relative;
+
+            width:95%;
+            height:92vh;
+
+            margin:4vh auto;
+
+            background:white;
+
+            border-radius:15px;
+
+            overflow:hidden;
+
+            display:flex;
+            flex-direction:column;
+        }
+
+        #timelineFrame{
+            width:100%;
+            flex-grow:1;
+            border:none;
+        }
+
+        .close-btn{
+            position:absolute;
+            top:12px;
+            right:15px;
+
+            width:42px;
+            height:42px;
+
+            border-radius:50%;
+
+            background:#e74c3c;
+            color:white;
+
+            display:flex;
+            justify-content:center;
+            align-items:center;
+
+            font-size:26px;
+
+            cursor:pointer;
+
+            z-index:2100;
+
+            border:2px solid white;
+        }
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (max-width:1024px){
+
+            .main-layout{
+                grid-template-columns:1fr;
+            }
+
+            .iframe-wrapper{
+                position:relative;
+                top:0;
+            }
+
+            .full-screen-iframe{
+                height:70vh;
+            }
+        }
+
+        @media (max-width:768px){
+
+            body{
+                padding:10px;
+            }
+
+            .notebook-page{
+                padding:50px 15px 50px 60px;
+            }
+
+            h1{
+                font-size:22px;
+            }
+
+            h2{
+                font-size:18px;
+            }
+
+            p{
+                font-size:16px;
+            }
+
+            .full-screen-iframe{
+                height:60vh;
+            }
+        }
+
     </style>
 </head>
+
 <body>
 
- <!-- Header Navigation -->
+    <!-- =========================================================
+         HEADER
+    ========================================================== -->
+
     <div class="header-nav">
-                <button class="next-btn" onclick="document.getElementById('notes-section').scrollIntoView()">📝 Notes</button>
-        <button class="next-btn" onclick="openModal('beginning.html')">🕒 EIC Timeline</button>
-        <button class="next-btn" onclick="openModal('company-rule.html')">🕒 Company Rule</button>
-        <button class="next-btn" onclick="openModal('crown-rule.html')">🕒 Crown Rule</button>
+
+        <button class="next-btn"
+            onclick="openModal('beginning.html')">
+            🕒 EIC Timeline
+        </button>
+
+        <button class="next-btn"
+            onclick="openModal('company-rule.html')">
+            🏛️ Company Rule
+        </button>
+
+        <button class="next-btn"
+            onclick="openModal('crown-rule.html')">
+            👑 Crown Rule
+        </button>
+
     </div>
 
-    <!-- 100vh Iframe for Making.html -->
-    <iframe src="indexQuiz.html" class="full-screen-iframe" scrolling="yes"></iframe>
+    <!-- =========================================================
+         MAIN 2 COLUMN LAYOUT
+    ========================================================== -->
 
-    <!-- Modal for External HTML Pages -->
-    <div id="iframeModal" class="modal-overlay">
-        <div class="modal-box">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <iframe id="timelineFrame" src=""></iframe>
+    <div class="main-layout">
+
+        <!-- =====================================================
+             LEFT COLUMN : IFRAME
+        ====================================================== -->
+
+        <div class="iframe-wrapper">
+
+            <div class="iframe-toolbar">
+
+                <div class="toolbar-left">
+
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+
+                    <span class="toolbar-title">
+                        PSI Maharashtra Study Panel
+                    </span>
+
+                </div>
+
+                <div class="toolbar-actions">
+
+                    <button class="toolbar-btn"
+                        onclick="reloadIframe()">
+                        🔄 Reload
+                    </button>
+
+                    <button class="toolbar-btn"
+                        onclick="toggleFullscreen()">
+                        ⛶ Fullscreen
+                    </button>
+
+                </div>
+
+            </div>
+
+            <iframe
+                id="mainIframe"
+                src="https://vishaljadhav82.github.io/Indian-polity/PART%20I_Constitutional%20Framework/01_Historical%20Background/The%20Company%20Rule%20(1773-1858)/indexQuiz.html"
+                class="full-screen-iframe"
+                scrolling="yes">
+            </iframe>
+
         </div>
-    </div>
 
- 
-    <div class="notebook-page" id="notes-section">
+       <div class="notebook-page" id="notes-section">
         <div class="motivation-banner">
             "ध्येयासाठी वेडे व्हा, कारण इतिहास वेड्या लोकांनीच घडवला आहे!" 🔥
         </div>
@@ -489,37 +806,102 @@
         </div>
     </div>
 
+    <!-- =========================================================
+         MODAL
+    ========================================================== -->
+
+    <div id="iframeModal" class="modal-overlay">
+
+        <div class="modal-box">
+
+            <span class="close-btn"
+                onclick="closeModal()">
+                &times;
+            </span>
+
+            <iframe
+                id="timelineFrame"
+                src=""
+                scrolling="yes">
+            </iframe>
+
+        </div>
+
+    </div>
+
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================== -->
+
     <script>
-        // Modal functions
-        function openModal(url) {
-            const modal = document.getElementById('iframeModal');
-            const iframe = document.getElementById('timelineFrame');
+
+        function openModal(url){
+
+            const modal =
+                document.getElementById('iframeModal');
+
+            const iframe =
+                document.getElementById('timelineFrame');
+
             iframe.src = url;
+
             modal.style.display = 'block';
-            document.body.style.overflow = 'hidden'; // Disable scroll
+
+            document.body.style.overflow = 'hidden';
         }
 
-        function closeModal() {
-            const modal = document.getElementById('iframeModal');
-            const iframe = document.getElementById('timelineFrame');
+        function closeModal(){
+
+            const modal =
+                document.getElementById('iframeModal');
+
+            const iframe =
+                document.getElementById('timelineFrame');
+
             modal.style.display = 'none';
-            iframe.src = "";
-            document.body.style.overflow = 'auto'; // Enable scroll
+
+            iframe.src = '';
+
+            document.body.style.overflow = 'auto';
         }
 
-        // Timeline toggle
-        function toggleTimeline() {
-            var t = document.getElementById("timeline");
-            t.style.display = (t.style.display === "block") ? "none" : "block";
-        }
+        window.onclick = function(event){
 
-        // Close modal on outside click
-        window.onclick = function(event) {
-            const modal = document.getElementById('iframeModal');
-            if (event.target == modal) {
+            const modal =
+                document.getElementById('iframeModal');
+
+            if(event.target == modal){
                 closeModal();
             }
         }
+
+        function reloadIframe(){
+
+            const iframe =
+                document.getElementById('mainIframe');
+
+            iframe.src = iframe.src;
+        }
+
+        function toggleFullscreen(){
+
+            const iframe =
+                document.getElementById('mainIframe');
+
+            if(iframe.requestFullscreen){
+
+                iframe.requestFullscreen();
+
+            }else if(iframe.webkitRequestFullscreen){
+
+                iframe.webkitRequestFullscreen();
+
+            }else if(iframe.msRequestFullscreen){
+
+                iframe.msRequestFullscreen();
+            }
+        }
+
     </script>
 
 </body>
