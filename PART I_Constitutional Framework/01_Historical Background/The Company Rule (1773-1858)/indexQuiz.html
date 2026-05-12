@@ -5,7 +5,6 @@
 <title>PSI Online Exam</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-/* General */
 body { font-family: 'Segoe UI', sans-serif; background:#fdf6e3; margin:0; text-align:center; }
 .container { max-width:900px; margin:20px auto; background:#fff; padding:20px; border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.2); }
 h1 { color:#2c3e50; margin-bottom:15px; font-size:28px; }
@@ -19,13 +18,9 @@ h1 { color:#2c3e50; margin-bottom:15px; font-size:28px; }
 .match-item, .seq-item { padding:10px; margin:5px; border-radius:8px; background:#f7f3ea; cursor:pointer; display:inline-block; min-width:120px; }
 .correct { background:green; color:white; }
 .wrong { background:red; color:white; }
-
-/* Review Page */
 .review-correct { border-left:4px solid green; background:#e6ffe6; padding:12px; margin:12px 0; border-radius:8px; }
 .review-wrong { border-left:4px solid red; background:#ffe6e6; padding:12px; margin:12px 0; border-radius:8px; }
 .scoreBox { font-size:20px; margin-top:20px; text-align:left; line-height:1.5; }
-
-/* Small screens */
 @media (max-width:600px){
     h1 { font-size:22px; }
     .question { font-size:18px; }
@@ -69,15 +64,16 @@ let questions = [
     { type:"mcq", q:"ईस्ट इंडिया कंपनीने व्यापारी संस्थेतून राजकीय शक्ती कशी मिळवली?", options:["कारण त्यांनी फक्त व्यापार केला आणि कोणतीही युक्ती वापरली नाही","कारण त्यांनी मीर जाफरचा विश्वासघात आणि फर्मानाचा फायदा घेतला","कारण त्यांनी फ्रेंच सैनिक नेते बनवले","कारण त्यांनी पोर्तुगालवर आक्रमण केले"], answer:1 }
 ];
 
+
 let index=0, answers=[];
 
 function loadQuestion(){
     let q = questions[index];
     document.getElementById("q").innerText = q.q;
     let instr = "";
-    if(q.type==="mcq" || q.type==="assertion") instr = "✅ Click the correct option below.";
-    else if(q.type==="match") instr = "🔗 Click an item on the LEFT, then click the matching item on the RIGHT.";
-    else if(q.type==="sequence") instr = "🔢 Click the items in the correct order.";
+    if(q.type==="mcq" || q.type==="assertion") instr = "✅ खालील योग्य उत्तरावर क्लिक करा.";
+    else if(q.type==="match") instr = "🔗 A आणि B मधील योग्य जोडी क्लिक करा.";
+    else if(q.type==="sequence") instr = "🔢 घटक योग्य क्रमाने क्लिक करा.";
     document.getElementById("instruction").innerText = instr;
 
     let opts = document.getElementById("options");
@@ -91,15 +87,13 @@ function loadQuestion(){
             if(answers[index]===i) btn.classList.add("selected");
             opts.appendChild(btn);
         });
-    }
-    else if(q.type==="match"){
+    } else if(q.type==="match"){
         let selectedA = null;
         q.A.forEach((a,i)=>{
             let btn = document.createElement("button");
             btn.innerText = a;
             btn.classList.add("match-item");
             btn.onclick = ()=>{ selectedA=i; highlightMatch(selectedA,answers[index]||[]); };
-            if(answers[index] && answers[index][i]!=null) btn.classList.add("selected");
             opts.appendChild(btn);
         });
         opts.appendChild(document.createElement("br"));
@@ -112,42 +106,27 @@ function loadQuestion(){
                     answers[index] = answers[index] || [];
                     answers[index][selectedA]=i;
                     selectedA=null;
-                    loadQuestion();
+                    highlightMatch(null, answers[index]);
                 }
             };
-            if(answers[index] && answers[index].includes(i)) btn.classList.add("selected");
             opts.appendChild(btn);
         });
-    }
-    else if(q.type==="sequence"){
-        let order = answers[index] ? [...answers[index]] : [];
-        q.items.forEach((it,i)=>{
-            let btn = document.createElement("button");
-            btn.innerText = it;
-            btn.classList.add("seq-item");
-            if(order.includes(i)) btn.classList.add("selected");
-            btn.onclick = ()=>{
-                if(!order.includes(i)) order.push(i);
-                else order = order.filter(x=>x!==i);
-                answers[index]=order;
-                loadQuestion();
-            };
-            opts.appendChild(btn);
-        });
+        highlightMatch(null, answers[index]);
     }
 }
 
 function highlightMatch(selectedA, ansArr){
-    document.querySelectorAll(".match-item").forEach(b=>b.classList.remove("selected"));
+    let items = document.querySelectorAll(".match-item");
+    items.forEach(b=>b.classList.remove("selected"));
     if(ansArr){
         ansArr.forEach((b,i)=>{
             if(b!=null){
-                document.querySelectorAll(".match-item")[i].classList.add("selected");
-                document.querySelectorAll(".match-item")[questions[index].A.length+b].classList.add("selected");
+                items[i].classList.add("selected");
+                items[questions[index].A.length+b].classList.add("selected");
             }
         });
     }
-    if(selectedA!=null) document.querySelectorAll(".match-item")[selectedA].classList.add("selected");
+    if(selectedA!=null) items[selectedA].classList.add("selected");
 }
 
 function selectAnswer(i){ answers[index]=i; loadQuestion(); }
