@@ -1,1 +1,144 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ऐतिहासिक पार्श्वभूमी</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #e67e22;
+            --bg: #ffffff;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg);
+            padding-bottom: 70px; /* खालच्या नेव्हिगेशन बारसाठी जागा */
+        }
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        /* मोबाईल नेव्हिगेशन बार (तळाला) */
+        .mobile-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: #fff;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            overflow-x: auto; /* जास्त बटणे असतील तर स्क्रोल होईल */
+            white-space: nowrap;
+        }
+        .nav-item {
+            padding: 15px 10px;
+            text-decoration: none;
+            color: #7f8c8d;
+            font-size: 12px;
+            font-weight: bold;
+            border: none;
+            background: none;
+            flex-shrink: 0;
+            border-top: 3px solid transparent;
+        }
+        .nav-item.active {
+            color: var(--accent);
+            border-top: 3px solid var(--accent);
+            background: #fff9f4;
+        }
 
+        /* कंटेंट एरिया */
+        .main-container {
+            width: 100%;
+            -webkit-overflow-scrolling: touch; /* मोबाईलवर स्मूथ स्क्रोलिंगसाठी */
+        }
+        iframe {
+            width: 100%;
+            height: calc(100vh - 130px); /* स्क्रीननुसार उंची */
+            border: none;
+            display: none;
+        }
+        iframe.active {
+            display: block;
+        }
+        #welcome {
+            padding: 40px 20px;
+            text-align: center;
+            color: #95a5a6;
+        }
+    </style>
+</head>
+<body  onload="openTabByDefault()">
+
+<header style="background: linear-gradient(to right, #2c3e50, #4ca1af); color: white; padding: 20px;">
+    <h1 style="margin:0;">ब्रिटीश राजवट: ऐतिहासिक पार्श्वभूमी</h1>
+    <div style="display: flex; justify-content: center; gap: 20px; font-size: 14px; margin-top: 10px;">
+        <span>👑 क्राऊन रुल (१८५८-१९४७)</span>
+    </div>
+</header>
+
+    <div class="main-container">
+        <div id="welcome">
+            <h2>प्रकरण निवडा</h2>
+            <p>खालच्या पट्टीतील विषयांवर क्लिक करा.</p>
+        </div>
+
+        <iframe id="p1" src="1.html"></iframe>
+        <iframe id="p2" src="2.html"></iframe>
+        <iframe id="p3" src="3.html"></iframe>
+        <iframe id="p4" src="4.html"></iframe>
+        <iframe id="p5" src="5.html"></iframe>
+        <iframe id="p5" src="6.html"></iframe>
+
+    </div>
+
+    <!-- मोबाईलसाठी खालचा मेनू -->
+   <!-- नवीन नेव्हिगेशन गट -->
+<div style="background: #eee; padding: 5px; font-size: 12px; font-weight: bold;">CROWN RULE (राजसत्ता)</div>
+<nav class="mobile-nav" style="position: relative; box-shadow: none;">
+    <button class="nav-item" onclick="changeTab(event, 'p1')">१८५८ कायदा</button>
+    <button class="nav-item" onclick="changeTab(event, 'p2')">१८६१/१८९२ कायदा</button>
+    <button class="nav-item" onclick="changeTab(event, 'p3')">१९०९ कायदा</button>
+    <button class="nav-item" onclick="changeTab(event, 'p4')">१९१९ कायदा</button>
+    <button class="nav-item" onclick="changeTab(event, 'p5')">१९३५ कायदा</button>
+  <button class="nav-item" onclick="changeTab(event, 'p5')">१९47 कायदा</button>
+  
+</nav>
+
+    <script>
+          function openTabByDefault() {
+        document.querySelector('.tab-btn').click(); // पहिला बटण क्लिक केल्यासारखा
+    }
+        function changeTab(evt, tabId) {
+            // १. स्वागत संदेश लपवा
+            document.getElementById('welcome').style.display = 'none';
+
+            // २. सर्व इफेम्स लपवा
+            const iframes = document.querySelectorAll('iframe');
+            iframes.forEach(iframe => iframe.classList.remove('active'));
+
+            // ३. सर्व बटणांवरील ॲक्टिव्ह क्लास काढा
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+
+            // ४. निवडलेला इफेम दाखवा
+            document.getElementById(tabId).classList.add('active');
+            evt.currentTarget.classList.add('active');
+
+            // ५. मोबाईलवर क्लिक केल्यावर पेज आपोआप वर जाईल
+            window.scrollTo(0, 0);
+        }
+    </script>
+
+</body>
+</html>
