@@ -10,20 +10,22 @@
             --accent: #e67e22;
             --bg: #ffffff;
         }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
             padding: 0;
             background-color: var(--bg);
-            padding-bottom: 80px; 
+            /* खालच्या नेव्हिगेशन आणि लेबलसाठी पुरेशी जागा */
+            padding-bottom: 100px; 
         }
-        
-        /* हेडर ट्रान्सपरंट आणि कमी जागेचा केला आहे */
+
+        /* १. पारदर्शक आणि कमी जागेचा हेडर */
         header {
-            background: rgba(44, 62, 80, 0.9); /* पारदर्शक गडद रंग */
-            backdrop-filter: blur(5px); /* काचेसारखा इफेक्ट */
+            background: rgba(44, 62, 80, 0.85); /* ८५% पारदर्शकता */
+            backdrop-filter: blur(8px); /* काचेसारखा ब्लर इफेक्ट */
             color: white;
-            padding: 8px 15px;
+            padding: 10px 15px;
             text-align: center;
             position: sticky;
             top: 0;
@@ -31,93 +33,110 @@
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         header p {
-            margin: 2px 0;
-            font-size: 0.9rem;
+            margin: 0;
+            font-size: 1rem;
+            font-weight: bold;
         }
         header span {
             font-size: 0.75rem;
-            opacity: 0.8;
+            opacity: 0.9;
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* २. मुख्य कंटेनर आणि आयफ्रेम */
+        .main-container {
+            width: 100%;
+        }
+        iframe {
+            width: 100%;
+            /* हेडरची उंची वजा करून उरलेली पूर्ण स्क्रीन */
+            height: calc(100vh - 60px); 
+            border: none;
+            display: none;
+        }
+        iframe.active {
             display: block;
         }
 
+        /* ३. विभाग दर्शवणारे लेबल (Fixed वर) */
+        .section-label {
+            background: #f8f9fa;
+            padding: 5px 15px;
+            font-size: 11px;
+            font-weight: bold;
+            color: #2c3e50;
+            position: fixed;
+            bottom: 50px; /* नेव्हिगेशन बारच्या बरोबर वर */
+            width: 100%;
+            z-index: 999;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #eee;
+            box-sizing: border-box;
+        }
+
+        /* ४. मोबाईल नेव्हिगेशन - स्क्रोलिंगसह */
         .mobile-nav {
             position: fixed;
             bottom: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.98);
             display: flex;
-            justify-content: flex-start;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            overflow-x: auto; /* आडव्या स्क्रोलिंगसाठी */
+            white-space: nowrap; /* मजकूर एका ओळीत ठेवण्यासाठी */
+            box-shadow: 0 -3px 15px rgba(0,0,0,0.1);
             z-index: 1000;
-            overflow-x: auto;
-            white-space: nowrap;
-            -webkit-overflow-scrolling: touch;
+            /* स्मूथ स्क्रोलिंगसाठी */
+            -webkit-overflow-scrolling: touch; 
+            scrollbar-width: none; /* Firefox साठी स्क्रोलबार लपवा */
         }
         
-        /* स्क्रोलबार लपवण्यासाठी */
-        .mobile-nav::-webkit-scrollbar { display: none; }
+        /* Chrome/Safari साठी स्क्रोलबार लपवा */
+        .mobile-nav::-webkit-scrollbar {
+            display: none;
+        }
 
         .nav-item {
-            padding: 12px 15px;
+            padding: 15px 20px;
             text-decoration: none;
             color: #7f8c8d;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: bold;
             border: none;
             background: none;
-            flex-shrink: 0;
+            /* महत्त्वाचे: बटणे दबली जाऊ नयेत म्हणून */
+            flex: 0 0 auto; 
             border-top: 3px solid transparent;
+            transition: all 0.3s ease;
         }
+
         .nav-item.active {
             color: var(--accent);
             border-top: 3px solid var(--accent);
             background: #fff9f4;
         }
 
-        .main-container { width: 100%; }
-        
-        iframe {
-            width: 100%;
-            height: calc(100vh - 100px); 
-            border: none;
-            display: none;
-        }
-        iframe.active { display: block; }
-
         #welcome {
-            padding: 40px 20px;
+            padding: 50px 20px;
             text-align: center;
             color: #95a5a6;
-        }
-        
-        .section-label {
-            background: #f4f4f4;
-            padding: 4px 10px;
-            font-size: 10px;
-            font-weight: bold;
-            color: #666;
-            position: fixed;
-            bottom: 45px; /* नेव्हिगेशनच्या वर */
-            width: 100%;
-            z-index: 999;
-            border-top: 1px solid #ddd;
         }
     </style>
 </head>
 <body onload="openTabByDefault()">
 
 <header>
-    <p>ब्रिटीश राजवट: ऐतिहासिक पार्श्वभूमी</p>
+    <p>ऐतिहासिक पार्श्वभूमी</p>
     <span>👑 क्राऊन रुल (१८५८-१९४७)</span>
 </header>
 
 <div class="main-container">
     <div id="welcome">
         <h2>प्रकरण निवडा</h2>
-        <p>खालच्या पट्टीतील विषयांवर क्लिक करा.</p>
+        <p>खालील पर्यायांवरून अभ्यासाला सुरुवात करा.</p>
     </div>
 
-    <!-- IDs दुरुस्त केले आहेत (p1 ते p6) -->
+    <!-- मजकूर लोड करण्यासाठी आयफ्रेम्स -->
     <iframe id="p1" src="1.html"></iframe>
     <iframe id="p2" src="2.html"></iframe>
     <iframe id="p3" src="3.html"></iframe>
@@ -126,38 +145,52 @@
     <iframe id="p6" src="6.html"></iframe>
 </div>
 
-<div class="section-label">CROWN RULE (राजसत्ता)</div>
+<div class="section-label">📍 CROWN RULE (राजसत्ता)</div>
+
 <nav class="mobile-nav">
-    <button class="nav-item active" onclick="changeTab(event, 'p1')">१८५८ कायदा</button>
-    <button class="nav-item" onclick="changeTab(event, 'p2')">१८६१/१८९२</button>
-    <button class="nav-item" onclick="changeTab(event, 'p3')">१९०९ कायदा</button>
-    <button class="nav-item" onclick="changeTab(event, 'p4')">१९१९ कायदा</button>
-    <button class="nav-item" onclick="changeTab(event, 'p5')">१९३५ कायदा</button>
-    <button class="nav-item" onclick="changeTab(event, 'p6')">१९४७ कायदा</button>
+    <button class="nav-item" onclick="changeTab(event, 'p1')">१८५८ कायदा</button>
+    <button class="nav-item" onclick="changeTab(event, 'p2')">१८६१/१९०९</button>
+    <button class="nav-item" onclick="changeTab(event, 'p3')">१९१९ कायदा</button>
+    <button class="nav-item" onclick="changeTab(event, 'p4')">१९३५ कायदा</button>
+    <button class="nav-item" onclick="changeTab(event, 'p5')">१९४७ कायदा</button>
+    <button class="nav-item" onclick="changeTab(event, 'p6')">पहिले मंत्रिमंडळ</button>
 </nav>
 
 <script>
+    // १. पेज लोड झाल्यावर पहिला टॅब उघडणे
     function openTabByDefault() {
-        // स्वागत संदेश लपवून पहिला टॅब आपोआप उघडण्यासाठी
         const firstTab = document.querySelector('.nav-item');
-        if(firstTab) firstTab.click();
+        if(firstTab) {
+            // स्वागत संदेश लपवण्यासाठी इव्हेंट पास न करता मॅन्युअली कॉल
+            changeTab({ currentTarget: firstTab }, 'p1');
+        }
     }
 
+    // २. टॅब बदलण्याचे फंक्शन
     function changeTab(evt, tabId) {
-        document.getElementById('welcome').style.display = 'none';
+        // स्वागत संदेश लपवा
+        const welcome = document.getElementById('welcome');
+        if(welcome) welcome.style.display = 'none';
 
+        // सर्व इफेम्स लपवा
         const iframes = document.querySelectorAll('iframe');
         iframes.forEach(iframe => iframe.classList.remove('active'));
 
+        // सर्व बटणांवरील ॲक्टिव्ह क्लास काढा
         const navItems = document.querySelectorAll('.nav-item');
         navItems.forEach(item => item.classList.remove('active'));
 
+        // निवडलेला इफेम आणि बटण ॲक्टिव्ह करा
         const targetIframe = document.getElementById(tabId);
         if(targetIframe) {
             targetIframe.classList.add('active');
             evt.currentTarget.classList.add('active');
+            
+            // क्लिक केल्यावर तो टॅब स्क्रीनच्या मध्यभागी आणण्यासाठी (Auto Scroll)
+            evt.currentTarget.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
         }
 
+        // पेजच्या टॉपला जा
         window.scrollTo(0, 0);
     }
 </script>
