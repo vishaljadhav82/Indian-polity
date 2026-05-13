@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ऐतिहासिक पार्श्वभूमी</title>
+    <title>ऐतिहासिक पार्श्वभूमी - क्राऊन रुल</title>
     <style>
         :root {
             --primary: #2c3e50;
@@ -15,36 +15,53 @@
             margin: 0;
             padding: 0;
             background-color: var(--bg);
-            padding-bottom: 70px; /* खालच्या नेव्हिगेशन बारसाठी जागा */
+            padding-bottom: 80px; 
         }
+        
+        /* हेडर ट्रान्सपरंट आणि कमी जागेचा केला आहे */
         header {
-            background: var(--primary);
+            background: rgba(44, 62, 80, 0.9); /* पारदर्शक गडद रंग */
+            backdrop-filter: blur(5px); /* काचेसारखा इफेक्ट */
             color: white;
-            padding: 15px;
+            padding: 8px 15px;
             text-align: center;
-            font-size: 1.2rem;
             position: sticky;
             top: 0;
             z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
-        /* मोबाईल नेव्हिगेशन बार (तळाला) */
+        header p {
+            margin: 2px 0;
+            font-size: 0.9rem;
+        }
+        header span {
+            font-size: 0.75rem;
+            opacity: 0.8;
+            display: block;
+        }
+
         .mobile-nav {
             position: fixed;
             bottom: 0;
             width: 100%;
-            background: #fff;
+            background: rgba(255, 255, 255, 0.95);
             display: flex;
-            justify-content: space-around;
+            justify-content: flex-start;
             box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
             z-index: 1000;
-            overflow-x: auto; /* जास्त बटणे असतील तर स्क्रोल होईल */
+            overflow-x: auto;
             white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
         }
+        
+        /* स्क्रोलबार लपवण्यासाठी */
+        .mobile-nav::-webkit-scrollbar { display: none; }
+
         .nav-item {
-            padding: 15px 10px;
+            padding: 12px 15px;
             text-decoration: none;
             color: #7f8c8d;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
             border: none;
             background: none;
@@ -57,86 +74,93 @@
             background: #fff9f4;
         }
 
-        /* कंटेंट एरिया */
-        .main-container {
-            width: 100%;
-            -webkit-overflow-scrolling: touch; /* मोबाईलवर स्मूथ स्क्रोलिंगसाठी */
-        }
+        .main-container { width: 100%; }
+        
         iframe {
             width: 100%;
-            height: calc(100vh - 130px); /* स्क्रीननुसार उंची */
+            height: calc(100vh - 100px); 
             border: none;
             display: none;
         }
-        iframe.active {
-            display: block;
-        }
+        iframe.active { display: block; }
+
         #welcome {
             padding: 40px 20px;
             text-align: center;
             color: #95a5a6;
         }
+        
+        .section-label {
+            background: #f4f4f4;
+            padding: 4px 10px;
+            font-size: 10px;
+            font-weight: bold;
+            color: #666;
+            position: fixed;
+            bottom: 45px; /* नेव्हिगेशनच्या वर */
+            width: 100%;
+            z-index: 999;
+            border-top: 1px solid #ddd;
+        }
     </style>
 </head>
-<body  onload="openTabByDefault()">
+<body onload="openTabByDefault()">
 
-<header style="background: linear-gradient(to right, #2c3e50, #4ca1af); color: white; padding: 0;">
-    <p style="margin:0;">ब्रिटीश राजवट: ऐतिहासिक पार्श्वभूमी</p>
-        <p>👑 क्राऊन रुल (१८५८-१९४७)</p>
+<header>
+    <p>ब्रिटीश राजवट: ऐतिहासिक पार्श्वभूमी</p>
+    <span>👑 क्राऊन रुल (१८५८-१९४७)</span>
 </header>
 
-    <div class="main-container">
-        <div id="welcome">
-            <h2>प्रकरण निवडा</h2>
-            <p>खालच्या पट्टीतील विषयांवर क्लिक करा.</p>
-        </div>
-
-        <iframe id="p1" src="1.html"></iframe>
-        <iframe id="p2" src="2.html"></iframe>
-        <iframe id="p3" src="3.html"></iframe>
-        <iframe id="p4" src="4.html"></iframe>
-        <iframe id="p5" src="5.html"></iframe>
-        <iframe id="p5" src="6.html"></iframe>
-
+<div class="main-container">
+    <div id="welcome">
+        <h2>प्रकरण निवडा</h2>
+        <p>खालच्या पट्टीतील विषयांवर क्लिक करा.</p>
     </div>
 
-    <!-- मोबाईलसाठी खालचा मेनू -->
-   <!-- नवीन नेव्हिगेशन गट -->
-<div style="background: #eee; padding: 5px; font-size: 12px; font-weight: bold;">CROWN RULE (राजसत्ता)</div>
-<nav class="mobile-nav" style="position: relative; box-shadow: none;">
-    <button class="nav-item" onclick="changeTab(event, 'p1')">१८५८ कायदा</button>
-    <button class="nav-item" onclick="changeTab(event, 'p2')">१८६१/१८९२ कायदा</button>
+    <!-- IDs दुरुस्त केले आहेत (p1 ते p6) -->
+    <iframe id="p1" src="1.html"></iframe>
+    <iframe id="p2" src="2.html"></iframe>
+    <iframe id="p3" src="3.html"></iframe>
+    <iframe id="p4" src="4.html"></iframe>
+    <iframe id="p5" src="5.html"></iframe>
+    <iframe id="p6" src="6.html"></iframe>
+</div>
+
+<div class="section-label">CROWN RULE (राजसत्ता)</div>
+<nav class="mobile-nav">
+    <button class="nav-item active" onclick="changeTab(event, 'p1')">१८५८ कायदा</button>
+    <button class="nav-item" onclick="changeTab(event, 'p2')">१८६१/१८९२</button>
     <button class="nav-item" onclick="changeTab(event, 'p3')">१९०९ कायदा</button>
     <button class="nav-item" onclick="changeTab(event, 'p4')">१९१९ कायदा</button>
     <button class="nav-item" onclick="changeTab(event, 'p5')">१९३५ कायदा</button>
-  <button class="nav-item" onclick="changeTab(event, 'p5')">१९47 कायदा</button>
-  
+    <button class="nav-item" onclick="changeTab(event, 'p6')">१९४७ कायदा</button>
 </nav>
 
-    <script>
-          function openTabByDefault() {
-        document.querySelector('.tab-btn').click(); // पहिला बटण क्लिक केल्यासारखा
+<script>
+    function openTabByDefault() {
+        // स्वागत संदेश लपवून पहिला टॅब आपोआप उघडण्यासाठी
+        const firstTab = document.querySelector('.nav-item');
+        if(firstTab) firstTab.click();
     }
-        function changeTab(evt, tabId) {
-            // १. स्वागत संदेश लपवा
-            document.getElementById('welcome').style.display = 'none';
 
-            // २. सर्व इफेम्स लपवा
-            const iframes = document.querySelectorAll('iframe');
-            iframes.forEach(iframe => iframe.classList.remove('active'));
+    function changeTab(evt, tabId) {
+        document.getElementById('welcome').style.display = 'none';
 
-            // ३. सर्व बटणांवरील ॲक्टिव्ह क्लास काढा
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(item => item.classList.remove('active'));
+        const iframes = document.querySelectorAll('iframe');
+        iframes.forEach(iframe => iframe.classList.remove('active'));
 
-            // ४. निवडलेला इफेम दाखवा
-            document.getElementById(tabId).classList.add('active');
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => item.classList.remove('active'));
+
+        const targetIframe = document.getElementById(tabId);
+        if(targetIframe) {
+            targetIframe.classList.add('active');
             evt.currentTarget.classList.add('active');
-
-            // ५. मोबाईलवर क्लिक केल्यावर पेज आपोआप वर जाईल
-            window.scrollTo(0, 0);
         }
-    </script>
+
+        window.scrollTo(0, 0);
+    }
+</script>
 
 </body>
 </html>
