@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>भारतीय राज्यघटना</title>
+    <title>भारतीय राज्यघटना - Iframe Structure</title>
 
     <style>
         :root {
             --primary: #2c3e50;
             --accent: #e67e22;
-            --bg: #f8f9fa;
-            --text: #2d3436;
+            --bg: #ffffff;
         }
 
         body {
@@ -18,9 +17,7 @@
             margin: 0;
             padding: 0;
             background-color: var(--bg);
-            color: var(--text);
-            /* बॉटम नेव्हिगेशनसाठी जागा */
-            padding-bottom: 70px; 
+            overflow: hidden; /* मुख्य पेजचा स्क्रोलबार लपवण्यासाठी */
         }
 
         header {
@@ -28,163 +25,148 @@
             color: white;
             padding: 15px;
             text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            height: 60px; /* फिक्स हाईट */
+            box-sizing: border-box;
         }
 
-        header h2 { margin: 0; font-size: 1.2rem; }
-        header p { margin: 5px 0 0; color: #dfe6e9; font-size: 0.85rem; }
+        header h2 { margin: 0; font-size: 1.1rem; }
+        header p { margin: 2px 0 0; color: #dfe6e9; font-size: 0.8rem; }
 
-        /* कंटेंट एरिया */
-        .content-section {
+        /* Iframe Container */
+        .main-container {
+            width: 100%;
+            height: calc(100vh - 130px); /* हेडर आणि नेव्हीगेशन वजा करून उरलेली जागा */
+            position: relative;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
             display: none; /* सुरुवातीला सर्व लपवा */
-            padding: 20px;
-            animation: fadeIn 0.3s ease; /* बदलताना स्मूथ इफेक्ट */
         }
 
-        .content-section.active {
-            display: block;
+        iframe.active {
+            display: block; /* फक्त ॲक्टिव्ह iframe दाखवा */
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* बॉटम नेव्हिगेशन */
+        /* Bottom Navigation */
         .mobile-nav {
             position: fixed;
             bottom: 0;
             width: 100%;
-            background: #ffffff;
+            height: 70px;
+            background: #fff;
             display: flex;
             overflow-x: auto;
             white-space: nowrap;
-            box-shadow: 0 -2px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
             z-index: 1000;
-            scrollbar-width: none; /* Firefox साठी */
+            scrollbar-width: none;
         }
-
-        .mobile-nav::-webkit-scrollbar { display: none; } /* Chrome साठी */
+        .mobile-nav::-webkit-scrollbar { display: none; }
 
         .nav-item {
-            padding: 15px 20px;
+            padding: 0 18px;
+            height: 100%;
             border: none;
             background: none;
-            font-size: 13px;
-            font-weight: 600;
-            color: #b2bec3;
+            font-size: 12px;
+            font-weight: bold;
+            color: #7f8c8d;
             flex-shrink: 0;
+            cursor: pointer;
+            border-top: 4px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: 0.3s;
-            border-top: 3px solid transparent;
         }
 
         .nav-item.active {
             color: var(--accent);
-            border-top: 3px solid var(--accent);
+            border-top: 4px solid var(--accent);
             background: #fff8f2;
         }
 
-        /* कार्ड स्टाईल (तुमचा मजकूर चांगला दिसण्यासाठी) */
-        .card {
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        #welcome-screen {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #f8f9fa;
+            text-align: center;
+            color: #7f8c8d;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h2 id="current-title">भारतीय राज्यघटना</h2>
-        <p id="current-subtitle">प्रकरण १: ऐतिहासिक पार्श्वभूमी</p>
+        <h2 id="display-title">भारतीय राज्यघटना</h2>
+        <p id="display-subtitle">घटना समिती आणि संविधान निर्मिती</p>
     </header>
 
-    <main class="main-container">
+    <div class="main-container">
+        <!-- वेलकम स्क्रीन -->
+        <div id="welcome-screen">
+            <h3>प्रकरण निवडा</h3>
+            <p>खालील मेनूमधून अभ्यासासाठी विषय निवडा.</p>
+        </div>
 
-        <!-- विभाग १ -->
-        <section id="p1" class="content-section active">
-            <div class="card">
-                <h3>📜 राज्यघटना निर्मिती</h3>
-                <p>येथे तुमच्या १.html चा मजकूर पेस्ट करा...</p>
-            </div>
-        </section>
+        <!-- Iframes (src मध्ये तुमच्या फाईल्सची नावे खात्री करा) -->
+        <iframe id="p1" src="1.html"></iframe>
+        <iframe id="p2" src="2.html"></iframe>
+        <iframe id="p3" src="3.html"></iframe>
+        <iframe id="p4" src="4.html"></iframe>
+        <iframe id="p5" src="5.html"></iframe>
+        <iframe id="p6" src="6.html"></iframe>
+        <iframe id="p7" src="7.html"></iframe>
+    </div>
 
-        <!-- विभाग २ -->
-        <section id="p2" class="content-section">
-            <div class="card">
-                <h3>👥 समिती रचना</h3>
-                <p>येथे तुमच्या २.html चा मजकूर पेस्ट करा...</p>
-            </div>
-        </section>
-
-        <!-- विभाग ३ -->
-        <section id="p3" class="content-section">
-            <div class="card">
-                <h3>⚙️ समिती कार्य</h3>
-                <p>येथे तुमच्या ३.html चा मजकूर पेस्ट करा...</p>
-            </div>
-        </section>
-
-        <!-- विभाग ४ ते ७ याच प्रमाणे वाढवा -->
-        <section id="p4" class="content-section">
-            <div class="card"><h3>🏛️ घटना समिती</h3><p>मजकूर ४...</p></div>
-        </section>
-        
-        <section id="p5" class="content-section">
-            <div class="card"><h3>📑 समित्या</h3><p>मजकूर ५...</p></div>
-        </section>
-
-        <section id="p6" class="content-section">
-            <div class="card"><h3>⏳ अंमलबजावणीपूर्व</h3><p>मजकूर ६...</p></div>
-        </section>
-
-        <section id="p7" class="content-section">
-            <div class="card"><h3>✅ अंमलबजावणी</h3><p>मजकूर ७...</p></div>
-        </section>
-
-    </main>
-
-    <!-- Bottom Navigation -->
     <nav class="mobile-nav">
-        <button class="nav-item active" onclick="changeTab(this, 'p1', 'राज्यघटना', 'ऐतिहासिक पार्श्वभूमी')">राज्यघटना</button>
-        <button class="nav-item" onclick="changeTab(this, 'p2', 'समिती रचना', 'घटना समितीची बांधणी')">समिती रचना</button>
-        <button class="nav-item" onclick="changeTab(this, 'p3', 'समिती कार्य', 'कामाची पद्धत')">समिती कार्य</button>
-        <button class="nav-item" onclick="changeTab(this, 'p4', 'घटना समिती', 'प्रमुख वैशिष्ठ्ये')">घटना समिती</button>
-        <button class="nav-item" onclick="changeTab(this, 'p5', 'समित्या', 'विविध उप-समित्या')">समित्या</button>
-        <button class="nav-item" onclick="changeTab(this, 'p6', 'अंमलबजावणीपूर्व', 'अंतिम मसुदा')">अंमलबजावणीपूर्व</button>
-        <button class="nav-item" onclick="changeTab(this, 'p7', 'अंमलबजावणी', 'प्रजासत्ताक भारत')">अंमलबजावणी</button>
+        <button class="nav-item" onclick="changeTab(this, 'p1', '१८५८ कायदा', 'ऐतिहासिक पार्श्वभूमी')">१८५८</button>
+        <button class="nav-item" onclick="changeTab(this, 'p2', '१८६१-१९०९', 'सहकार्य व प्रतिनिधित्व')">१८६१-०९</button>
+        <button class="nav-item" onclick="changeTab(this, 'p3', '१९१९ कायदा', 'द्विदल शासन पद्धती')">१९१९</button>
+        <button class="nav-item" onclick="changeTab(this, 'p4', '१९३५ कायदा', 'प्रांतिक स्वायत्तता')">१९३५</button>
+        <button class="nav-item" onclick="changeTab(this, 'p5', '१९४७ कायदा', 'स्वातंत्र्य व फाळणी')">१९४७</button>
+        <button class="nav-item" onclick="changeTab(this, 'p6', 'प्रशासन', 'अंतरिम सरकार')">प्रशासन</button>
+        <button class="nav-item" onclick="changeTab(this, 'p7', 'घटना समिती', 'संविधान सभेची रचना')">संविधान</button>
     </nav>
 
     <script>
-        function changeTab(element, tabId, title, subtitle) {
-            // १. सर्व सेक्शन्स लपवा
-            const sections = document.querySelectorAll('.content-section');
-            sections.forEach(s => s.classList.remove('active'));
+        function changeTab(btn, tabId, title, subtitle) {
+            // १. वेलकम स्क्रीन लपवा
+            const welcome = document.getElementById('welcome-screen');
+            if(welcome) welcome.style.display = 'none';
 
-            // २. सर्व बटण डी-ॲक्टिव्हेट करा
-            const buttons = document.querySelectorAll('.nav-item');
-            buttons.forEach(b => b.classList.remove('active'));
+            // २. सर्व iframe लपवा
+            document.querySelectorAll('iframe').forEach(frame => {
+                frame.classList.remove('active');
+            });
 
-            // ३. हवा असलेला सेक्शन दाखवा
-            document.getElementById(tabId).classList.add('active');
+            // ३. सर्व बटण डी-ॲक्टिव्हेट करा
+            document.querySelectorAll('.nav-item').forEach(button => {
+                button.classList.remove('active');
+            });
 
-            // ४. क्लिक केलेल्या बटणाला ॲक्टिव्ह करा
-            element.classList.add('active');
+            // ४. निवडलेला iframe दाखवा
+            const activeFrame = document.getElementById(tabId);
+            activeFrame.classList.add('active');
 
-            // ५. हेडरचे नाव बदला (Dynamic feel साठी)
-            document.getElementById('current-title').innerText = title;
-            document.getElementById('current-subtitle').innerText = subtitle;
+            // ५. बटण ॲक्टिव्ह करा
+            btn.classList.add('active');
 
-            // ६. स्क्रीन वरती न्या
-            window.scrollTo({top: 0, behavior: 'smooth'});
+            // ६. हेडर मजकूर बदला
+            document.getElementById('display-title').innerText = title;
+            document.getElementById('display-subtitle').innerText = subtitle;
 
-            // ७. बटण सेंटरला स्क्रोल करा (मोबाईलवर सोयीचे पडते)
-            element.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            // ७. मोबाईलवर बटण सेंटरला स्क्रोल करा
+            btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
         }
     </script>
 
