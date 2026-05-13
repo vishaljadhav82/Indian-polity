@@ -78,7 +78,7 @@
         }
     </style>
 </head>
-<body>
+<body  onload="openTabByDefault()">
 
     <header>ऐतिहासिक पार्श्वभूमी</header>
 
@@ -105,6 +105,9 @@
     </nav>
 
     <script>
+          function openTabByDefault() {
+        document.querySelector('.tab-btn').click(); // पहिला बटण क्लिक केल्यासारखा
+    }
         function changeTab(evt, tabId) {
             // १. स्वागत संदेश लपवा
             document.getElementById('welcome').style.display = 'none';
