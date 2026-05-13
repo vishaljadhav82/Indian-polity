@@ -3,125 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ऐतिहासिक पार्श्वभूमी (१६०० ते १७५७)</title>
+    <title>ऐतिहासिक पार्श्वभूमी</title>
     <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #e67e22;
+            --bg: #ffffff;
+        }
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
-            padding: 20px;
-            text-align: center;
+            padding: 0;
+            background-color: var(--bg);
+            padding-bottom: 70px; /* खालच्या नेव्हिगेशन बारसाठी जागा */
         }
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 30px;
-            border-bottom: 3px solid #2c3e50;
-            display: inline-block;
-            padding-bottom: 10px;
-        }
-        .nav-container {
-            margin-bottom: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-        }
-        button {
-            padding: 12px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            background-color: #3498db;
+        header {
+            background: var(--primary);
             color: white;
-            transition: 0.3s;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
-        button:hover {
-            background-color: #2980b9;
-        }
-        button.active {
-            background-color: #2c3e50;
-            box-shadow: inset 0 0 5px rgba(0,0,0,0.5);
-        }
-        .iframe-container {
+        /* मोबाईल नेव्हिगेशन बार (तळाला) */
+        .mobile-nav {
+            position: fixed;
+            bottom: 0;
             width: 100%;
-            max-width: 1000px;
-            margin: 0 auto;
-            height: 80vh;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.2);
-            overflow: hidden;
-            display: none; /* सुरुवातीला सर्व लपवलेले */
+            background: #fff;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            overflow-x: auto; /* जास्त बटणे असतील तर स्क्रोल होईल */
+            white-space: nowrap;
+        }
+        .nav-item {
+            padding: 15px 10px;
+            text-decoration: none;
+            color: #7f8c8d;
+            font-size: 12px;
+            font-weight: bold;
+            border: none;
+            background: none;
+            flex-shrink: 0;
+            border-top: 3px solid transparent;
+        }
+        .nav-item.active {
+            color: var(--accent);
+            border-top: 3px solid var(--accent);
+            background: #fff9f4;
+        }
+
+        /* कंटेंट एरिया */
+        .main-container {
+            width: 100%;
+            -webkit-overflow-scrolling: touch; /* मोबाईलवर स्मूथ स्क्रोलिंगसाठी */
         }
         iframe {
             width: 100%;
-            height: 100%;
+            height: calc(100vh - 130px); /* स्क्रीननुसार उंची */
             border: none;
+            display: none;
         }
-        #welcome-msg {
-            margin-top: 50px;
-            color: #7f8c8d;
+        iframe.active {
+            display: block;
+        }
+        #welcome {
+            padding: 40px 20px;
+            text-align: center;
+            color: #95a5a6;
         }
     </style>
 </head>
 <body>
 
-    <h1>ऐतिहासिक पार्श्वभूमी (१६०० ते १७५७)</h1>
+    <header>ऐतिहासिक पार्श्वभूमी</header>
 
-    <div class="nav-container">
-        <button onclick="showPage('page1', this)">भारतात युरोपियनांचे आगमन</button>
-        <button onclick="showPage('page2', this)">१७७३ चा रेग्युलेटिंग ॲक्ट</button>
-        <button onclick="showPage('page3', this)">पिट्स इंडिया ॲक्ट, १७८४</button>
-        <button onclick="showPage('page4', this)">चार्टर ॲक्ट १८३३</button>
-        <button onclick="showPage('page5', this)">चार्टर ॲक्ट १८५३</button>
+    <div class="main-container">
+        <div id="welcome">
+            <h2>प्रकरण निवडा</h2>
+            <p>खालच्या पट्टीतील विषयांवर क्लिक करा.</p>
+        </div>
+
+        <iframe id="p1" src="1.html"></iframe>
+        <iframe id="p2" src="2.html"></iframe>
+        <iframe id="p3" src="3.html"></iframe>
+        <iframe id="p4" src="4.html"></iframe>
+        <iframe id="p5" src="5.html"></iframe>
     </div>
 
-    <div id="welcome-msg">
-        <h3>कृपया माहिती पाहण्यासाठी वरील बटणांवर क्लिक करा.</h3>
-    </div>
-
-    <!-- iFrame Sections -->
-    <div id="page1" class="iframe-container">
-        <iframe src="1.html"></iframe> <!-- मूळ index.html ला 1.html नाव देऊन येथे लोड करा -->
-    </div>
-
-    <div id="page2" class="iframe-container">
-        <iframe src="2.html"></iframe>
-    </div>
-
-    <div id="page3" class="iframe-container">
-        <iframe src="3.html"></iframe>
-    </div>
-
-    <div id="page4" class="iframe-container">
-        <iframe src="4.html"></iframe>
-    </div>
-
-    <div id="page5" class="iframe-container">
-        <iframe src="5.html"></iframe>
-    </div>
+    <!-- मोबाईलसाठी खालचा मेनू -->
+    <nav class="mobile-nav">
+        <button class="nav-item" onclick="changeTab(event, 'p1')">आगमन</button>
+        <button class="nav-item" onclick="changeTab(event, 'p2')">१७७३ कायदा</button>
+        <button class="nav-item" onclick="changeTab(event, 'p3')">१७८४ कायदा</button>
+        <button class="nav-item" onclick="changeTab(event, 'p4')">१८३३ कायदा</button>
+        <button class="nav-item" onclick="changeTab(event, 'p5')">१८५३ कायदा</button>
+    </nav>
 
     <script>
-        function showPage(pageId, btn) {
-            // सर्व इफेम्स लपवा
-            var iframes = document.getElementsByClassName('iframe-container');
-            for (var i = 0; i < iframes.length; i++) {
-                iframes[i].style.display = 'none';
-            }
+        function changeTab(evt, tabId) {
+            // १. स्वागत संदेश लपवा
+            document.getElementById('welcome').style.display = 'none';
 
-            // स्वागत मेसेज लपवा
-            document.getElementById('welcome-msg').style.display = 'none';
+            // २. सर्व इफेम्स लपवा
+            const iframes = document.querySelectorAll('iframe');
+            iframes.forEach(iframe => iframe.classList.remove('active'));
 
-            // सर्व बटणांवरील 'active' क्लास काढा
-            var buttons = document.getElementsByTagName('button');
-            for (var i = 0; i < buttons.length; i++) {
-                buttons[i].classList.remove('active');
-            }
+            // ३. सर्व बटणांवरील ॲक्टिव्ह क्लास काढा
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
 
-            // निवडलेला इफेम दाखवा आणि बटण हायलाईट करा
-            document.getElementById(pageId).style.display = 'block';
-            btn.classList.add('active');
+            // ४. निवडलेला इफेम दाखवा
+            document.getElementById(tabId).classList.add('active');
+            evt.currentTarget.classList.add('active');
+
+            // ५. मोबाईलवर क्लिक केल्यावर पेज आपोआप वर जाईल
+            window.scrollTo(0, 0);
         }
     </script>
 
