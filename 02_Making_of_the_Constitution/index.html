@@ -1,1 +1,195 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>भारतीय राज्यघटना</title>
 
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #e67e22;
+            --bg: #ffffff;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg);
+            padding-bottom: 75px;
+        }
+
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header h2 {
+            margin: 0;
+            font-size: 1.3rem;
+        }
+
+        header p {
+            margin: 5px 0 0;
+            color: #dfe6e9;
+            font-size: 0.95rem;
+        }
+
+        /* Bottom Navigation */
+        .mobile-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: #fff;
+            display: flex;
+            overflow-x: auto;
+            white-space: nowrap;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .mobile-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-item {
+            padding: 14px 12px;
+            border: none;
+            background: none;
+            font-size: 12px;
+            font-weight: bold;
+            color: #7f8c8d;
+            flex-shrink: 0;
+            border-top: 3px solid transparent;
+            cursor: pointer;
+        }
+
+        .nav-item.active {
+            color: var(--accent);
+            border-top: 3px solid var(--accent);
+            background: #fff8f2;
+        }
+
+        .main-container {
+            width: 100%;
+        }
+
+        iframe {
+            width: 100%;
+            height: calc(100vh - 140px);
+            border: none;
+            display: none;
+        }
+
+        iframe.active {
+            display: block;
+        }
+
+        #welcome {
+            text-align: center;
+            padding: 50px 20px;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h2>भारतीय राज्यघटना</h2>
+        <p>घटना समिती आणि संविधान निर्मिती</p>
+    </header>
+
+    <div class="main-container">
+
+        <div id="welcome">
+            <h2>प्रकरण निवडा</h2>
+            <p>खालच्या मेनूमधून विषय निवडा.</p>
+        </div>
+
+        <!-- Iframes -->
+        <iframe id="p1" src="1.html"></iframe>
+        <iframe id="p2" src="2.html"></iframe>
+        <iframe id="p3" src="3.html"></iframe>
+        <iframe id="p4" src="4.html"></iframe>
+        <iframe id="p5" src="5.html"></iframe>
+        <iframe id="p6" src="6.html"></iframe>
+        <iframe id="p7" src="7.html"></iframe>
+
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="mobile-nav">
+
+        <button class="nav-item" onclick="changeTab(event,'p1')">
+            राज्यघटना
+        </button>
+
+        <button class="nav-item" onclick="changeTab(event,'p2')">
+            समिती रचना
+        </button>
+
+        <button class="nav-item" onclick="changeTab(event,'p3')">
+            समिती कार्य
+        </button>
+
+        <button class="nav-item" onclick="changeTab(event,'p4')">
+            घटना समिती
+        </button>
+
+        <button class="nav-item" onclick="changeTab(event,'p5')">
+            समित्या
+        </button>
+
+        <button class="nav-item" onclick="changeTab(event,'p6')">
+            अंमलबजावणीपूर्व
+        </button>
+
+        <button class="nav-item" onclick="changeTab(event,'p7')">
+            अंमलबजावणी
+        </button>
+
+    </nav>
+
+   <script>
+
+    function openDefaultTab() {
+
+        document.getElementById('welcome').style.display = 'none';
+
+        document.getElementById('p1').classList.add('active');
+
+        document.querySelector('.nav-item').classList.add('active');
+    }
+
+    function changeTab(evt, tabId) {
+
+        document.getElementById('welcome').style.display = 'none';
+
+        const iframes = document.querySelectorAll('iframe');
+        iframes.forEach(frame => {
+            frame.classList.remove('active');
+        });
+
+        const buttons = document.querySelectorAll('.nav-item');
+        buttons.forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        document.getElementById(tabId).classList.add('active');
+
+        evt.currentTarget.classList.add('active');
+
+        window.scrollTo(0, 0);
+    }
+
+</script>
+
+</body>
+</html>
