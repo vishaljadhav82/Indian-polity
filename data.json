@@ -1,0 +1,666 @@
+{
+  "intune_concepts": [
+    {
+      "category": "App Management & Delivery",
+      "concepts": [
+        {
+          "name": "Enterprise App Catalogue",
+          "explanation": "A curated repository within Intune that simplifies the discovery, deployment, and automatic updating of common third-party Win32 applications.",
+          "example": "Deploying Google Chrome or Adobe Acrobat Reader directly from the built-in catalog without manually packaging the installation files.",
+          "default_value": "App updates are set to 'Show all visual notifications' to the user by default, and update checks run automatically in the background."
+        },
+        {
+          "name": "Company Portal App",
+          "explanation": "The user-facing storefront application where employees can self-install authorized apps, view device compliance status, and contact IT support.",
+          "example": "A marketing employee opening the app to download an approved copy of Camtasia labeled as 'Available'.",
+          "default_value": "Syncs automatically with Intune every 8 hours on Windows devices."
+        },
+        {
+          "name": "App configuration policies",
+          "explanation": "Instructions pushed to managed applications to pre-configure settings, accounts, or branding before the user opens the app.",
+          "example": "Pre-populating the corporate server URL in the Zoom app so users do not have to type it.",
+          "default_value": "Configured using Configuration designer (UI format) or raw JSON data."
+        },
+        {
+          "name": "App settings",
+          "explanation": "The individual, granular configuration values or key-pair keys defined within an app configuration policy to customize application behavior.",
+          "example": "Setting the key 'com.microsoft.outlook.EmailProfile.AccountDomain' to your company's domain.",
+          "default_value": "No default keys are populated; settings are completely dependent on the specific app developer’s documentation."
+        },
+        {
+          "name": "Application assignments",
+          "explanation": "The process of targeting applications to specific users or devices as 'Required', 'Available', or 'Uninstall'.",
+          "example": "Assigning Microsoft Teams as 'Required' for all employees, ensuring it installs automatically.",
+          "default_value": "Delivery optimization priority is set to 'Background' for Required apps, and app availability is set to 'As soon as possible'."
+        },
+        {
+          "name": "Application information",
+          "explanation": "The metadata of an app—such as name, description, publisher, and icon—displayed to users within the Company Portal.",
+          "example": "Uploading a high-resolution Slack logo and a 2-sentence description so users know exactly what they are installing.",
+          "default_value": "'Show this as a featured app in the Company Portal' is toggled to No by default."
+        },
+        {
+          "name": "Managed Google Play App",
+          "explanation": "Android applications sourced from the secure enterprise Google Play store and approved by IT for deployment to Android Enterprise devices.",
+          "example": "Approving the OneDrive app in the Google Play console so it instantly appears in your Intune app inventory.",
+          "default_value": "App runtime permissions are set to 'Prompt' user consent by default."
+        },
+        {
+          "name": "Line of business app",
+          "explanation": "A custom, in-house developed application (such as an .msi, .apk, or .ipa) uploaded directly to Intune for deployment.",
+          "example": "Uploading a custom-built inventory-tracking .msi app developed by your internal software team.",
+          "default_value": "'Ignore app version' is set to No (meaning Intune will strictly check the app version during evaluation)."
+        },
+        {
+          "name": "Mobile application management (MAM)",
+          "explanation": "A management approach focused strictly on securing and controlling corporate data within applications without requiring the user to enroll their entire personal device.",
+          "example": "Securing business emails by applying corporate restrictions exclusively to the Outlook mobile app on an employee's personal iPhone (BYOD).",
+          "default_value": "Data protection applies immediately to any application natively integrated with the Microsoft Intune App SDK."
+        },
+        {
+          "name": "Android Enterprise system app",
+          "explanation": "Pre-installed, native device applications (like the camera or calculator) that IT can explicitly enable or disable on corporate Android devices.",
+          "example": "Unhiding the native Samsung Camera app on a dedicated corporate barcode-scanning device.",
+          "default_value": "Native system apps are automatically hidden/disabled on Android Enterprise fully managed profiles to ensure a clean slate."
+        },
+        {
+          "name": "Difference assignments all devices, users, or single group",
+          "explanation": "Targeting 'All Devices' applies settings regardless of who logs in, 'All Users' ensures settings follow the person across devices, while a 'Single Group' confines the policy to a specific, scoped subset of identities.",
+          "example": "Assigning a VPN profile to All Devices (so it is ready at the login screen) vs. assigning an expense app to a Single Group named 'Finance-Dept'.",
+          "default_value": "Intune defaults to evaluating Exclusion groups first, overriding any Inclusion groups."
+        },
+        {
+          "name": "Add android store apps",
+          "explanation": "The process of adding publicly available applications from the Managed Google Play store into the Intune console for deployment.",
+          "example": "Searching for and adding the Salesforce mobile app from the integrated Play Store tab.",
+          "default_value": "The application syncs into your main Intune console roughly 10 to 15 minutes after approval."
+        },
+        {
+          "name": "Microsoft 365 apps with intune",
+          "explanation": "A built-in Intune app suite category that allows administrators to easily configure and deploy the Microsoft 365 productivity suite to Windows or macOS endpoints.",
+          "example": "Deploying Excel, Word, and PowerPoint to a fleet of new laptops in a single click.",
+          "default_value": "Update channel defaults to 'Current Channel', and old architecture versions default to '64-bit'."
+        }
+      ]
+    },
+    {
+      "category": "App Protection & Data Security (MAM)",
+      "concepts": [
+        {
+          "name": "App protection policy",
+          "explanation": "A set of security rules (like restricting copy-paste or requiring an app PIN) that safeguards corporate data inside specific apps, regardless of whether the device is enrolled.",
+          "example": "Restricting an employee from copying text out of corporate Outlook and pasting it into personal WhatsApp.",
+          "default_value": "'Target to apps on all device types' is set to Yes (covering both managed and unmanaged personal devices)."
+        },
+        {
+          "name": "Policy for office apps",
+          "explanation": "Targeted app protection or configuration rules applied specifically to core Microsoft productivity applications like Word, Excel, and Outlook to protect corporate data.",
+          "example": "Blocking users from saving corporate Excel spreadsheets directly to a personal Dropbox account.",
+          "default_value": "Handled via the Microsoft 365 Apps security baseline which auto-configures common macro-blocking behaviors."
+        },
+        {
+          "name": "Data Protection",
+          "explanation": "The section of an app protection policy that controls data movement, such as blocking 'Save As' to personal storage or preventing screenshots.",
+          "example": "Setting corporate files to automatically save only to OneDrive for Business.",
+          "default_value": "'Backup org data to Android/iOS cloud backups' is set to Block."
+        },
+        {
+          "name": "Access Requirements",
+          "explanation": "The security criteria inside an app protection policy that a user must meet to open an app, such as setting a complex PIN or providing biometric authentication.",
+          "example": "Requiring a 4-digit PIN and FaceID to unlock the corporate Outlook app.",
+          "default_value": "PIN type is Numeric, minimum length is 4 digits, and biometric override is Allowed."
+        },
+        {
+          "name": "Conditional Launch",
+          "explanation": "A mechanism that checks device health and user compliance at app startup, blocking access or wiping data if conditions (like a minimum OS version) aren't met.",
+          "example": "Prompting a user that they cannot open their work email because their iPhone is running an outdated iOS version.",
+          "default_value": "Max PIN attempts before a local data wipe is set to 5 attempts."
+        },
+        {
+          "name": "Device Rooted or jailbroken",
+          "explanation": "A critical health check that identifies devices where operating system security restrictions have been bypassed, making them unsafe to access corporate data.",
+          "example": "Instantly blocking access to corporate OneDrive the moment a user jailbreaks their iPhone using tools like checkra1n.",
+          "default_value": "The default action configured for rooted/jailbroken devices is Block Access (can be configured to Wipe Data)."
+        },
+        {
+          "name": "Organization data encryption",
+          "explanation": "The mandatory, software-level encryption applied by Intune app protection policies to isolate and secure corporate data stored within managed apps on mobile devices.",
+          "example": "Automatically encrypting data caches stored inside the local storage sandbox of the Microsoft Teams mobile app.",
+          "default_value": "'Encrypt org data' is set to Require in all standard MAM policies."
+        },
+        {
+          "name": "Wipe data",
+          "explanation": "A targeted remote action that selectively deletes only corporate data from protected applications, leaving the user's personal photos and files untouched.",
+          "example": "Offboarding a contractor and wiping corporate emails off their personal iPad without deleting their personal photos.",
+          "default_value": "Once initiated, the wipe command executes the very next time the targeted application connects to the internet."
+        },
+        {
+          "name": "MAM vs. MDM conflicts",
+          "explanation": "A scenario where Mobile Application Management and Mobile Device Management policies overlap, typically resolved because Intune automatically defers to the more restrictive data protection rule.",
+          "example": "An MDM policy allows copy-paste across the whole phone, but a MAM app protection policy blocks it inside Outlook; the MAM policy wins for Outlook data.",
+          "default_value": "When identity-based MAM and device-based MDM policies conflict, MAM (App Protection) policies take precedence regarding data handling within that app."
+        }
+      ]
+    },
+    {
+      "category": "Device Configuration & Settings",
+      "concepts": [
+        {
+          "name": "Device Configuration Settings Catalogue",
+          "explanation": "A comprehensive, searchable interface in Intune containing all individual settings available for customization across various device platforms.",
+          "example": "Searching for 'Bluetooth' to quickly find and disable the setting that allows corporate laptops to discover unknown devices.",
+          "default_value": "Settings are in a 'Not Configured' state until explicitly added to a profile by an administrator."
+        },
+        {
+          "name": "Device Configuration Templates",
+          "explanation": "Pre-packaged logical groupings of settings tailored for specific scenarios (like VPN, Wi-Fi, or Certificates) to streamline policy creation.",
+          "example": "Selecting the Wi-Fi template to push out your corporate network SSID and WPA2 security key to all laptops.",
+          "default_value": "Templates come with standard enterprise baselines pre-selected, but require administrators to input environment-specific fields (like server names)."
+        },
+        {
+          "name": "Device Configuration profile and Delivery Optimization",
+          "explanation": "A configuration policy used to manage how Windows updates are downloaded, allowing devices to share update files locally to save internet bandwidth.",
+          "example": "Configuring a branch office of 100 computers so only 1 machine downloads a major Windows update from the internet, while the other 99 pull it from that local machine.",
+          "default_value": "Download mode defaults to 'HTTP blended with peering behind same NAT' (LAN peering enabled)."
+        },
+        {
+          "name": "Delivery Optimization Template",
+          "explanation": "A specific, pre-built settings template used to configure peer-to-peer caching behaviors for Windows updates.",
+          "example": "Pushing out a configuration that limits Delivery Optimization caching to machines with at least 4GB of RAM and 32GB of free disk space.",
+          "default_value": "Cache age limit is set to 7 days and the minimum file size allowed to cache is 50 MB."
+        },
+        {
+          "name": "Import administrative template",
+          "explanation": "The ability to upload custom third-party group policy settings into Intune to manage applications or features not natively included in the console.",
+          "example": "Uploading custom Google Chrome policies into Intune so you can enforce a corporate home page across Chrome users.",
+          "default_value": "Requires matching pairs of custom structural files to be uploaded successfully before configuration can begin."
+        },
+        {
+          "name": "ADMX and ADML",
+          "explanation": "The underlying XML-based files where .admx defines the structure of configuration settings and .adml provides the localized language text for those settings.",
+          "example": "Uploading GoogleChrome.admx for system logic along with GoogleChrome.adml so the text labels show up in English inside the Intune portal.",
+          "default_value": "Intune natively includes standard Windows OS ADMX files automatically updated by Microsoft."
+        },
+        {
+          "name": "Assignment filters for apps, policies, profiles",
+          "explanation": "High-performance rules applied to policy assignments that dynamically include or exclude devices based on specific attributes like model, manufacturer, or OS version.",
+          "example": "Creating a filter where 'device.model -startsWith \"Surface Pro\"' to ensure a specific hardware driver is only assigned to Microsoft Surface tablets.",
+          "default_value": "Devices that do not match the evaluation rule are immediately skipped from processing during the policy evaluation cycle."
+        },
+        {
+          "name": "Group Policy Analytics",
+          "explanation": "An assessment tool that analyzes imported on-premises Group Policy Objects (GPOs) to determine their compatibility and readiness for transition to cloud-based Intune policies.",
+          "example": "Uploading an old corporate desktop GPO XML report and discovering that 85% of its settings have direct, modern equivalents in the Intune Settings Catalog.",
+          "default_value": "Analysis reports map imported settings into three clear status labels: Supported, Not Supported, or Unknown."
+        }
+      ]
+    },
+    {
+      "category": "Enrollment & Device Identity",
+      "concepts": [
+        {
+          "name": "Automatic Enrollment",
+          "explanation": "A feature that seamlessly and automatically registers a device into Intune MDM as soon as it is joined to Microsoft Entra ID.",
+          "example": "A user logging into their new Windows laptop with their corporate email for the first time, causing the machine to silently enroll into Intune management.",
+          "default_value": "MDM User scope defaults to None until switched to All or Some to enable automatic enrollment."
+        },
+        {
+          "name": "Intune joined vs entra joined device",
+          "explanation": "An Entra Joined device is registered with the cloud identity directory for authentication, whereas an Intune Joined device is explicitly enrolled in the management service to receive security policies and apps.",
+          "example": "A laptop that can log in with cloud credentials is Entra Joined, but it won't receive configuration profiles until it undergoes MDM enrollment to become Intune Joined.",
+          "default_value": "Modern Autopilot deployments configure devices to become both Entra Joined and Intune Managed simultaneously."
+        },
+        {
+          "name": "Apple Business Manager",
+          "explanation": "A web-based portal by Apple that integrates with Intune to automate corporate-owned iOS, iPadOS, and macOS device deployment and management.",
+          "example": "Purchasing 50 corporate iPhones from an authorized reseller and having their unique serial numbers automatically sync to your Intune environment.",
+          "default_value": "Requires an active Apple ID configured with Two-Factor Authentication and an annual token renewal."
+        },
+        {
+          "name": "Android Enterprise",
+          "explanation": "Google’s modern management framework for Android devices, offering secure corporate deployment models like Work Profile and Fully Managed.",
+          "example": "Provisioning a corporate phone as Fully Managed so the IT department controls the entire device, preventing the installation of personal apps.",
+          "default_value": "Enrolling via a standard QR code creates a 'Personally-owned device with a work profile' unless designated otherwise."
+        },
+        {
+          "name": "Device Limit Restrictions to User",
+          "explanation": "An administrative policy that defines the maximum number of devices (up to 15) a single user is allowed to enroll into Intune.",
+          "example": "Restricting an average office worker so they can only enroll a maximum of 3 personal devices into the system.",
+          "default_value": "Out of the box, Intune sets the global device limit restriction to 15 devices per user."
+        },
+        {
+          "name": "Device Enrollment Manager (DEM)",
+          "explanation": "A special administrative account status that allows a single user to enroll and manage up to 1,000 corporate devices instead of the standard user limit.",
+          "example": "A staging technician using a single service account to enroll 300 shared retail tablets before sending them out to store branches.",
+          "default_value": "No accounts are configured as DEM by default; they must be manually designated under the Enrollment portal."
+        },
+        {
+          "name": "Device Enrollment Manager Accounts",
+          "explanation": "The specific user accounts designated with DEM permissions to facilitate large-scale, shared-device deployments.",
+          "example": "Creating a non-expiring cloud account named 'it-staging-dem@yourcompany.com' to handle bulk hardware deployments.",
+          "default_value": "An Intune tenant allows a maximum limit of 150 DEM accounts."
+        },
+        {
+          "name": "MDM server Apple Business Manager and Uploading Server token in intune",
+          "explanation": "The secure handshake process where a public/private key token is exchanged to link Intune with Apple Business Manager for automated enrollments.",
+          "example": "Downloading an encryption key from Intune, uploading it to Apple's deployment portal, and downloading the server token to finalize the secure pipeline.",
+          "default_value": "The uploaded Apple Server Token (.p7m file) is valid for exactly 1 year and must be manually renewed annually."
+        },
+        {
+          "name": "Apple Automatic Device Enrollment (ADE)",
+          "explanation": "A zero-touch enrollment method that forces Apple devices to automatically configure and enroll into Intune immediately upon initial power-on.",
+          "example": "Unboxing a brand new factory iPad, turning it on, and seeing a custom screen that says 'Your Organization will automatically configure this iPad' before reaching the home page.",
+          "default_value": "Setup Assistant screens like Apple Pay, Touch ID, and Siri are set to Show unless explicitly toggled to Hide in the Intune profile."
+        },
+        {
+          "name": "Automatic MDM Enrollment",
+          "explanation": "A broader term for configuring an identity provider (like Entra ID) to automatically hand off device management to Intune without user intervention during setup.",
+          "example": "Setting up a corporate policy so that any user connecting a personal Windows PC to their work account forces an automatic MDM check-in.",
+          "default_value": "URLs for terms of use, discovery, and compliance are pre-populated with standard Microsoft cloud endpoints."
+        },
+        {
+          "name": "Device Enrollment restrictions",
+          "explanation": "Global rules that block or allow specific device platforms, operating system versions, or personally owned (BYOD) devices from enrolling in Intune.",
+          "example": "Creating an enrollment restriction rule that blocks all personal Android devices from enrolling, while allowing corporate ones.",
+          "default_value": "The out-of-the-box system policy Allows all platforms (Windows, iOS, Android, macOS) for both Corporate and Personally-Owned enrollments."
+        },
+        {
+          "name": "Enrollment Status Page (ESP)",
+          "explanation": "A visual screen displayed to users during initial device setup that tracks the progress of mandatory applications, certificates, and profiles being installed.",
+          "example": "A new employee waiting during setup while a progress bar blocks access to the desktop until corporate security software is installed.",
+          "default_value": "The default enrollment timeout before showing an error is set to 60 minutes."
+        },
+        {
+          "name": "Entra Join new windows device during OOBE",
+          "explanation": "The process of a user typing their corporate credentials during the initial Windows Out-of-Box Experience to instantly register the machine in Microsoft Entra ID.",
+          "example": "An employee opens a factory-sealed laptop, connects it to home Wi-Fi, types 'user@company.com', and the machine instantly joins the corporate identity directory.",
+          "default_value": "The joining user is automatically designated as a Standard User on the local operating system configuration."
+        },
+        {
+          "name": "Configure Microsoft Entra connect Sync to Synchronize device objects",
+          "explanation": "Setting up the on-premises sync tool to copy active directory computer accounts to the cloud to support hybrid deployment scenarios.",
+          "example": "Syncing your legacy on-premises Windows 10 desktop computer objects into Azure AD so they can be recognized for Hybrid Entra Join configurations.",
+          "default_value": "The synchronization delta engine runs automatically every 30 minutes by default."
+        },
+        {
+          "name": "Enable device Writeback in Microsoft Entra connect Sync",
+          "explanation": "An advanced configuration that syncs cloud-registered device objects back to an on-premises Active Directory to support conditional access features.",
+          "example": "Writing an Entra-registered iOS device identity back to your local Active Directory domain so on-premises applications can verify its identity.",
+          "default_value": "This feature is Disabled by default and requires running the Entra Connect configuration wizard with domain admin rights to enable."
+        }
+      ]
+    },
+    {
+      "category": "Windows Autopilot & OS Management",
+      "concepts": [
+        {
+          "name": "OS SKU",
+          "explanation": "The specific edition of an operating system (such as Windows Home, Pro, or Enterprise) that dictates which features and Intune management capabilities are available.",
+          "example": "Moving a device from Windows Pro to Windows Enterprise via an Intune license push to unlock advanced BitLocker key rotation.",
+          "default_value": "Intune management capabilities are designed to target standard business-grade SKUs (Windows Pro/Enterprise) and explicitly exclude Windows Home edition."
+        },
+        {
+          "name": "OEM (Original Equipment Manufacturer)",
+          "explanation": "Hardware manufacturers (like Dell, HP, or Lenovo) that can pre-register device hardware hashes directly into an organization's Autopilot service.",
+          "example": "Placing an order with Lenovo for 100 laptops and having them populate your Autopilot deployment list before the physical boxes even arrive.",
+          "default_value": "Hardware registrations remain indefinitely in your tenant until the device is explicitly deleted by an administrator."
+        },
+        {
+          "name": "Windows Autopilot deployment profiles",
+          "explanation": "Configuration files that define the exact user experience during Windows setup, specifying whether a device is user-driven, self-deploying, and if it hides privacy settings.",
+          "example": "Configuring a profile so users don't see the Microsoft Software License Agreement (EULA) or privacy diagnostics toggles during setup.",
+          "default_value": "Deployment mode defaults to User-driven, and Join type defaults to Microsoft Entra joined."
+        },
+        {
+          "name": "Autopilot Profiles",
+          "explanation": "The distinct templates containing deployment rules assigned to hardware hashes to govern how a Windows machine installs its corporate image.",
+          "example": "Creating a 'Kiosk-Profile' for shared front-desk machines vs. a 'Standard-User-Profile' for corporate employees.",
+          "default_value": "New profiles default to making the primary enrolling user a standard Standard User account rather than an Administrator."
+        },
+        {
+          "name": "User state migration tool (USMT)",
+          "explanation": "A command-line utility used by IT pros to capture and seamlessly transfer user files, settings, and profiles during a Windows OS upgrade.",
+          "example": "Running a script during a hardware replacement cycle to copy a user's local Documents folder and desktop background to their new machine.",
+          "default_value": "Standard migration rules capture all local desktop files and user app data configurations unless customized via .xml files."
+        },
+        {
+          "name": "Autopilot reset",
+          "explanation": "A remote or local action that strips away a Windows device's personal data, apps, and settings, returning it to a clean, fully managed state ready for the next user.",
+          "example": "A remote worker resigns; the IT team fires an Autopilot Reset to wipe the machine and leave it sitting cleanly at the Windows login screen for a replacement worker.",
+          "default_value": "The device preserves its established keyboard, language, and Wi-Fi connection configurations to ensure it remains manageable over the cloud."
+        },
+        {
+          "name": "DisableAtomaticReDeplymentCredentials Policy",
+          "explanation": "A security policy setting that prevents standard users from triggering a local Autopilot Reset via keyboard shortcuts on the sign-in screen.",
+          "example": "Blocking regular employees from using the Ctrl + Win + R hotkey shortcut on a login page to wipe their machine.",
+          "default_value": "Set to Not Configured, meaning local automatic redeployment capabilities are accessible on the lock screen if local admin credentials are supplied."
+        },
+        {
+          "name": "Windows Enterprise Multi Session remote Desktops",
+          "explanation": "A specialized Windows OS SKU designed exclusively for Azure Virtual Desktop that allows multiple remote users to share a single virtual machine simultaneously.",
+          "example": "Provisioning a single powerful cloud VM that simultaneously hosts separate virtual secure desktops for 15 remote call-center workers.",
+          "default_value": "Standard user profiles are managed via FSLogix containers to decouple user data from the local operating system drive."
+        },
+        {
+          "name": "Windows 365 / Cloud PC",
+          "explanation": "A cloud-based service that streams a personalized, secure Windows desktop experience directly from Microsoft's cloud to any user device, managed fully within Intune.",
+          "example": "Giving a contractor a secure, cloud-hosted Windows 11 desktop that they can log into securely from their personal MacBook.",
+          "default_value": "Automatically provisions with automated monthly patch cycles managed by Windows Autopatch."
+        }
+      ]
+    },
+    {
+      "category": "Endpoint Security & Compliance",
+      "concepts": [
+        {
+          "name": "Enterprise Security Baseline",
+          "explanation": "A collection of Microsoft-recommended, pre-configured security settings designed to help administrators quickly apply proven best-practice defenses.",
+          "example": "Pushing out the Windows 11 Security Baseline to instantly turn on advanced credential protection and complex local password requirements.",
+          "default_value": "Settings align strictly with Microsoft’s official Security Compliance Toolkit recommendations."
+        },
+        {
+          "name": "Account Protection",
+          "explanation": "A dedicated endpoint security policy focused specifically on safeguarding user identity credentials, covering features like Windows Hello for Business and credential guarding.",
+          "example": "Enforcing a policy requiring users to set up a biometric Windows Hello Face/PIN instead of traditional passwords.",
+          "default_value": "Windows Hello for Business defaults to Enabled globally across basic tenant onboarding."
+        },
+        {
+          "name": "Microsoft Defender for iOS",
+          "explanation": "The mobile security app that protects iPhones and iPads against phishing, unsafe network connections, and malicious web content.",
+          "example": "Automatically blocking an iPhone user from loading a malicious link clicked from an SMS text message.",
+          "default_value": "Web Protection (Anti-phishing) is enabled by default upon completion of the user's initial app login."
+        },
+        {
+          "name": "Conditional Access",
+          "explanation": "An identity-driven security engine that evaluates real-time signals (like device compliance and location) to enforce access controls before granting entry to corporate apps.",
+          "example": "Forcing a user to complete an MFA prompt only if they are logging into corporate apps from an unrecognized country.",
+          "default_value": "New tenants deploy with Microsoft Security Defaults enabled, enforcing standard MFA for all users."
+        },
+        {
+          "name": "Conditional Access Policy",
+          "explanation": "The specific, structured rule defined within Microsoft Entra ID that enforces blocks or multifactor authentication based on user compliance and risk criteria.",
+          "example": "A rule stating: 'If a user tries to access Exchange Online from a non-compliant laptop, then Block Access entirely.'",
+          "default_value": "Policies are created in Report-only mode by default so admins can test the impact before turning them on live."
+        },
+        {
+          "name": "Protection Policy",
+          "explanation": "A general term representing security configurations designed to guard corporate resources, frequently used to refer to application or data layer security templates.",
+          "example": "Applying an Endpoint Security policy to ensure local client firewalls are permanently running on all company laptops.",
+          "default_value": "Security components act as additive policies that overlay on top of existing baseline configuration profiles."
+        },
+        {
+          "name": "Types of Compliance Policy",
+          "explanation": "The various categories of rules (such as OS version, encryption status, or firewall state) used to determine whether an endpoint is considered healthy and secure.",
+          "example": "Setting up individual, distinct compliance policies for Windows 11 compliance vs. iOS compliance.",
+          "default_value": "Devices are checked for compliance against native parameters every 8 hours by default."
+        },
+        {
+          "name": "Compliance Status Validity",
+          "explanation": "A setting that defines exactly how many days a device has to report its status before Intune automatically marks it as 'noncompliant' due to inactivity.",
+          "example": "Marking a laptop as noncompliant if an employee goes on vacation and leaves the computer powered off in a drawer for more than 30 consecutive days.",
+          "default_value": "Set globally to 30 days out of the box."
+        },
+        {
+          "name": "Compliance assigned as setting",
+          "explanation": "A specific rule configured inside a compliance policy that dictates a precise technical standard a device must meet to pass health validation.",
+          "example": "Explicitly changing the Require BitLocker setting toggle to Require within your corporate compliance profile.",
+          "default_value": "Most settings inside a fresh compliance policy are initially set to Not Configured."
+        },
+        {
+          "name": "Device Compliance Policy",
+          "explanation": "A set of platform-specific security requirements that endpoints must satisfy to be flagged as healthy and permitted to access corporate resources via Conditional Access.",
+          "example": "A core company policy requiring all MacBooks to run at least macOS Sonoma and have FileVault disk encryption enabled.",
+          "default_value": "'Mark devices with no assigned compliance policy as' defaults to Compliant (Security best practice is to change this to Noncompliant)."
+        },
+        {
+          "name": "Attack Surface Reduction (ASR)",
+          "explanation": "A suite of endpoint security rules that blocks behaviors commonly exploited by malware, such as launching executable files from emails or scripts.",
+          "example": "Enforcing a rule that blocks Microsoft Word from spawning executable child processes (preventing malicious macro viruses from executing code).",
+          "default_value": "Individual rules are typically set to Not Configured or Audit Mode until explicitly switched to Block."
+        },
+        {
+          "name": "Endpoint detection and response (EDR)",
+          "explanation": "Advanced security policies that integrate Intune with Microsoft Defender for Endpoint to monitor, detect, and automatically remediate malicious activities on endpoints.",
+          "example": "Configuring Intune to automatically offboard/isolate a machine from the local network if live ransomware behavior is detected on it.",
+          "default_value": "Microsoft Defender for Endpoint client configuration packages are set to automatically renew and stream telemetry to your security center."
+        },
+        {
+          "name": "Mitigate to Windows LAPS from legacy LAPS",
+          "explanation": "The architectural migration of transitioning from old active-directory local administrator password management to the modern, cloud-native Windows Local Administrator Password Solution integrated into Intune.",
+          "example": "Decommissioning legacy GPOs that saved local passwords to plain-text Active Directory attributes and enabling the native Intune LAPS endpoint policy instead.",
+          "default_value": "The modern cloud version defaults to a password complexity structure requiring Large letters, small letters, numbers, and special characters."
+        },
+        {
+          "name": "Protect identities in Entra ID",
+          "explanation": "Utilizing security features like identity protection, multi-factor authentication, and risk scoring within the cloud directory to prevent credential theft and unauthorized access.",
+          "example": "Implementing an identity policy that blocks all user login attempts originating from anonymous proxy networks or Tor browsers.",
+          "default_value": "Risky sign-in policies are set to Audit-only until explicit access blocks or MFA remediation controls are turned on."
+        },
+        {
+          "name": "Jailbreak detection",
+          "explanation": "A security capability that scans iOS and Android operating systems for unauthorized root modifications, instantly triggering policy actions to isolate noncompliant devices.",
+          "example": "Evaluating file paths like /Applications/Cydia.app on iOS devices during sync to check if the underlying sandbox has been compromised.",
+          "default_value": "Handled natively by the Intune Company Portal or Microsoft Authenticator app during its routine security check cycles."
+        }
+      ]
+    },
+    {
+      "category": "Updates & Servicing",
+      "concepts": [
+        {
+          "name": "Update Ring",
+          "explanation": "A policy that defines how and when Windows Quality and Feature updates are deployed across various groups of devices over designated deferral timeframes.",
+          "example": "Configuring an update ring where IT personnel get updates immediately (0-day deferral) while the rest of the company gets them 10 days later.",
+          "default_value": "Quality update deferral period defaults to 0 days, and Feature update deferral period defaults to 0 days on a fresh profile."
+        },
+        {
+          "name": "Feature update policy",
+          "explanation": "A configuration that locks Windows devices into a specific version of the operating system (e.g., Windows 11, version 23H2) and prevents upgrades past that point until authorized.",
+          "example": "Ensuring your entire corporate fleet stays strictly on Windows 11 23H2 and skips 24H2 until the corporate app team gives approval.",
+          "default_value": "Devices will update to the absolute newest version available over the cloud unless a specific version target policy is assigned."
+        },
+        {
+          "name": "Quality update policy",
+          "explanation": "Rules that govern the scheduling, installation, and forced restarts for monthly Windows security and bug-fix updates.",
+          "example": "Forcing laptops to automatically download the monthly Microsoft 'Patch Tuesday' security fixes and schedule mandatory installations at 3:00 AM.",
+          "default_value": "Automatic update behavior defaults to 'Auto install at maintenance time'."
+        },
+        {
+          "name": "Ring policy",
+          "explanation": "The foundational update deployment structure used to stagger software patches across a gradual rollout schedule (e.g., Pilot, Fast, Slow) to minimize business disruption.",
+          "example": "Deploying a patch to 5% of machines on Monday, 25% on Wednesday, and the final 70% on Friday if no issues arise.",
+          "default_value": "Restarts are deferred with a deadline of 3 days for quality updates before forcing a device reboot."
+        }
+      ]
+    },
+    {
+      "category": "macOS Specific Policies",
+      "concepts": [
+        {
+          "name": "Compliance Profile for macOS",
+          "explanation": "A targeted set of health rules—such as requiring FileVault encryption or a specific minimum OS version—that Mac computers must satisfy to access corporate apps.",
+          "example": "Flagging an employee's MacBook Pro as noncompliant because they turned off system password locks.",
+          "default_value": "System integrity protection (SIP) checks default to Required for standard Apple compliance checks."
+        },
+        {
+          "name": "Device Configuration profile for macOS",
+          "explanation": "A customized payload used to push operational settings, such as Wi-Fi profiles, system extensions, and custom preferences, to Mac endpoints.",
+          "example": "Pushing a .mobileconfig file that forces the corporate desktop wallpaper onto all enterprise Mac devices.",
+          "default_value": "Configured profiles run with Root/System privileges on the local macOS operating system."
+        },
+        {
+          "name": "Device type restriction for macOS",
+          "explanation": "A global enrollment filter used to either block personal Mac computers from registering or restrict Apple enrollment entirely based on ownership type.",
+          "example": "Blocking personal employee MacBooks from enrolling via the web portal while allowing corporate MacBooks to onboard via automated systems.",
+          "default_value": "Personally owned devices for the macOS platform defaults to Allow."
+        },
+        {
+          "name": "Software Update policy for macOS",
+          "explanation": "A policy that controls the visibility, scheduling, and deferrals of system updates and patches across managed Mac computers.",
+          "example": "Setting macOS critical security updates to automatically install within 24 hours of release without waiting for user confirmation.",
+          "default_value": "Product updates are set to Default behavior (user receives standard system notifications from Apple)."
+        }
+      ]
+    },
+    {
+      "category": "Analytics & Reporting",
+      "concepts": [
+        {
+          "name": "Endpoint Analytics",
+          "explanation": "A cloud analytics service that evaluates device performance, startup times, and software reliability to help IT proactively improve the digital user experience.",
+          "example": "Opening the console to discover that 40 laptops are suffering from slow boot times caused by an outdated antivirus driver application.",
+          "default_value": "Requires data collection settings to be switched to Enhanced mode inside the Windows telemetry configuration."
+        },
+        {
+          "name": "Assignment Failure report",
+          "explanation": "A troubleshooting dashboard that highlights exactly which policies or applications failed to deploy to specific users or devices, along with error codes.",
+          "example": "Reviewing a dashboard to find that a corporate VPN profile failed to install on a laptop due to error code 0x87D101F4 (remediation timeout).",
+          "default_value": "Refreshes continuously and retains detailed system deployment error history for 30 days."
+        },
+        {
+          "name": "Windows feature update device readiness report",
+          "explanation": "An analytics report that assesses whether managed devices meet the strict hardware requirements needed to successfully upgrade to a newer version of Windows.",
+          "example": "Verifying how many aging company desktop machines lack the necessary TPM 2.0 chips required to upgrade to Windows 11.",
+          "default_value": "Categorizes all active endpoints into status groupings: Capable, Not Capable, or Insufficient Data."
+        },
+        {
+          "name": "Windows feature update device comparability risks report",
+          "explanation": "A diagnostic view that pinpoints potential application or driver incompatibilities that might cause a feature update to fail on specific devices.",
+          "example": "Seeing a warning that 12 engineering laptops will crash during an update because their current CAD software version isn't supported on the new OS build.",
+          "default_value": "Data is derived directly from global Microsoft app telemetry tracking databases."
+        },
+        {
+          "name": "Device compliance report",
+          "explanation": "A high-level administrative dashboard that displays the overall health status of all organization devices, categorizing them as compliant, noncompliant, or not evaluated.",
+          "example": "A CISO pulling a quick pie-chart graphic showing that 98% of the organization's mobile fleet is securely compliant with security rules.",
+          "default_value": "Filtered automatically to show live Active devices that checked in within the last 30 days."
+        }
+      ]
+    },
+    {
+      "category": "Operations, Remote Actions & Management",
+      "concepts": [
+        {
+          "name": "Intune RBAC and Scope Group",
+          "explanation": "A security model that combines Role-Based Access Control to limit what actions an administrator can perform with Scope Tags to restrict which specific devices they can see.",
+          "example": "Giving a London IT technician full rights to wipe devices, but only if those devices carry the 'UK-Region' scope tag.",
+          "default_value": "The built-in administrator account carries the Default scope tag, giving them unrestricted access to everything."
+        },
+        {
+          "name": "Intune roles",
+          "explanation": "Defined sets of administrative permissions (such as Help Desk Operator or Application Manager) that control access within the Intune admin center.",
+          "example": "Assigning a junior technician the Help Desk Operator role so they can trigger device syncs and password resets but cannot delete apps.",
+          "default_value": "Intune provides 10+ built-in roles out-of-the-box ready for immediate assignment."
+        },
+        {
+          "name": "Bulk device actions to delete",
+          "explanation": "An administrative operation used to purge multiple selected device records completely out of the Intune management system simultaneously.",
+          "example": "Selecting 150 legacy laptops that were decommissioned and sold, then deleting them from the system database in a single action.",
+          "default_value": "You can process a maximum limit of 1000 devices in a single bulk action operation."
+        },
+        {
+          "name": "Bulk device actions to retire",
+          "explanation": "A mass-action command that simultaneously removes corporate data, applications, and policies from a selected group of devices while retaining personal user data.",
+          "example": "Retiring 40 personal smartphones belonging to a sales team after transitioning them over to newly issued corporate devices.",
+          "default_value": "Once triggered, the target devices process the retirement command the next time they complete a background check-in cycle."
+        },
+        {
+          "name": "Rotate Bitlocker keys remote action",
+          "explanation": "A security command sent over the cloud that forces a Windows endpoint to instantly generate a brand-new BitLocker recovery key and upload it back to Entra ID.",
+          "example": "Forcing a new key generation because a technician accidentally looked at and copied a user's original BitLocker recovery key during a support ticket.",
+          "default_value": "Requires the client machine to be actively running Windows 10/11 Azure AD Joined with local administrative access available to the OS."
+        },
+        {
+          "name": "Device Delete, Retire, Sync, Wipe",
+          "explanation": "The core suite of remote actions used to completely remove a record (Delete), strip company data (Retire), force a policy check-in (Sync), or factory reset a machine (Wipe).",
+          "example": "Sending a remote Wipe command to an executive's laptop that was stolen from an airport terminal to erase all data on the hard drive.",
+          "default_value": "The Sync command will attempt to ping the device up to 3 times consecutively before timing out over the web."
+        },
+        {
+          "name": "Which devices can activated by using subscription activation",
+          "explanation": "Windows Pro devices owned by users assigned a Windows Enterprise E3 or E5 license can automatically upgrade to Windows Enterprise without a reboot or product key.",
+          "example": "A user logs into a retail-bought Windows 11 Pro laptop with their corporate E5 account, instantly transforming the OS into Windows 11 Enterprise.",
+          "default_value": "This background upgrade process executes silently without requiring any system restarts or entering a 25-digit product license key."
+        },
+        {
+          "name": "Device cleanup rules",
+          "explanation": "Automated administrative criteria that automatically delete inactive, stale, or unresponsive device records from Intune after a set number of days.",
+          "example": "Automatically deleting any device record from your console if the machine hasn't connected or pinged the service in over 90 days.",
+          "default_value": "Out-of-the-box cleanup rules are turned Off (when enabled, the standard recommended default value is 90 days)."
+        },
+        {
+          "name": "Remote Bitlocker keys rotation",
+          "explanation": "An on-demand security feature that allows an IT administrator to change a device's encryption recovery key remotely via the cloud console.",
+          "example": "Clicking the 'BitLocker key rotation' button inside a specific device's Intune page after a security breach incident.",
+          "default_value": "Successfully rotated keys are instantly backed up to Microsoft Entra ID before the old key is systematically deprecated on the client."
+        },
+        {
+          "name": "Device Query",
+          "explanation": "An advanced feature that allows administrators to use Kusto Query Language (KQL) to request real-time configuration and operational data directly from an active Windows device.",
+          "example": "Running the live query `Registry('HKEY_LOCAL_MACHINE\\Software\\MyCustomApp')` to verify if a specific system registry patch is present on a user's machine right now.",
+          "default_value": "Queries run live against the endpoint and automatically time out if the target machine fails to respond within 2 minutes."
+        },
+        {
+          "name": "Remote Device Actions",
+          "explanation": "The broad collective term for cloud-initiated commands—such as restart, lock, sync, or wipe—sent instantly from the Intune console to an endpoint.",
+          "example": "Initiating a remote Remote Lock on an employee's iPad because they left it exposed on a table at a public coffee shop.",
+          "default_value": "Commands are wrapped in secure Apple APNs or Windows WNS notification packets for near-instant push execution."
+        },
+        {
+          "name": "Device authentication",
+          "explanation": "The secure validation process used to verify a device's identity via certificates, TPM chips, or tokens before allowing it to communicate with management services or access resources.",
+          "example": "Enforcing a rule where an Android phone must present a valid, Intune-issued SCEP certificate before it is allowed to connect to corporate Wi-Fi networks.",
+          "default_value": "Utilizes industry-standard OAuth 2.0 token validation structures during standard registration check-ins."
+        },
+        {
+          "name": "Device Sync",
+          "explanation": "A command that forces an endpoint to immediately check in with Intune to download the latest available apps, policies, and configuration updates.",
+          "example": "Pushing out an urgent security update and sending a manual 'Sync' command from the web console to force an employee's machine to download it immediately instead of waiting 8 hours.",
+          "default_value": "Laptops automatically execute an internal background sync task every 8 hours if no manual command is sent."
+        },
+        {
+          "name": "Remote Help in intune",
+          "explanation": "A secure, cloud-based help desk tool integrated directly into Intune that allows IT technicians to remotely view and control a user's screen during troubleshooting sessions.",
+          "example": "A support agent generating a 6-digit session code to securely take control of a remote worker's desktop to fix a broken printing driver.",
+          "default_value": "Unattended access capability defaults to Disabled to ensure end-user privacy consent is always required before screen sharing."
+        },
+        {
+          "name": "Microsoft Cloud PKI",
+          "explanation": "A cloud-native Public Key Infrastructure service that allows IT to easily generate, issue, and manage security certificates directly within Intune without on-premises servers.",
+          "example": "Issuing secure device authentication certificates to 5,000 corporate laptops to authorize automatic VPN access without deploying local active directory certificate services.",
+          "default_value": "Root certification authority validity periods are automatically set to 25 years by default upon initialization."
+        },
+        {
+          "name": "Exclusion vs. Inclusion Groups",
+          "explanation": "Inclusion groups explicitly target a policy to specific sets of users or devices, whereas Exclusion groups act as an overriding veto to ensure certain members never receive that specific policy.",
+          "example": "Deploying a restrictive wallpaper policy to an inclusion group named 'All-Staff', while simultaneously adding the 'Executive-Team' to the exclusion group so they can keep their personal backgrounds.",
+          "default_value": "Intune calculation logic prioritizes Exclusions over Inclusions in all scenarios where a user belongs to both targeted groups."
+        },
+        {
+          "name": "Wipe vs. Retire",
+          "explanation": "A Wipe executes a full factory reset to clear all personal and corporate data from a device, whereas a Retire selectively deletes only corporate data, keeping personal files untouched.",
+          "example": "Choosing Wipe for a lost corporate phone to erase everything, but using Retire for a personal BYOD phone when an employee departs the company.",
+          "default_value": "If a device is encrypted via BitLocker, a Wipe action will securely discard the local encryption keys to render the hard drive completely unreadable."
+        },
+        {
+          "name": "Co-Management & Tenant Attach",
+          "explanation": "Co-Management allows a Windows device to be simultaneously managed by both on-premises Configuration Manager and cloud Intune, while Tenant Attach syncs Configuration Manager devices directly to the cloud admin console for instant remote actions.",
+          "example": "Moving the 'Compliance Policies' workload slider to Intune to manage device health via the cloud while keeping 'App Deployment' running through your on-premises SCCM infrastructure.",
+          "default_value": "The capability matrix uses Workload Sliders that point explicitly to either Configuration Manager or Intune as the authoritative owner for specific feature buckets."
+        },
+        {
+          "name": "Intune Suite / Advanced Add-ons",
+          "explanation": "A premium collection of advanced endpoint management capabilities—such as Cloud PKI, Remote Help, and Endpoint Privilege Management—available as specialized licenses on top of standard Intune.",
+          "example": "Purchasing the add-on suite to implement Endpoint Privilege Management so standard users can temporarily elevate their privileges to install specific approved developer utilities.",
+          "default_value": "Individual advanced add-on modules are turned Off and hidden in the console until active subscription add-on licenses are added to the tenant billing portal."
+        },
+        {
+          "name": "Microsoft tunnel gateway, for mobile",
+          "explanation": "A Linux-based VPN gateway solution that allows iOS and Android devices to securely access on-premises corporate networks and resources using modern authentication.",
+          "example": "Setting up an on-demand secure pipeline so that whenever an iPhone user opens an internal intranet application, it securely connects via the Tunnel architecture without user interaction.",
+          "default_value": "Requires separate Linux host VM configurations using Docker containers running on-premises or within a cloud infrastructure pool."
+        }
+      ]
+    }
+  ]
+}

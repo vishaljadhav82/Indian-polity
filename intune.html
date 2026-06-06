@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intune Advanced Reference Hub</title>
+    <style>
+        :root {
+            --bg-main: #0B0F19;
+            --bg-surface: #151D30;
+            --bg-card: #1E2942;
+            --text-main: #F3F4F6;
+            --text-muted: #9CA3AF;
+            --accent-blue: #3B82F6;
+            --accent-cyan: #06B6D4;
+            --accent-purple: #8B5CF6;
+            --border-color: #2D3D60;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: var(--font-family);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.5rem;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 780px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Minimalist Header Area */
+        header {
+            text-align: center;
+            margin-top: 1rem;
+            padding-bottom: 0.5rem;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, var(--accent-blue), var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.03em;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Unified Minimalist Control Center */
+        .control-panel {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.25rem;
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* Premium Top Control Row */
+        .top-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .search-wrapper {
+            flex: 1;
+        }
+
+        .search-input {
+            width: 100%;
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+
+        /* Toggle Menu Trigger Button */
+        .menu-toggle-btn {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .menu-toggle-btn:hover {
+            border-color: var(--accent-cyan);
+            background-color: rgba(6, 182, 212, 0.05);
+        }
+
+        /* Collapsible Menu Bar Area */
+        .collapsible-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            border-top: 0 solid var(--border-color);
+            padding-top: 0;
+        }
+
+        .collapsible-menu.expanded {
+            max-height: 300px; /* Safe upper bound limit for smooth transition auto-calc */
+            border-top-width: 1px;
+            padding-top: 1rem;
+            overflow-y: auto;
+        }
+
+        .tab-btn {
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 0.4rem 0.85rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--text-main);
+            color: var(--text-main);
+        }
+
+        .tab-btn.active {
+            background-color: var(--accent-blue);
+            border-color: var(--accent-blue);
+            color: #ffffff;
+        }
+
+        /* Presentation Paging Navigation Mechanics */
+        .navigation-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1rem;
+        }
+
+        .nav-buttons-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .loop-btn {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 0.5rem 1.25rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .loop-btn:hover:not(:disabled) {
+            border-color: var(--accent-cyan);
+            background-color: rgba(6, 182, 212, 0.05);
+        }
+
+        .loop-btn:disabled {
+            opacity: 0.25;
+            cursor: not-allowed;
+        }
+
+        .loop-counter {
+            font-size: 0.85rem;
+            color: var(--accent-cyan);
+            font-family: monospace;
+            font-weight: 700;
+            background-color: var(--bg-main);
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Revision Stage Area & Immersive Solo Flashcard Card Display */
+        .stage-area {
+            width: 100%;
+        }
+
+        .card {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6);
+            border-top: 4px solid var(--accent-cyan);
+            animation: cardEntrance 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes cardEntrance {
+            from { opacity: 0; transform: scale(0.98) translateY(10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .card-meta-badge {
+            align-self: flex-start;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--accent-cyan);
+            background-color: rgba(6, 182, 212, 0.08);
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            border: 1px solid rgba(6, 182, 212, 0.15);
+        }
+
+        .card-header h2 {
+            font-size: 1.65rem;
+            color: #ffffff;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .card-explanation {
+            font-size: 1.05rem;
+            color: var(--text-main);
+            line-height: 1.7;
+        }
+
+        .card-detail {
+            background-color: var(--bg-card);
+            padding: 1.1rem 1.25rem;
+            border-radius: 12px;
+            font-size: 0.925rem;
+            border-left: 4px solid var(--accent-blue);
+        }
+
+        .card-detail strong {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.4rem;
+        }
+
+        .card-detail.default-val {
+            border-left-color: var(--accent-purple);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 5rem 2rem;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            background-color: var(--bg-surface);
+            border-radius: 20px;
+            border: 1px dashed var(--border-color);
+        }
+
+        /* Loading Screen Layout */
+        .status-msg {
+            padding: 2rem;
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-align: center;
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        /* Keyboard Hotkey Footnote Badge Area */
+        .hotkey-legend {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            opacity: 0.7;
+        }
+
+        .hotkey-legend kbd {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 0.1rem 0.4rem;
+            font-family: monospace;
+            color: var(--text-main);
+        }
+
+        /* Responsive Breakpoint Adaptability Adjustments */
+        @media (max-width: 600px) {
+            body { padding: 1rem; }
+            .card { padding: 1.5rem; gap: 1.25rem; }
+            .card-header h2 { font-size: 1.35rem; }
+            .card-explanation { font-size: 0.95rem; }
+            .navigation-row { flex-direction: column; gap: 1rem; align-items: center; }
+            .nav-buttons-group { width: 100%; }
+            .loop-btn { flex: 1; text-align: center; justify-content: center; }
+            .top-row { flex-direction: column; align-items: stretch; }
+            .menu-toggle-btn { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Microsoft Intune Advanced Reference Hub</h1>
+        <p>Dynamic Solo Revision Terminal • System Knowledge Base Architecture</p>
+    </header>
+
+    <div id="appContainer" class="hidden">
+        <div class="control-panel">
+            <div class="top-row">
+                <div class="search-wrapper">
+                    <input type="text" id="searchBar" class="search-input" placeholder="Type to filter parameters instantly...">
+                </div>
+                <button class="menu-toggle-btn" id="menuToggleBtn" onclick="toggleSubsystemMenu()">
+                    <span>☰</span> Subsystems
+                </button>
+            </div>
+            
+            <div class="collapsible-menu" id="collapsibleMenu">
+                <button class="tab-btn active" id="defaultTab">All Subsystems</button>
+            </div>
+            
+            <div class="navigation-row">
+                <div class="nav-buttons-group">
+                    <button class="loop-btn" id="prevLoopBtn" onclick="navigatePresentation(-1)">
+                        ← Back
+                    </button>
+                    <button class="loop-btn" id="nextLoopBtn" onclick="navigatePresentation(1)">
+                        Next →
+                    </button>
+                </div>
+                <span class="loop-counter" id="loopCounter">0 / 0</span>
+            </div>
+        </div>
+
+        <main id="stageArea" class="stage-area">
+            </main>
+        
+        <div id="noResults" class="no-results hidden">
+            No matching configuration records or settings parameters found matching current search bounds.
+        </div>
+
+        <div class="hotkey-legend">
+            Tip: Use the <kbd>←</kbd> and <kbd>→</kbd> arrow keys on your keyboard to navigate cards instantly.
+        </div>
+    </div>
+
+    <div id="statusIndicator" class="status-msg">
+        Streaming schema profiles and mounting runtime database structures...
+    </div>
+</div>
+
+<script>
+    let activeCategory = "All";
+    let masterCatalogDataset = [];
+    let activeFilteredSequence = [];
+    let pointerIndex = 0;
+
+    // Asynchronous network runtime interface
+    async function loadCatalogData() {
+        const statusEl = document.getElementById("statusIndicator");
+        const appEl = document.getElementById("appContainer");
+
+        try {
+            const response = await fetch('data.json');
+            if (!response.ok) {
+                throw new Error(`Catalog pipeline fault connection error. Status: ${response.status}`);
+            }
+            const intuneData = await response.json();
+            
+            statusEl.classList.add("hidden");
+            appEl.classList.remove("hidden");
+            
+            flattenCatalogStructure(intuneData);
+            buildSubsystemMenuOptions(intuneData);
+            evaluateActiveSequenceFilters();
+            setupGlobalKeyboardBindings();
+        } catch (error) {
+            console.error("Initialization Stack Exception: ", error);
+            statusEl.style.borderColor = "#EF4444";
+            statusEl.style.color = "#F87171";
+            statusEl.textContent = `Data parsing exception: ${error.message}. Ensure deployment parses natively via standard HTTP web container contexts (CORS parameters check).`;
+        }
+    }
+
+    function flattenCatalogStructure(rawJSON) {
+        masterCatalogDataset = [];
+        rawJSON.intune_concepts.forEach(block => {
+            block.concepts.forEach(concept => {
+                masterCatalogDataset.push({
+                    category: block.category,
+                    name: concept.name,
+                    explanation: concept.explanation,
+                    example: concept.example,
+                    default_value: concept.default_value
+                });
+            });
+        });
+    }
+
+    function buildSubsystemMenuOptions(data) {
+        const menu = document.getElementById("collapsibleMenu");
+        const defaultTab = document.getElementById("defaultTab");
+
+        defaultTab.onclick = (e) => handleSubsystemSelection('All', e.target);
+        
+        data.intune_concepts.forEach(block => {
+            const tabBtn = document.createElement("button");
+            tabBtn.className = "tab-btn";
+            tabBtn.textContent = block.category;
+            tabBtn.onclick = (e) => handleSubsystemSelection(block.category, e.target);
+            menu.appendChild(tabBtn);
+        });
+
+        document.getElementById("searchBar").addEventListener("input", evaluateActiveSequenceFilters);
+    }
+
+    // Toggle logic control handler for structural responsive dropdown actions
+    function toggleSubsystemMenu() {
+        const menu = document.getElementById("collapsibleMenu");
+        menu.classList.toggle("expanded");
+    }
+
+    function handleSubsystemSelection(category, targetElement) {
+        activeCategory = category;
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        targetElement.classList.add('active');
+        
+        // Auto-collapse layout gracefully upon selecting mobile/desktop tracking parameters
+        document.getElementById("collapsibleMenu").classList.remove("expanded");
+        
+        evaluateActiveSequenceFilters();
+    }
+
+    function evaluateActiveSequenceFilters() {
+        const query = document.getElementById("searchBar").value.toLowerCase().trim();
+        
+        activeFilteredSequence = masterCatalogDataset.filter(item => {
+            const matchesCategory = (activeCategory === "All" || item.category === activeCategory);
+            const matchesSearch = !query || 
+                item.name.toLowerCase().includes(query) ||
+                item.explanation.toLowerCase().includes(query) ||
+                item.example.toLowerCase().includes(query) ||
+                item.default_value.toLowerCase().includes(query);
+                
+            return matchesCategory && matchesSearch;
+        });
+
+        pointerIndex = 0;
+        renderPresentationCard();
+    }
+
+    function renderPresentationCard() {
+        const stage = document.getElementById("stageArea");
+        const noResults = document.getElementById("noResults");
+        const prevBtn = document.getElementById("prevLoopBtn");
+        const nextBtn = document.getElementById("nextLoopBtn");
+        const counter = document.getElementById("loopCounter");
+        
+        const sequenceLength = activeFilteredSequence.length;
+        stage.innerHTML = "";
+
+        if (sequenceLength === 0) {
+            stage.classList.add("hidden");
+            noResults.classList.remove("hidden");
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+            counter.textContent = "0 / 0";
+            return;
+        }
+
+        stage.classList.remove("hidden");
+        noResults.classList.add("hidden");
+        prevBtn.disabled = false;
+        nextBtn.disabled = false;
+        
+        counter.textContent = `${pointerIndex + 1} / ${sequenceLength}`;
+        
+        const concept = activeFilteredSequence[pointerIndex];
+        
+        const cardNode = document.createElement("div");
+        cardNode.className = "card";
+        cardNode.innerHTML = `
+            <div class="card-meta-badge">${concept.category}</div>
+            <div class="card-header">
+                <h2>${concept.name}</h2>
+            </div>
+            <p class="card-explanation">${concept.explanation}</p>
+            <div class="card-detail">
+                <strong>Practical Example</strong>
+                ${concept.example}
+            </div>
+            <div class="card-detail default-val">
+                <strong>Default Production Behavior</strong>
+                ${concept.default_value}
+            </div>
+        `;
+        
+        stage.appendChild(cardNode);
+    }
+
+    function navigatePresentation(direction) {
+        const sequenceLength = activeFilteredSequence.length;
+        if (sequenceLength === 0) return;
+
+        pointerIndex += direction;
+        
+        if (pointerIndex >= sequenceLength) {
+            pointerIndex = 0; 
+        } else if (pointerIndex < 0) {
+            pointerIndex = sequenceLength - 1; 
+        }
+
+        renderPresentationCard();
+    }
+
+    // Modern Keyboard Accessibility Engine for Swift Flashcard Review
+    function setupGlobalKeyboardBindings() {
+        window.addEventListener("keydown", (e) => {
+            // Ignore keystrokes if the user is actively typing in the search block input box
+            if (document.activeElement.id === "searchBar") return;
+
+            if (e.key === "ArrowLeft") {
+                navigatePresentation(-1);
+            } else if (e.key === "ArrowRight") {
+                navigatePresentation(1);
+            }
+        });
+    }
+
+    window.addEventListener("DOMContentLoaded", loadCatalogData);
+</script>
+</body>
+</html>
