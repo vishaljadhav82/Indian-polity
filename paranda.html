@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aapala Paranda Jobs & Services</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --primary-color: #0b6b3a;
+    --job-color: #1565c0;
+    --business-color: #e65100;
+    --service-color: #2e7d32;
+    --user-color: #6b21a8;
+    --bg-color: #f1f5f9;
+}
+
+body {
+    font-family: 'Poppins', Arial, sans-serif;
+    background: var(--bg-color);
+    margin: 0;
+    padding: 0;
+    color: #333;
+    -webkit-tap-highlight-color: transparent;
+}
+
+header {
+    background: linear-gradient(135deg, #0b6b3a, #1b4d3e);
+    color: white;
+    padding: 20px 16px;
+    text-align: center;
+    border-bottom-left-radius: 24px;
+    border-bottom-right-radius: 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    position: relative;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    padding-right: 40px;
+    padding-left: 40px;
+}
+
+header p {
+    margin: 5px 0 0 0;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+/* Action Floating Icons in Header */
+.header-action-btn {
+    position: absolute;
+    top: 20px;
+    background: white;
+    color: var(--primary-color);
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+#profileTrigger { right: 16px; }
+#postTrigger { left: 16px; background: #22c55e; color: white; }
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    padding: 16px;
+}
+
+/* Advanced Search Box */
+.search-wrapper {
+    background: white;
+    padding: 12px;
+    border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    margin-top: -35px;
+    margin-bottom: 20px;
+}
+
+.search-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+input[type="text"], select, textarea {
+    width: 100%;
+    padding: 14px 14px 14px 40px;
+    border-radius: 12px;
+    border: 2px solid #e2e8f0;
+    font-size: 16px;
+    box-sizing: border-box;
+    outline: none;
+    font-family: inherit;
+}
+textarea, select { padding-left: 14px; }
+
+.search-input-container input { margin-bottom: 0; }
+
+.search-icon {
+    position: absolute;
+    left: 14px;
+    font-size: 18px;
+    color: #718096;
+}
+
+/* Quick Visual Category Filter Buttons */
+.category-shortcuts {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    margin-bottom: 20px;
+}
+
+.cat-btn {
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 10px 2px;
+    text-align: center;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 11px;
+}
+
+.cat-btn .icon {
+    font-size: 22px;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.cat-btn.active {
+    color: white;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.cat-btn[data-type="all"].active { background: #475569; border-color: #475569; }
+.cat-btn[data-type="Job"].active { background: var(--job-color); border-color: var(--job-color); }
+.cat-btn[data-type="Business"].active { background: var(--business-color); border-color: var(--business-color); }
+.cat-btn[data-type="Service"].active { background: var(--service-color); border-color: var(--service-color); }
+.cat-btn[data-type="Mine"].active { background: var(--user-color); border-color: var(--user-color); }
+
+/* Card Styling */
+.card {
+    background: white;
+    padding: 18px;
+    margin-bottom: 16px;
+    border-radius: 18px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+    border-left: 6px solid #ccc;
+}
+
+.card.type-Job { border-left-color: var(--job-color); }
+.card.type-Business { border-left-color: var(--business-color); }
+.card.type-Service { border-left-color: var(--service-color); }
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.village-badge { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+.type-badge { color: white; }
+
+.type-Job .type-badge { background: var(--job-color); }
+.type-Business .type-badge { background: var(--business-color); }
+.type-Service .type-badge { background: var(--service-color); }
+
+.card h3 { margin: 0 0 10px 0; font-size: 19px; color: #1e293b; }
+
+.details-box {
+    background: #f8fafc;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 14px;
+    font-size: 15px;
+    border: 1px dashed #cbd5e1;
+}
+
+/* Call Button */
+.call-button {
+    background: #22c55e;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 12px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 18px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+/* Owner Management Buttons */
+.owner-panel {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    border-top: 1px solid #edf2f7;
+    padding-top: 12px;
+}
+.btn-owner {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: white;
+}
+.btn-edit { background: #f59e0b; }
+.btn-delete { background: #ef4444; }
+
+/* Modals & Forms Layout */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+}
+.modal-content {
+    background: white;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    max-height: 85vh;
+    overflow-y: auto;
+}
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 10px;
+}
+.modal-header h2 { margin: 0; font-size: 18px; }
+.close-modal {
+    background: #f1f5f9; border: none; width: 32px; height: 32px;
+    border-radius: 50%; font-size: 16px; cursor: pointer;
+}
+
+label { display: block; font-weight: 600; margin: 10px 0 4px 0; font-size: 14px; color: #475569; }
+input, select, textarea { margin-bottom: 10px; }
+
+.status-badge {
+    display: inline-block; padding: 6px 12px; border-radius: 20px;
+    font-size: 13px; font-weight: bold; margin-bottom: 12px; text-align: center; width: 100%; box-sizing: border-box;
+}
+.status-pending { background: #fef3c7; color: #d97706; }
+.status-verified { background: #dcfce7; color: #15803d; }
+
+.flex-row { display: flex; gap: 8px; }
+.btn-small {
+    background: #475569; color: white; border: none; padding: 0 16px;
+    border-radius: 12px; font-weight: 600; cursor: pointer; white-space: nowrap;
+}
+.submit-btn {
+    background: var(--primary-color); color: white; border: none; padding: 14px;
+    border-radius: 12px; width: 100%; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 10px;
+}
+
+.no-results { text-align: center; padding: 40px 20px; color: #64748b; }
+.no-results div { font-size: 48px; margin-bottom: 10px; }
+</style>
+</head>
+<body>
+
+<header>
+    <button class="header-action-btn" id="postTrigger" title="जाहिरात टाका">➕</button>
+    <h1>आपला परांडा रोजगार व व्यवसाय</h1>
+    <p>गाव, नोकरी आणि सेवा शोधा</p>
+    <button class="header-action-btn" id="profileTrigger" title="माझे अकाउंट">👤</button>
+</header>
+
+<div class="container">
+    <div class="search-wrapper">
+        <div class="search-input-container">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchBox" placeholder="इथे लिहा... (उदा. डोमगाव, नोकरी, ट्रॅक्टर)">
+        </div>
+    </div>
+
+    <div class="category-shortcuts">
+        <div class="cat-btn active" data-type="all"><span class="icon">✨</span>सर्व</div>
+        <div class="cat-btn" data-type="Job"><span class="icon">💼</span>नोकरी</div>
+        <div class="cat-btn" data-type="Business"><span class="icon">🏪</span>दुकान</div>
+        <div class="cat-btn" data-type="Service"><span class="icon">🚜</span>सेवा</div>
+        <div class="cat-btn" data-type="Mine" id="myPostsTab"><span class="icon">👤</span>माझ्या</div>
+    </div>
+
+    <div id="listings"></div>
+</div>
+
+<div id="profileModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>👤 मोबाईल व्हेरिफिकेशन (Login)</h2>
+            <button class="close-modal" id="closeProfileModal">✕</button>
+        </div>
+        <div id="verifyStatus" class="status-badge status-pending">⏳ मोबाईल नंबर व्हेरिफाय नाही</div>
+        
+        <div id="profileFormWrapper">
+            <p style="color:#64748b; font-size:13px; text-align:center; margin-top:0;">तुमच्या जाहिराती टाकण्यासाठी, बदलण्यासाठी किंवा डिलीट करण्यासाठी नंबर व्हेरिफाय करा.</p>
+            <label>तुमचा मोबाईल नंबर टाका:</label>
+            <div class="flex-row">
+                <input type="text" id="authContact" maxlength="10" placeholder="उदा. 98XXXXXXXX">
+                <button type="button" class="btn-small" id="otpBtn">OTP पाठवा</button>
+            </div>
+
+            <div id="recaptcha-container"></div>
+
+            <div id="otpInputRow" style="display:none; margin-top: 10px;">
+                <label style="color:var(--primary-color);">तुमच्या मोबाईलवर आलेला ६ अंकी OTP टाका:</label>
+                <div class="flex-row">
+                    <input type="text" id="otpCode" maxlength="6" placeholder="XXXXXX">
+                    <button type="button" class="btn-small" style="background:#22c55e;" id="verifyOtpBtn">तपासा</button>
+                </div>
+            </div>
+        </div>
+        <div id="profileActiveWrapper" style="display:none; text-align:center;">
+            <p id="verifiedNumberDisplay" style="font-weight:bold; font-size:16px; color: var(--primary-color);"></p>
+            <p style="color:#15803d; font-weight:600; font-size:14px;">✅ तुमचे अकाउंट चालू झाले आहे!</p>
+            <p style="color:#64748b; font-size:13px;">आता तुम्ही स्वतःच्या सर्व पोस्ट बदलू किंवा काढून टाकू शकता.</p>
+            <button class="submit-btn" style="background:#ef4444;" id="logoutBtn">लॉग आऊट (नंबर बदला)</button>
+        </div>
+    </div>
+</div>
+
+<div id="postModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>📝 नवीन जाहिरात तयार करा</h2>
+            <button class="close-modal" id="closePostModal">✕</button>
+        </div>
+        <form id="listingForm">
+            <label>वर्ग निवडा (Category):</label>
+            <select id="formType" required>
+                <option value="Job">💼 नोकरी (मजूर पाहिजेत/काम मिळणे)</option>
+                <option value="Business">🏪 दुकान / व्यवसाय (खते, कापड, दुकान)</option>
+                <option value="Service">🚜 सेवा (ट्रॅक्टर, इलेक्ट्रिकल्स, इ.)</option>
+            </select>
+
+            <label>कामाचे किंवा दुकानाचे नाव (Title):</label>
+            <input type="text" id="formTitle" placeholder="उदा. उसाचे तोडणी कामगार पाहिजेत" required>
+
+            <label>गावचे नाव (Village):</label>
+            <input type="text" id="formVillage" placeholder="उदा. डोमगाव" required>
+
+            <label>माहिती किंवा रोजंदारी / दर (Details):</label>
+            <textarea id="formDetails" rows="3" placeholder="उदा. रोजंदारी ₹७०० किंवा कामाची संपूर्ण माहिती लिहा" required></textarea>
+
+            <button type="submit" id="submitFormBtn" class="submit-btn">पब्लिश करा (Submit)</button>
+        </form>
+    </div>
+</div>
+
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>✏️ जाहिरात दुरुस्त करा (Edit)</h2>
+            <button class="close-modal" id="closeEditModal">✕</button>
+        </div>
+        <form id="editForm">
+            <input type="hidden" id="editKey">
+            <label>वर्ग निवडा (Category):</label>
+            <select id="editType" required>
+                <option value="Job">💼 नोकरी</option>
+                <option value="Business">🏪 दुकान / व्यवसाय</option>
+                <option value="Service">🚜 सेवा</option>
+            </select>
+
+            <label>नाव किंवा शीर्षक (Title):</label>
+            <input type="text" id="editTitle" required>
+
+            <label>गावचे नाव (Village):</label>
+            <input type="text" id="editVillage" required>
+
+            <label>माहिती किंवा दर (Details):</label>
+            <textarea id="editDetails" rows="3" required></textarea>
+
+            <button type="submit" class="submit-btn">बदल जतन करा (Save Changes)</button>
+        </form>
+    </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-analytics.js";
+  import { getDatabase, ref, set, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
+  import { getAuth, signInWithPhoneNumber, RecaptchaVerifier, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCSwr1mbjcFhjeWCoZIipb5TE3o0jLkU7M",
+    authDomain: "quiz-43b3e.firebaseapp.com",
+    databaseURL: "https://quiz-43b3e-default-rtdb.firebaseio.com",
+    projectId: "quiz-43b3e",
+    storageBucket: "quiz-43b3e.appspot.com",
+    messagingSenderId: "477037762591",
+    appId: "1:477037762591:web:4b26497b4fc373dc819d2a",
+    measurementId: "G-NFJNFJTD27"
+  };
+
+  // Initialize Modules
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const db = getDatabase(app);
+  const auth = getAuth(app);
+  const dbRef = ref(db, 'listings');
+
+  // Application Global Variable States
+  let rawDatabaseItems = {}; 
+  let currentSelectedType = "all";
+  let isPhoneVerified = false;
+  let verifiedPhoneNumber = "";
+  let pendingAction = null;
+  let confirmationResult = null; // Saves Firebase OTP session instance
+
+  // --- RENDERING MODULE ---
+  function render() {
+      const searchText = document.getElementById("searchBox").value.toLowerCase();
+      let html = "";
+      let hasItems = false;
+
+      const keys = Object.keys(rawDatabaseItems).reverse();
+
+      keys.forEach(key => {
+          const item = rawDatabaseItems[key];
+          
+          const matchesSearch = item.title.toLowerCase().includes(searchText) || 
+                                item.village.toLowerCase().includes(searchText) ||
+                                item.details.toLowerCase().includes(searchText);
+                                
+          let matchesType = false;
+          if (currentSelectedType === "all") {
+              matchesType = true;
+          } else if (currentSelectedType === "Mine") {
+              matchesType = (item.contact === verifiedPhoneNumber);
+          } else {
+              matchesType = (item.type === currentSelectedType);
+          }
+
+          if (matchesSearch && matchesType) {
+              hasItems = true;
+              const isOwner = isPhoneVerified && (item.contact === verifiedPhoneNumber);
+              
+              let controlMarkup = `
+                  <button class="call-button" onclick="window.location.href='tel:${item.contact}'">
+                      📞 थेट फोन करा (Call)
+                  </button>
+              `;
+              
+              if (isOwner) {
+                  controlMarkup = `
+                      <div class="owner-panel">
+                          <button class="btn-owner btn-edit" data-id="${key}">✏️ बदला (Edit)</button>
+                          <button class="btn-owner btn-delete" data-id="${key}">🗑️ हटवा (Delete)</button>
+                      </div>
+                  `;
+              }
+
+              html += `
+              <div class="card type-${item.type}">
+                  <div class="card-header">
+                      <span class="badge type-badge">${item.typeMr}</span>
+                      <span class="badge village-badge">${item.village}</span>
+                  </div>
+                  <h3>${item.title}</h3>
+                  <div class="details-box">
+                      <b>माहिती:</b> ${item.details}
+                  </div>
+                  ${controlMarkup}
+              </div>`;
+          }
+      });
+
+      if (!hasItems) {
+          html = `
+          <div class="no-results">
+              <div>😞</div>
+              <p><b>काही सापडले नाही!</b><br>नवीन जाहिरात जोडण्यासाठी वर (➕) चिन्हावर क्लिक करा.</p>
+          </div>`;
+      }
+      
+      document.getElementById("listings").innerHTML = html;
+      attachDynamicCardListeners();
+  }
+
+  function attachDynamicCardListeners() {
+      document.querySelectorAll('.btn-edit').forEach(btn => {
+          btn.addEventListener('click', () => openEditModal(btn.getAttribute('data-id')));
+      });
+      document.querySelectorAll('.btn-delete').forEach(btn => {
+          btn.addEventListener('click', () => deletePost(btn.getAttribute('data-id')));
+      });
+  }
+
+  // --- FIREBASE SYNC REALTIME SYSTEM ---
+  onValue(dbRef, (snapshot) => {
+      const data = snapshot.val();
+      rawDatabaseItems = data ? data : {};
+      render();
+  });
+
+  // --- FIREBASE ON-AUTH STATE LISTENER ---
+  onAuthStateChanged(auth, (user) => {
+      if (user && user.phoneNumber) {
+          isPhoneVerified = true;
+          // Normalizes country prefixes like +9198XXXXXXXX to standard 10 digit local layout
+          let displayNum = user.phoneNumber;
+          if(displayNum.startsWith("+91")) {
+              displayNum = displayNum.substring(3);
+          }
+          verifiedPhoneNumber = displayNum;
+          
+          const badge = document.getElementById("verifyStatus");
+          badge.className = "status-badge status-verified";
+          badge.innerText = "✅ नंबर व्हेरिफाय झाला आहे!";
+          
+          document.getElementById("myPostsTab").innerHTML = `<span class="icon">👤</span>माझ्या (${verifiedPhoneNumber.substring(6)})`;
+          document.getElementById("profileFormWrapper").style.display = "none";
+          document.getElementById("profileActiveWrapper").style.display = "block";
+          document.getElementById("verifiedNumberDisplay").innerText = "व्हेरिफाय नंबर: " + verifiedPhoneNumber;
+          
+          render();
+
+          if (pendingAction === "openPostForm") {
+              pendingAction = null;
+              window.openModal('postModal');
+          } else if (pendingAction === "openMineTab") {
+              pendingAction = null;
+              categoryButtons.forEach(btn => btn.classList.remove('active'));
+              document.getElementById("myPostsTab").classList.add('active');
+              currentSelectedType = "Mine";
+              render();
+          }
+      } else {
+          // Explicit logged out visual resets
+          isPhoneVerified = false;
+          verifiedPhoneNumber = "";
+          const badge = document.getElementById("verifyStatus");
+          badge.className = "status-badge status-pending";
+          badge.innerText = "⏳ मोबाईल नंबर व्हेरिफाय नाही";
+          
+          document.getElementById("myPostsTab").innerHTML = `<span class="icon">👤</span>माझ्या`;
+          document.getElementById("profileFormWrapper").style.display = "block";
+          document.getElementById("profileActiveWrapper").style.display = "none";
+          render();
+      }
+  });
+  
+  
+   
+  // --- CAPTCHA INITIALIZATION ---
+  window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+      'size': 'invisible',
+      'callback': (response) => {}
+  });
+
+  // --- MODAL AND INTERFACE INTERACTORS ---
+  window.openModal = function(id) { document.getElementById(id).style.display = 'flex'; };
+  window.closeModal = function(id) { document.getElementById(id).style.display = 'none'; };
+
+  document.getElementById("postTrigger").addEventListener('click', () => {
+      if (!isPhoneVerified) {
+          pendingAction = "openPostForm";
+          window.openModal('profileModal');
+      } else {
+          window.openModal('postModal');
+      }
+  });
+
+  document.getElementById("profileTrigger").addEventListener('click', () => window.openModal('profileModal'));
+  document.getElementById("closeProfileModal").addEventListener('click', () => window.closeModal('profileModal'));
+  document.getElementById("closePostModal").addEventListener('click', () => window.closeModal('postModal'));
+  document.getElementById("closeEditModal").addEventListener('click', () => window.closeModal('editModal'));
+
+  // Category Selector Filtering Routing
+  const categoryButtons = document.querySelectorAll('.cat-btn');
+  categoryButtons.forEach(button => {
+      button.addEventListener('click', function() {
+          const targetType = this.getAttribute('data-type');
+          if (targetType === "Mine" && !isPhoneVerified) {
+              pendingAction = "openMineTab";
+              window.openModal('profileModal');
+              return;
+          }
+          categoryButtons.forEach(btn => btn.classList.remove('active'));
+          this.classList.add('active');
+          currentSelectedType = targetType;
+          render();
+      });
+  });
+
+  // --- FIREBASE LIVE OTP REWRITE SCRIPT ---
+  document.getElementById("otpBtn").addEventListener('click', function() {
+      const phoneInput = document.getElementById("authContact").value;
+      if (phoneInput.length !== 10 || isNaN(phoneInput)) {
+          alert("कृपया योग्य १० अंकी मोबाईल नंबर टाका!");
+          return;
+      }
+      
+      const appVerifier = window.recaptchaVerifier;
+      const fullInternationalNumber = "+91" + phoneInput; // Append Indian Locale Dial Prefix
+
+      signInWithPhoneNumber(auth, fullInternationalNumber, appVerifier)
+          .then((result) => {
+              confirmationResult = result;
+              document.getElementById("otpInputRow").style.display = "block";
+              document.getElementById("otpBtn").innerText = "पुन्हा पाठवा";
+              alert("तुमच्या मोबाईलवर ६-अंकी SMS पासवर्ड पाठवला आहे!");
+          }).catch((error) => {
+              alert("OTP पाठवण्यात समस्या: " + error.message);
+          });
+  });
+
+  document.getElementById("verifyOtpBtn").addEventListener('click', function() {
+      const code = document.getElementById("otpCode").value;
+      if (code.length !== 6 || isNaN(code)) {
+          alert("कृपया ६-अंकी योग्य कोड टाका!");
+          return;
+      }
+
+      confirmationResult.confirm(code)
+          .then((result) => {
+              window.closeModal('profileModal');
+          }).catch((error) => {
+              alert("चुकीचा OTP! कृपया पुन्हा तपासा.");
+          });
+  });
+
+  document.getElementById("logoutBtn").addEventListener('click', function() {
+      signOut(auth).then(() => {
+          if (currentSelectedType === "Mine") {
+              currentSelectedType = "all";
+              categoryButtons.forEach(btn => btn.classList.remove('active'));
+              categoryButtons[0].classList.add('active');
+          }
+          window.closeModal('profileModal');
+          alert("लॉग आऊट यशस्वी!");
+      });
+  });
+
+  // --- SUBMIT NEW POST TO FIREBASE ---
+  document.getElementById("listingForm").addEventListener('submit', function(event) {
+      event.preventDefault();
+      if (!isPhoneVerified) {
+          alert("आधी मोबाईल नंबर व्हेरिफाय करा!");
+          return;
+      }
+
+      const type = document.getElementById("formType").value;
+      const title = document.getElementById("formTitle").value;
+      const village = "📍 " + document.getElementById("formVillage").value;
+      const details = document.getElementById("formDetails").value;
+
+      let typeMr = "💼 नोकरी";
+      if (type === "Business") typeMr = "🏪 दुकान";
+      if (type === "Service") typeMr = "🚜 सेवा";
+
+      const newListRef = push(dbRef);
+      set(newListRef, {
+          type, typeMr, title, village, details, contact: verifiedPhoneNumber
+      }).then(() => {
+          categoryButtons.forEach(btn => btn.classList.remove('active'));
+          document.getElementById("myPostsTab").classList.add('active');
+          currentSelectedType = "Mine";
+          
+          document.getElementById("formTitle").value = "";
+          document.getElementById("formVillage").value = "";
+          document.getElementById("formDetails").value = "";
+          
+          window.closeModal('postModal');
+          alert("तुमची नवीन जाहिरात यशस्वीरित्या पब्लिश झाली आहे!");
+      }).catch(err => alert("डेटाबेस त्रुटी: " + err.message));
+  });
+
+  // --- EDIT & DELETE ENGINE CRUD OPERATIONS ---
+  function deletePost(key) {
+      if (rawDatabaseItems[key].contact !== verifiedPhoneNumber) {
+          alert("सुरक्षा चेतावणी: तुम्ही ही जाहिरात डिलीट करू शकत नाही!");
+          return;
+      }
+      if (confirm("तुम्हाला तुमची ही जाहिरात कायमची हटवायची (Delete) आहे का?")) {
+          const itemRef = ref(db, `listings/${key}`);
+          remove(itemRef).then(() => {
+              alert("जाहिरात यशस्वीरित्या हटवली गेली!");
+          });
+      }
+  }
+
+  function openEditModal(key) {
+      if (rawDatabaseItems[key].contact !== verifiedPhoneNumber) {
+          alert("सुरक्षा चेतावणी: तुम्ही ही जाहिरात बदलू शकत नाही!");
+          return;
+      }
+      const item = rawDatabaseItems[key];
+      document.getElementById("editKey").value = key;
+      document.getElementById("editType").value = item.type;
+      document.getElementById("editTitle").value = item.title;
+      document.getElementById("editVillage").value = item.village.replace("📍 ", "");
+      document.getElementById("editDetails").value = item.details;
+      window.openModal('editModal');
+  }
+
+  document.getElementById("editForm").addEventListener('submit', function(event) {
+      event.preventDefault();
+      const key = document.getElementById("editKey").value;
+      
+      if (rawDatabaseItems[key].contact !== verifiedPhoneNumber) {
+          alert("अनधिकृत कृती!");
+          return;
+      }
+      
+      const type = document.getElementById("editType").value;
+      let typeMr = "💼 नोकरी";
+      if (type === "Business") typeMr = "🏪 दुकान";
+      if (type === "Service") typeMr = "🚜 सेवा";
+
+      const itemRef = ref(db, `listings/${key}`);
+      update(itemRef, {
+          type: type,
+          typeMr: typeMr,
+          title: document.getElementById("editTitle").value,
+          village: "📍 " + document.getElementById("editVillage").value,
+          details: document.getElementById("editDetails").value
+      }).then(() => {
+          window.closeModal('editModal');
+          alert("बदल यशस्वीरित्या जतन झाले आहेत!");
+      });
+  });
+</script>
+
+</body>
+</html>
