@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Aapala Paranda Jobs & Services</title>
+<!-- Google Fonts for better Marathi typography -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -91,7 +92,7 @@ header p {
     align-items: center;
 }
 
-input[type="text"], select, textarea {
+input[type="text"], input[type="email"], input[type="password"], select, textarea {
     width: 100%;
     padding: 14px 14px 14px 40px;
     border-radius: 12px;
@@ -101,8 +102,9 @@ input[type="text"], select, textarea {
     outline: none;
     font-family: inherit;
 }
-textarea, select { padding-left: 14px; }
+textarea, select, input[type="email"], input[type="password"] { padding-left: 14px; }
 
+input { margin-bottom: 10px; }
 .search-input-container input { margin-bottom: 0; }
 
 .search-icon {
@@ -195,7 +197,7 @@ textarea, select { padding-left: 14px; }
     border: 1px dashed #cbd5e1;
 }
 
-/* Call Button */
+/* Call Button / Action Button */
 .call-button {
     background: #22c55e;
     color: white;
@@ -272,7 +274,6 @@ textarea, select { padding-left: 14px; }
 }
 
 label { display: block; font-weight: 600; margin: 10px 0 4px 0; font-size: 14px; color: #475569; }
-input, select, textarea { margin-bottom: 10px; }
 
 .status-badge {
     display: inline-block; padding: 6px 12px; border-radius: 20px;
@@ -291,6 +292,17 @@ input, select, textarea { margin-bottom: 10px; }
     border-radius: 12px; width: 100%; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 10px;
 }
 
+.google-btn {
+    background: #ffffff; color: #333; border: 2px solid #e2e8f0; padding: 12px;
+    border-radius: 12px; width: 100%; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 8px;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+
+.toggle-auth-link {
+    display: block; text-align: center; margin-top: 12px; color: var(--job-color);
+    font-size: 13px; cursor: pointer; text-decoration: underline;
+}
+
 .no-results { text-align: center; padding: 40px 20px; color: #64748b; }
 .no-results div { font-size: 48px; margin-bottom: 10px; }
 </style>
@@ -298,13 +310,16 @@ input, select, textarea { margin-bottom: 10px; }
 <body>
 
 <header>
+    <!-- Left Button: Post Form -->
     <button class="header-action-btn" id="postTrigger" title="जाहिरात टाका">➕</button>
     <h1>आपला परांडा रोजगार व व्यवसाय</h1>
     <p>गाव, नोकरी आणि सेवा शोधा</p>
+    <!-- Right Button: Profile / Login -->
     <button class="header-action-btn" id="profileTrigger" title="माझे अकाउंट">👤</button>
 </header>
 
 <div class="container">
+    <!-- Advanced Search Box Wrapper -->
     <div class="search-wrapper">
         <div class="search-input-container">
             <span class="search-icon">🔍</span>
@@ -312,6 +327,7 @@ input, select, textarea { margin-bottom: 10px; }
         </div>
     </div>
 
+    <!-- Visual Category Selector -->
     <div class="category-shortcuts">
         <div class="cat-btn active" data-type="all"><span class="icon">✨</span>सर्व</div>
         <div class="cat-btn" data-type="Job"><span class="icon">💼</span>नोकरी</div>
@@ -320,44 +336,50 @@ input, select, textarea { margin-bottom: 10px; }
         <div class="cat-btn" data-type="Mine" id="myPostsTab"><span class="icon">👤</span>माझ्या</div>
     </div>
 
+    <!-- Listings Container -->
     <div id="listings"></div>
 </div>
 
+<!-- PROFILE / VERIFICATION MODAL -->
 <div id="profileModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
-            <h2>👤 मोबाईल व्हेरिफिकेशन (Login)</h2>
+            <h2>👤 लॉग इन / साइन अप (Account)</h2>
             <button class="close-modal" id="closeProfileModal">✕</button>
         </div>
-        <div id="verifyStatus" class="status-badge status-pending">⏳ मोबाईल नंबर व्हेरिफाय नाही</div>
+        <div id="verifyStatus" class="status-badge status-pending">⏳ लॉग इन नाही</div>
         
         <div id="profileFormWrapper">
-            <p style="color:#64748b; font-size:13px; text-align:center; margin-top:0;">तुमच्या जाहिराती टाकण्यासाठी, बदलण्यासाठी किंवा डिलीट करण्यासाठी नंबर व्हेरिफाय करा.</p>
-            <label>तुमचा मोबाईल नंबर टाका:</label>
-            <div class="flex-row">
-                <input type="text" id="authContact" maxlength="10" placeholder="उदा. 98XXXXXXXX">
-                <button type="button" class="btn-small" id="otpBtn">OTP पाठवा</button>
-            </div>
+            <form id="emailAuthForm">
+                <label>ईमेल आयडी (Email):</label>
+                <input type="email" id="authEmail" placeholder="example@email.com" required>
 
-            <div id="recaptcha-container"></div>
+                <label>पासवर्ड (Password):</label>
+                <input type="password" id="authPassword" placeholder="******" required>
 
-            <div id="otpInputRow" style="display:none; margin-top: 10px;">
-                <label style="color:var(--primary-color);">तुमच्या मोबाईलवर आलेला ६ अंकी OTP टाका:</label>
-                <div class="flex-row">
-                    <input type="text" id="otpCode" maxlength="6" placeholder="XXXXXX">
-                    <button type="button" class="btn-small" style="background:#22c55e;" id="verifyOtpBtn">तपासा</button>
-                </div>
-            </div>
+                <button type="submit" class="submit-btn" id="emailSubmitBtn">लॉग इन करा (Login)</button>
+            </form>
+
+            <span class="toggle-auth-link" id="toggleAuthMode">नवीन अकाउंट तयार करा (Sign Up)</span>
+
+            <div style="text-align: center; margin: 15px 0; color: #94a3b8; font-size: 14px;">किंवा</div>
+
+            <button type="button" class="google-btn" id="googleAuthBtn">
+                <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.63-.06-1.25-.16-1.84H9v3.47h4.84c-.21 1.12-.84 2.07-1.79 2.7l2.78 2.16c1.63-1.5 2.57-3.7 2.57-6.3a8 8 0 0 0-.16-1.2z"/><path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.2l-2.78-2.16c-.77.52-1.76.83-2.18.83-2.43 0-4.5-1.64-5.23-3.84H1.1v2.24A9 9 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.77 10.63a5.4 5.4 0 0 1 0-3.26V5.13H1.1a9 9 0 0 0 0 7.74l2.67-2.24z"/><path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35L15 2.05A9 9 0 0 0 1.1 5.13l2.67 2.24C4.5 5.22 6.57 3.58 9 3.58z"/></svg>
+                Google सह लॉग इन करा
+            </button>
         </div>
+
         <div id="profileActiveWrapper" style="display:none; text-align:center;">
-            <p id="verifiedNumberDisplay" style="font-weight:bold; font-size:16px; color: var(--primary-color);"></p>
-            <p style="color:#15803d; font-weight:600; font-size:14px;">✅ तुमचे अकाउंट चालू झाले आहे!</p>
+            <p id="verifiedNumberDisplay" style="font-weight:bold; font-size:15px; color: var(--primary-color); word-break: break-all;"></p>
+            <p style="color:#15803d; font-weight:600; font-size:14px;">✅ तुमचे अकाउंट लॉग इन आहे!</p>
             <p style="color:#64748b; font-size:13px;">आता तुम्ही स्वतःच्या सर्व पोस्ट बदलू किंवा काढून टाकू शकता.</p>
-            <button class="submit-btn" style="background:#ef4444;" id="logoutBtn">लॉग आऊट (नंबर बदला)</button>
+            <button class="submit-btn" style="background:#ef4444;" id="logoutBtn">लॉग आऊट (Logout)</button>
         </div>
     </div>
 </div>
 
+<!-- ADD NEW ADVERTISEMENT MODAL -->
 <div id="postModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
@@ -381,11 +403,15 @@ input, select, textarea { margin-bottom: 10px; }
             <label>माहिती किंवा रोजंदारी / दर (Details):</label>
             <textarea id="formDetails" rows="3" placeholder="उदा. रोजंदारी ₹७०० किंवा कामाची संपूर्ण माहिती लिहा" required></textarea>
 
+            <label>संपर्क मोबाईल नंबर (Contact Number):</label>
+            <input type="text" id="formContact" maxlength="10" placeholder="उदा. 98XXXXXXXX" required>
+
             <button type="submit" id="submitFormBtn" class="submit-btn">पब्लिश करा (Submit)</button>
         </form>
     </div>
 </div>
 
+<!-- EDIT ADVERTISEMENT MODAL -->
 <div id="editModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
@@ -410,16 +436,19 @@ input, select, textarea { margin-bottom: 10px; }
             <label>माहिती किंवा दर (Details):</label>
             <textarea id="editDetails" rows="3" required></textarea>
 
+            <label>संपर्क मोबाईल नंबर (Contact Number):</label>
+            <input type="text" id="editContact" maxlength="10" required>
+
             <button type="submit" class="submit-btn">बदल जतन करा (Save Changes)</button>
         </form>
     </div>
 </div>
 
+<!-- FIREBASE STORAGE & AUTH CONTROL ENGINE -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-analytics.js";
   import { getDatabase, ref, set, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-database.js";
-  import { getAuth, signInWithPhoneNumber, RecaptchaVerifier, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.14.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCSwr1mbjcFhjeWCoZIipb5TE3o0jLkU7M",
@@ -432,22 +461,32 @@ input, select, textarea { margin-bottom: 10px; }
     measurementId: "G-NFJNFJTD27"
   };
 
-  // Initialize Modules
+  // Stack Init
   const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
   const db = getDatabase(app);
   const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
   const dbRef = ref(db, 'listings');
 
-  // Application Global Variable States
+  // Local Reactive Variables
   let rawDatabaseItems = {}; 
   let currentSelectedType = "all";
-  let isPhoneVerified = false;
-  let verifiedPhoneNumber = "";
+  let currentUser = null;
   let pendingAction = null;
-  let confirmationResult = null; // Saves Firebase OTP session instance
+  let authMode = "login"; // "login" or "signup"
 
-  // --- RENDERING MODULE ---
+  // Monitor Auth Changes Ecosystem natively via Firebase
+  onAuthStateChanged(auth, (user) => {
+      if (user) {
+          currentUser = user;
+          applyVerifiedState(user);
+      } else {
+          currentUser = null;
+          applyLoggedOutState();
+      }
+  });
+
+  // --- RENDERING SCHEMATICS ---
   function render() {
       const searchText = document.getElementById("searchBox").value.toLowerCase();
       let html = "";
@@ -466,14 +505,14 @@ input, select, textarea { margin-bottom: 10px; }
           if (currentSelectedType === "all") {
               matchesType = true;
           } else if (currentSelectedType === "Mine") {
-              matchesType = (item.contact === verifiedPhoneNumber);
+              matchesType = (currentUser && item.ownerUid === currentUser.uid);
           } else {
               matchesType = (item.type === currentSelectedType);
           }
 
           if (matchesSearch && matchesType) {
               hasItems = true;
-              const isOwner = isPhoneVerified && (item.contact === verifiedPhoneNumber);
+              const isOwner = currentUser && (item.ownerUid === currentUser.uid);
               
               let controlMarkup = `
                   <button class="call-button" onclick="window.location.href='tel:${item.contact}'">
@@ -498,7 +537,8 @@ input, select, textarea { margin-bottom: 10px; }
                   </div>
                   <h3>${item.title}</h3>
                   <div class="details-box">
-                      <b>माहिती:</b> ${item.details}
+                      <b>माहिती:</b> ${item.details}<br>
+                      <span style="font-size:13px; color:#64748b;">संपर्क: ${item.contact}</span>
                   </div>
                   ${controlMarkup}
               </div>`;
@@ -526,74 +566,22 @@ input, select, textarea { margin-bottom: 10px; }
       });
   }
 
-  // --- FIREBASE SYNC REALTIME SYSTEM ---
+  // Realtime Node Syncer
   onValue(dbRef, (snapshot) => {
       const data = snapshot.val();
       rawDatabaseItems = data ? data : {};
       render();
   });
 
-  // --- FIREBASE ON-AUTH STATE LISTENER ---
-  onAuthStateChanged(auth, (user) => {
-      if (user && user.phoneNumber) {
-          isPhoneVerified = true;
-          // Normalizes country prefixes like +9198XXXXXXXX to standard 10 digit local layout
-          let displayNum = user.phoneNumber;
-          if(displayNum.startsWith("+91")) {
-              displayNum = displayNum.substring(3);
-          }
-          verifiedPhoneNumber = displayNum;
-          
-          const badge = document.getElementById("verifyStatus");
-          badge.className = "status-badge status-verified";
-          badge.innerText = "✅ नंबर व्हेरिफाय झाला आहे!";
-          
-          document.getElementById("myPostsTab").innerHTML = `<span class="icon">👤</span>माझ्या (${verifiedPhoneNumber.substring(6)})`;
-          document.getElementById("profileFormWrapper").style.display = "none";
-          document.getElementById("profileActiveWrapper").style.display = "block";
-          document.getElementById("verifiedNumberDisplay").innerText = "व्हेरिफाय नंबर: " + verifiedPhoneNumber;
-          
-          render();
+  // Search box trigger
+  document.getElementById("searchBox").addEventListener('input', render);
 
-          if (pendingAction === "openPostForm") {
-              pendingAction = null;
-              window.openModal('postModal');
-          } else if (pendingAction === "openMineTab") {
-              pendingAction = null;
-              categoryButtons.forEach(btn => btn.classList.remove('active'));
-              document.getElementById("myPostsTab").classList.add('active');
-              currentSelectedType = "Mine";
-              render();
-          }
-      } else {
-          // Explicit logged out visual resets
-          isPhoneVerified = false;
-          verifiedPhoneNumber = "";
-          const badge = document.getElementById("verifyStatus");
-          badge.className = "status-badge status-pending";
-          badge.innerText = "⏳ मोबाईल नंबर व्हेरिफाय नाही";
-          
-          document.getElementById("myPostsTab").innerHTML = `<span class="icon">👤</span>माझ्या`;
-          document.getElementById("profileFormWrapper").style.display = "block";
-          document.getElementById("profileActiveWrapper").style.display = "none";
-          render();
-      }
-  });
-  
-  
-   
-  // --- CAPTCHA INITIALIZATION ---
-  window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-      'size': 'invisible',
-      'callback': (response) => {}
-  });
-
-  // --- MODAL AND INTERFACE INTERACTORS ---
+   // --- APPLICATION GENERAL CONTROLS ---
   window.openModal = function(id) { document.getElementById(id).style.display = 'flex'; };
   window.closeModal = function(id) { document.getElementById(id).style.display = 'none'; };
 
   document.getElementById("postTrigger").addEventListener('click', () => {
-      if (!isPhoneVerified) {
+      if (!currentUser) {
           pendingAction = "openPostForm";
           window.openModal('profileModal');
       } else {
@@ -606,12 +594,12 @@ input, select, textarea { margin-bottom: 10px; }
   document.getElementById("closePostModal").addEventListener('click', () => window.closeModal('postModal'));
   document.getElementById("closeEditModal").addEventListener('click', () => window.closeModal('editModal'));
 
-  // Category Selector Filtering Routing
+  // Filter Categories Buttons Logic
   const categoryButtons = document.querySelectorAll('.cat-btn');
   categoryButtons.forEach(button => {
       button.addEventListener('click', function() {
           const targetType = this.getAttribute('data-type');
-          if (targetType === "Mine" && !isPhoneVerified) {
+          if (targetType === "Mine" && !currentUser) {
               pendingAction = "openMineTab";
               window.openModal('profileModal');
               return;
@@ -623,60 +611,110 @@ input, select, textarea { margin-bottom: 10px; }
       });
   });
 
-  // --- FIREBASE LIVE OTP REWRITE SCRIPT ---
-  document.getElementById("otpBtn").addEventListener('click', function() {
-      const phoneInput = document.getElementById("authContact").value;
-      if (phoneInput.length !== 10 || isNaN(phoneInput)) {
-          alert("कृपया योग्य १० अंकी मोबाईल नंबर टाका!");
-          return;
+  // --- TOGGLE EMAIL AUTH MODE ---
+  document.getElementById("toggleAuthMode").addEventListener('click', function() {
+      const emailBtn = document.getElementById("emailSubmitBtn");
+      if (authMode === "login") {
+          authMode = "signup";
+          emailBtn.innerText = "अकाउंट तयार करा (Sign Up)";
+          this.innerText = "आधीच अकाउंट आहे? लॉग इन करा (Login)";
+      } else {
+          authMode = "login";
+          emailBtn.innerText = "लॉग इन करा (Login)";
+          this.innerText = "नवीन अकाउंट तयार करा (Sign Up)";
       }
+  });
+
+  // --- EMAIL AND PASSWORD AUTHENTICATION ENGINE ---
+  document.getElementById("emailAuthForm").addEventListener('submit', function(e) {
+      e.preventDefault();
+      const email = document.getElementById("authEmail").value;
+      const password = document.getElementById("authPassword").value;
+
+      if (authMode === "signup") {
+          createUserWithEmailAndPassword(auth, email, password)
+              .then((userCredential) => {
+                  alert("अकाउंट यशस्वीरित्या तयार झाले!");
+                  handlePostAuthRedirect();
+              })
+              .catch((error) => alert("त्रुटी: " + error.message));
+      } else {
+          signInWithEmailAndPassword(auth, email, password)
+              .then((userCredential) => {
+                  alert("लॉग इन यशस्वी झाले!");
+                  handlePostAuthRedirect();
+              })
+              .catch((error) => alert("त्रुटी: " + error.message));
+      }
+  });
+
+  // --- GOOGLE OAUTH ENGINE ---
+  document.getElementById("googleAuthBtn").addEventListener('click', function() {
+      signInWithPopup(auth, provider)
+          .then((result) => {
+              alert("Google लॉग इन यशस्वी!");
+              handlePostAuthRedirect();
+          })
+          .catch((error) => alert("Google लॉग इन त्रुटी: " + error.message));
+  });
+
+  function handlePostAuthRedirect() {
+      window.closeModal('profileModal');
+      if (pendingAction === "openPostForm") {
+          pendingAction = null;
+          window.openModal('postModal');
+      } else if (pendingAction === "openMineTab") {
+          pendingAction = null;
+          categoryButtons.forEach(btn => btn.classList.remove('active'));
+          document.getElementById("myPostsTab").classList.add('active');
+          currentSelectedType = "Mine";
+          render();
+      }
+  }
+
+  function applyVerifiedState(user) {
+      const badge = document.getElementById("verifyStatus");
+      badge.className = "status-badge status-verified";
+      badge.innerText = "✅ लॉग इन यशस्वी!";
       
-      const appVerifier = window.recaptchaVerifier;
-      const fullInternationalNumber = "+91" + phoneInput; // Append Indian Locale Dial Prefix
+      document.getElementById("myPostsTab").innerHTML = `<span class="icon">👤</span>माझ्या`;
+      document.getElementById("profileFormWrapper").style.display = "none";
+      document.getElementById("profileActiveWrapper").style.display = "block";
+      document.getElementById("verifiedNumberDisplay").innerText = "युझर: " + (user.email || "Google Account");
+      render();
+  }
 
-      signInWithPhoneNumber(auth, fullInternationalNumber, appVerifier)
-          .then((result) => {
-              confirmationResult = result;
-              document.getElementById("otpInputRow").style.display = "block";
-              document.getElementById("otpBtn").innerText = "पुन्हा पाठवा";
-              alert("तुमच्या मोबाईलवर ६-अंकी SMS पासवर्ड पाठवला आहे!");
-          }).catch((error) => {
-              alert("OTP पाठवण्यात समस्या: " + error.message);
-          });
-  });
-
-  document.getElementById("verifyOtpBtn").addEventListener('click', function() {
-      const code = document.getElementById("otpCode").value;
-      if (code.length !== 6 || isNaN(code)) {
-          alert("कृपया ६-अंकी योग्य कोड टाका!");
-          return;
+  function applyLoggedOutState() {
+      const badge = document.getElementById("verifyStatus");
+      badge.className = "status-badge status-pending";
+      badge.innerText = "⏳ लॉग इन नाही";
+      
+      document.getElementById("myPostsTab").innerHTML = `<span class="icon">👤</span>माझ्या`;
+      document.getElementById("profileFormWrapper").style.display = "block";
+      document.getElementById("profileActiveWrapper").style.display = "none";
+      document.getElementById("authEmail").value = "";
+      document.getElementById("authPassword").value = "";
+      
+      if (currentSelectedType === "Mine") {
+          currentSelectedType = "all";
+          categoryButtons.forEach(btn => btn.classList.remove('active'));
+          categoryButtons[0].classList.add('active');
       }
-
-      confirmationResult.confirm(code)
-          .then((result) => {
-              window.closeModal('profileModal');
-          }).catch((error) => {
-              alert("चुकीचा OTP! कृपया पुन्हा तपासा.");
-          });
-  });
+      render();
+  }
 
   document.getElementById("logoutBtn").addEventListener('click', function() {
       signOut(auth).then(() => {
-          if (currentSelectedType === "Mine") {
-              currentSelectedType = "all";
-              categoryButtons.forEach(btn => btn.classList.remove('active'));
-              categoryButtons[0].classList.add('active');
-          }
           window.closeModal('profileModal');
           alert("लॉग आऊट यशस्वी!");
-      });
+      }).catch(err => alert("त्रुटी: " + err.message));
   });
 
-  // --- SUBMIT NEW POST TO FIREBASE ---
+  // --- WRITE DATA TO FIREBASE ---
   document.getElementById("listingForm").addEventListener('submit', function(event) {
       event.preventDefault();
-      if (!isPhoneVerified) {
-          alert("आधी मोबाईल नंबर व्हेरिफाय करा!");
+      if (!currentUser) {
+          alert("आधी लॉग इन करा!");
           return;
       }
 
@@ -684,6 +722,12 @@ input, select, textarea { margin-bottom: 10px; }
       const title = document.getElementById("formTitle").value;
       const village = "📍 " + document.getElementById("formVillage").value;
       const details = document.getElementById("formDetails").value;
+      const contact = document.getElementById("formContact").value;
+
+      if (contact.length !== 10 || isNaN(contact)) {
+          alert("कृपया योग्य १० अंकी संपर्क नंबर टाका!");
+          return;
+      }
 
       let typeMr = "💼 नोकरी";
       if (type === "Business") typeMr = "🏪 दुकान";
@@ -691,7 +735,7 @@ input, select, textarea { margin-bottom: 10px; }
 
       const newListRef = push(dbRef);
       set(newListRef, {
-          type, typeMr, title, village, details, contact: verifiedPhoneNumber
+          type, typeMr, title, village, details, contact, ownerUid: currentUser.uid
       }).then(() => {
           categoryButtons.forEach(btn => btn.classList.remove('active'));
           document.getElementById("myPostsTab").classList.add('active');
@@ -700,16 +744,17 @@ input, select, textarea { margin-bottom: 10px; }
           document.getElementById("formTitle").value = "";
           document.getElementById("formVillage").value = "";
           document.getElementById("formDetails").value = "";
+          document.getElementById("formContact").value = "";
           
           window.closeModal('postModal');
           alert("तुमची नवीन जाहिरात यशस्वीरित्या पब्लिश झाली आहे!");
       }).catch(err => alert("डेटाबेस त्रुटी: " + err.message));
   });
 
-  // --- EDIT & DELETE ENGINE CRUD OPERATIONS ---
+  // --- UPDATE & DELETE (CRUD OPERATIONS) ---
   function deletePost(key) {
-      if (rawDatabaseItems[key].contact !== verifiedPhoneNumber) {
-          alert("सुरक्षा चेतावणी: तुम्ही ही जाहिरात डिलीट करू शकत नाही!");
+      if (rawDatabaseItems[key].ownerUid !== currentUser.uid) {
+          alert("तुम्ही ही जाहिरात डिलीट करू शकत नाही!");
           return;
       }
       if (confirm("तुम्हाला तुमची ही जाहिरात कायमची हटवायची (Delete) आहे का?")) {
@@ -721,8 +766,8 @@ input, select, textarea { margin-bottom: 10px; }
   }
 
   function openEditModal(key) {
-      if (rawDatabaseItems[key].contact !== verifiedPhoneNumber) {
-          alert("सुरक्षा चेतावणी: तुम्ही ही जाहिरात बदलू शकत नाही!");
+      if (rawDatabaseItems[key].ownerUid !== currentUser.uid) {
+          alert("तुम्ही ही जाहिरात बदलू शकत नाही!");
           return;
       }
       const item = rawDatabaseItems[key];
@@ -731,6 +776,7 @@ input, select, textarea { margin-bottom: 10px; }
       document.getElementById("editTitle").value = item.title;
       document.getElementById("editVillage").value = item.village.replace("📍 ", "");
       document.getElementById("editDetails").value = item.details;
+      document.getElementById("editContact").value = item.contact || "";
       window.openModal('editModal');
   }
 
@@ -738,8 +784,14 @@ input, select, textarea { margin-bottom: 10px; }
       event.preventDefault();
       const key = document.getElementById("editKey").value;
       
-      if (rawDatabaseItems[key].contact !== verifiedPhoneNumber) {
+      if (rawDatabaseItems[key].ownerUid !== currentUser.uid) {
           alert("अनधिकृत कृती!");
+          return;
+      }
+
+      const contact = document.getElementById("editContact").value;
+      if (contact.length !== 10 || isNaN(contact)) {
+          alert("कृपया योग्य १० अंकी संपर्क नंबर टाका!");
           return;
       }
       
@@ -754,7 +806,8 @@ input, select, textarea { margin-bottom: 10px; }
           typeMr: typeMr,
           title: document.getElementById("editTitle").value,
           village: "📍 " + document.getElementById("editVillage").value,
-          details: document.getElementById("editDetails").value
+          details: document.getElementById("editDetails").value,
+          contact: contact
       }).then(() => {
           window.closeModal('editModal');
           alert("बदल यशस्वीरित्या जतन झाले आहेत!");
