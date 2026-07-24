@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Curriculum & Study Tracker</title>
+  <!-- Google Fonts & FontAwesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-primary: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-sidebar: #f1f5f9;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --border-color: #e2e8f0;
+      --accent-color: #2563eb;
+      --accent-hover: #1d4ed8;
+      --success-color: #10b981;
+      --danger-color: #ef4444;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+      --radius: 8px;
+    }
+
+    [data-theme="dark"] {
+      --bg-primary: #0f172a;
+      --bg-surface: #1e293b;
+      --bg-sidebar: #0f172a;
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --border-color: #334155;
+      --accent-color: #3b82f6;
+      --accent-hover: #60a5fa;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.4);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+    body { background-color: var(--bg-primary); color: var(--text-primary); display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+
+    /* Top Navbar */
+    header {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      z-index: 10;
+    }
+
+    .brand { font-size: 1.25rem; font-weight: 700; color: var(--accent-color); display: flex; align-items: center; gap: 0.5rem; }
+    
+    .search-box {
+      flex: 1;
+      max-width: 400px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 0.5rem 0.75rem 0.5rem 2.25rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      outline: none;
+    }
+
+    .search-box i { position: absolute; left: 0.75rem; top: 50%; transform: translateY(-50%); color: var(--text-secondary); }
+
+    .nav-actions { display: flex; align-items: center; gap: 0.5rem; }
+
+    /* Buttons */
+    .btn {
+      padding: 0.5rem 0.85rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      background: var(--bg-surface);
+      color: var(--text-primary);
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.15s ease;
+    }
+
+    .btn:hover { background: var(--bg-sidebar); }
+    .btn-primary { background: var(--accent-color); color: white; border-color: var(--accent-color); }
+    .btn-primary:hover { background: var(--accent-hover); }
+    .btn-danger { color: var(--danger-color); border-color: rgba(239, 68, 68, 0.3); }
+    .btn-danger:hover { background: rgba(239, 68, 68, 0.1); }
+    .btn-icon { padding: 0.5rem; border-radius: var(--radius); border: none; background: transparent; color: var(--text-secondary); cursor: pointer; }
+    .btn-icon:hover { color: var(--text-primary); background: var(--border-color); }
+
+    /* App Layout */
+    .app-container { display: flex; flex: 1; overflow: hidden; }
+
+    /* Sidebar Navigation */
+    sidebar {
+      width: 320px;
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+
+    .sidebar-header {
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .subject-list { list-style: none; padding: 0.5rem; }
+    
+    .subject-item { margin-bottom: 0.5rem; border-radius: var(--radius); background: var(--bg-surface); border: 1px solid var(--border-color); }
+    
+    .subject-header {
+      padding: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .subject-title { display: flex; align-items: center; gap: 0.5rem; flex: 1; }
+    
+    .topic-list { list-style: none; padding-left: 1rem; border-top: 1px solid var(--border-color); background: var(--bg-primary); display: none; }
+    .subject-item.active .topic-list { display: block; }
+
+    .topic-item {
+      padding: 0.5rem 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .topic-item:last-child { border-bottom: none; }
+    .topic-item.selected { background: rgba(37, 99, 235, 0.1); color: var(--accent-color); font-weight: 600; }
+
+    /* Main Workspace */
+    main { flex: 1; padding: 1.5rem; overflow-y: auto; display: flex; flex-direction: column; gap: 1.5rem; }
+
+    .dashboard-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Progress Bar */
+    .progress-container { margin-top: 0.5rem; }
+    .progress-info { display: flex; justify-content: space-between; font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.35rem; }
+    .progress-bar-bg { width: 100%; height: 10px; background: var(--border-color); border-radius: 5px; overflow: hidden; }
+    .progress-bar-fill { height: 100%; background: var(--success-color); width: 0%; transition: width 0.3s ease; }
+
+    /* Modules Section */
+    .module-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .module-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+    .module-title { font-size: 1.1rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; }
+    .module-title.completed { text-decoration: line-through; opacity: 0.6; }
+
+    .module-notes {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      background: var(--bg-primary);
+      padding: 0.75rem;
+      border-radius: var(--radius);
+      white-space: pre-wrap;
+    }
+
+    .yt-links { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .yt-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+      padding: 0.35rem 0.65rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .yt-chip:hover { background: rgba(239, 68, 68, 0.2); }
+
+    /* Modals */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex; justify-content: center; align-items: center;
+      z-index: 100;
+      opacity: 0; pointer-events: none; transition: opacity 0.2s ease;
+    }
+    .modal-overlay.active { opacity: 1; pointer-events: auto; }
+    
+    .modal {
+      background: var(--bg-surface);
+      border-radius: var(--radius);
+      width: 100%; max-width: 500px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow-md);
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+
+    .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+    .form-group label { font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); }
+    .form-group input, .form-group textarea {
+      padding: 0.5rem; border: 1px solid var(--border-color);
+      border-radius: var(--radius); background: var(--bg-primary);
+      color: var(--text-primary); outline: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .app-container { flex-direction: column; }
+      sidebar { width: 100%; height: 250px; }
+      header { flex-wrap: wrap; }
+      .search-box { order: 3; max-width: 100%; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header>
+    <div class="brand">
+      <i class="fa-solid fa-graduation-cap">
+</i> Curriculum Tracker
+    </div>
+    
+    <div class="search-box">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="searchInput" placeholder="Search modules, notes, topics..." oninput="handleSearch()">
+    </div>
+
+    <div class="nav-actions">
+      <button class="btn" onclick="exportJSON()" title="Backup Data"><i class="fa-solid fa-download"></i> Export</button>
+      <button class="btn" onclick="triggerImport()" title="Restore Data"><i class="fa-solid fa-upload"></i> Import</button>
+      <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)">
+      <button class="btn-icon" id="themeToggle" onclick="toggleTheme()" title="Toggle Theme">
+        <i class="fa-solid fa-moon"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Application Area -->
+  <div class="app-container">
+    
+    <!-- Sidebar -->
+    <sidebar>
+      <div class="sidebar-header">
+        <span style="font-weight: 700; font-size: 0.9rem; text-transform: uppercase; color: var(--text-secondary);">Curriculum</span>
+        <button class="btn btn-primary" onclick="openSubjectModal()"><i class="fa-solid fa-plus"></i> Subject</button>
+      </div>
+      <ul class="subject-list" id="subjectList"></ul>
+    </sidebar>
+
+    <!-- Content Workspace -->
+    <main id="mainWorkspace">
+      <!-- Global Overview Dashboard -->
+      <div class="dashboard-card">
+        <h2 id="workspaceTitle">Overall Curriculum Progress</h2>
+        <div class="progress-container">
+          <div class="progress-info">
+            <span id="progressText">0 / 0 Modules Completed</span>
+            <span id="progressPercent">0%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progressBarFill"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Bar for Topics & Modules -->
+      <div style="display: flex; justify-content: space-between; align-items: center;" id="workspaceActions">
+        <h3 id="topicTitle">Select a topic from the sidebar</h3>
+        <button class="btn btn-primary" id="addModuleBtn" style="display:none;" onclick="openModuleModal()"><i class="fa-solid fa-plus"></i> Add Module</button>
+      </div>
+
+      <!-- Modules Container -->
+      <div id="moduleList"></div>
+    </main>
+  </div>
+
+  <!-- Modal for Subject CRUD -->
+  <div class="modal-overlay" id="subjectModal">
+    <div class="modal">
+      <h3 id="subjectModalTitle">Add New Subject</h3>
+      <div class="form-group">
+        <label>Subject Title</label>
+        <input type="text" id="subjectTitleInput" placeholder="e.g., Computer Science">
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+        <button class="btn" onclick="closeModal('subjectModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="saveSubject()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for Topic CRUD -->
+  <div class="modal-overlay" id="topicModal">
+    <div class="modal">
+      <h3 id="topicModalTitle">Add New Topic</h3>
+      <div class="form-group">
+        <label>Topic Name</label>
+        <input type="text" id="topicTitleInput" placeholder="e.g., Data Structures">
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+        <button class="btn" onclick="closeModal('topicModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="saveTopic()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for Module CRUD -->
+  <div class="modal-overlay" id="moduleModal">
+    <div class="modal">
+      <h3 id="moduleModalTitle">Add New Module</h3>
+      <div class="form-group">
+        <label>Module Title</label>
+        <input type="text" id="moduleTitleInput" placeholder="e.g., Arrays & Linked Lists">
+      </div>
+      <div class="form-group">
+        <label>Notes / Key Takeaways</label>
+        <textarea id="moduleNotesInput" rows="4" placeholder="Write markdown or quick notes here..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>YouTube Video URLs (one per line)</label>
+        <textarea id="moduleYtInput" rows="3" placeholder="https://www.youtube.com/watch?v=..."></textarea>
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+        <button class="btn" onclick="closeModal('moduleModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="saveModule()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initial State Structure
+    let state = {
+      subjects: [],
+      activeSubjectId: null,
+      activeTopicId: null,
+      editingSubjectId: null,
+      editingTopicId: null,
+      editingModuleId: null,
+      theme: 'light'
+    };
+
+    // Load Data from LocalStorage
+    function init() {
+      const saved = localStorage.getItem('study_tracker_data');
+      if (saved) {
+        state = JSON.parse(saved);
+      } else {
+        // Starter Seed Data
+        state.subjects = [{
+          id: 'sub_1',
+          title: 'Computer Science',
+          topics: [{
+            id: 'top_1',
+            title: 'Data Structures',
+            modules: [{
+              id: 'mod_1',
+              title: 'Arrays & Strings',
+              notes: 'Arrays are contiguous memory blocks. O(1) access time, O(n) insert/delete.',
+              youtubeLinks: ['https://www.youtube.com/watch?v=gDqQf4Ekr2A'],
+              completed: true
+            }]
+          }]
+        }];
+      }
+      
+      applyTheme(state.theme || 'light');
+      render();
+    }
+
+    function saveData() {
+      localStorage.setItem('study_tracker_data', JSON.stringify(state));
+      render();
+    }
+
+    // Theme Management
+    function toggleTheme() {
+      state.theme = state.theme === 'dark' ? 'light' : 'dark';
+      applyTheme(state.theme);
+      saveData();
+    }
+
+    function applyTheme(theme) {
+      document.body.setAttribute('data-theme', theme);
+      const icon = document.querySelector('#themeToggle i');
+      icon.className = theme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+    }
+
+    // Rendering Engine
+    function render() {
+      renderSidebar();
+      renderMainWorkspace();
+    }
+
+    function renderSidebar() {
+      const list = document.getElementById('subjectList');
+      list.innerHTML = '';
+
+      state.subjects.forEach(subject => {
+        const isSubjectActive = subject.id === state.activeSubjectId;
+        const li = document.createElement('li');
+        li.className = `subject-item ${isSubjectActive ? 'active' : ''}`;
+
+        let topicsHTML = subject.topics.map(topic => `
+          <li class="topic-item ${topic.id === state.activeTopicId ? 'selected' : ''}" onclick="selectTopic('${subject.id}', '${topic.id}', event)">
+            <span>${escapeHTML(topic.title)}</span>
+            <div>
+              <button class="btn-icon" onclick="openTopicModal('${subject.id}', '${topic.id}', event)"><i class="fa-solid fa-pen"></i></button>
+              <button class="btn-icon" onclick="deleteTopic('${subject.id}', '${topic.id}', event)"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </li>
+        `).join('');
+
+        li.innerHTML = `
+          <div class="subject-header" onclick="toggleSubject('${subject.id}')">
+            <div class="subject-title">
+              <i class="fa-solid ${isSubjectActive ? 'fa-chevron-down' : 'fa-chevron-right'}" style="font-size:0.75rem;"></i>
+              <span>${escapeHTML(subject.title)}</span>
+            </div>
+            <div>
+              <button class="btn-icon" onclick="openTopicModal('${subject.id}', null, event)" title="Add Topic"><i class="fa-solid fa-plus"></i></button>
+              <button class="btn-icon" onclick="openSubjectModal('${subject.id}', event)"><i class="fa-solid fa-pen"></i></button>
+              <button class="btn-icon" onclick="deleteSubject('${subject.id}', event)"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+          <ul class="topic-list">${topicsHTML}</ul>
+        `;
+        list.appendChild(li);
+      });
+    }
+
+    function renderMainWorkspace() {
+      const moduleList = document.getElementById('moduleList');
+      const addModuleBtn = document.getElementById('addModuleBtn');
+      const topicTitle = document.getElementById('topicTitle');
+      
+      moduleList.innerHTML = '';
+
+      // Compute Overall Progress
+      let totalModules = 0;
+      let completedModules = 0;
+
+      state.subjects.forEach(s => {
+        s.topics.forEach(t => {
+          t.modules.forEach(m => {
+            totalModules++;
+            if (m.completed) completedModules++;
+          });
+        });
+      });
+
+      const percent = totalModules === 0 ? 0 : Math.round((completedModules / totalModules) * 100);
+      document.getElementById('progressText').innerText = `${completedModules} / ${totalModules} Modules Completed`;
+      document.getElementById('progressPercent').innerText = `${percent}%`;
+      document.getElementById('progressBarFill').style.width = `${percent}%`;
+
+      // Render Active Topic's Modules
+      const activeTopic = getActiveTopic();
+      if (activeTopic) {
+        topicTitle.innerText = activeTopic.title;
+        addModuleBtn.style.display = 'inline-flex';
+
+        if (activeTopic.modules.length === 0) {
+          moduleList.innerHTML = `<p style="color:var(--text-secondary); text-align:center; padding:2rem;">No modules added yet. Click "Add Module" to start!</p>`;
+          return;
+        }
+
+        activeTopic.modules.forEach(module => {
+          const card = document.createElement('div');
+          card.className = 'module-card';
+          
+          let ytChips = (module.youtubeLinks || []).map((link, idx) => `
+            <a href="${escapeHTML(link)}" target="_blank" rel="noopener noreferrer" class="yt-chip">
+              <i class="fa-brands fa-youtube"></i> Video ${idx + 1}
+            </a>
+          `).join('');
+
+          card.innerHTML = `
+            <div class="module-header">
+              <div class="module-title ${module.completed ? 'completed' : ''}">
+                <input type="checkbox" ${module.completed ? 'checked' : ''} onchange="toggleModuleComplete('${module.id}')" style="width:18px; height:18px; cursor:pointer;">
+                <span>${escapeHTML(module.title)}</span>
+              </div>
+              <div>
+                <button class="btn-icon" onclick="openModuleModal('${module.id}')"><i class="fa-solid fa-pen"></i></button>
+                <button class="btn-icon" onclick="deleteModule('${module.id}')"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </div>
+            ${module.notes ? `<div class="module-notes">${escapeHTML(module.notes)}</div>` : ''}
+            ${ytChips ? `<div class="yt-links">${ytChips}</div>` : ''}
+          `;
+          moduleList.appendChild(card);
+        });
+
+      } else {
+        topicTitle.innerText = 'Select a topic from the sidebar';
+        addModuleBtn.style.display = 'none';
+        moduleList.innerHTML = `<p style="color:var(--text-secondary); text-align:center; padding:2rem;">Explore topics on the left to view modules and start learning.</p>`;
+      }
+    }
+
+    // Helper Selectors
+    function getActiveTopic() {
+      if (!state.activeSubjectId || !state.activeTopicId) return null;
+      const sub = state.subjects.find(s => s.id === state.activeSubjectId);
+      if (!sub) return null;
+      return sub.topics.find(t => t.id === state.activeTopicId) || null;
+    }
+
+    function toggleSubject(id) {
+      state.activeSubjectId = state.activeSubjectId === id ? null : id;
+      render();
+    }
+
+    function selectTopic(subId, topId, event) {
+      event.stopPropagation();
+      state.activeSubjectId = subId;
+      state.activeTopicId = topId;
+      render();
+    }
+
+    // Modal Control
+    function openModal(id) { document.getElementById(id).classList.add('active'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+    // Subject CRUD
+    function openSubjectModal(subjectId = null, event = null) {
+      if (event) event.stopPropagation();
+      state.editingSubjectId = subjectId;
+      const input = document.getElementById('subjectTitleInput');
+      document.getElementById('subjectModalTitle').innerText = subjectId ? 'Edit Subject' : 'Add Subject';
+      
+      if (subjectId) {
+        const sub = state.subjects.find(s => s.id === subjectId);
+        input.value = sub.title;
+      } else {
+        input.value = '';
+      }
+      openModal('subjectModal');
+    }
+
+    function saveSubject() {
+      const title = document.getElementById('subjectTitleInput').value.trim();
+      if (!title) return;
+
+      if (state.editingSubjectId) {
+        const sub = state.subjects.find(s => s.id === state.editingSubjectId);
+        sub.title = title;
+      } else {
+        state.subjects.push({ id: 'sub_' + Date.now(), title, topics: [] });
+      }
+      closeModal('subjectModal');
+      saveData();
+    }
+
+    function deleteSubject(id, event) {
+      event.stopPropagation();
+      if (confirm('Delete this subject and all its contents?')) {
+        state.subjects = state.subjects.filter(s => s.id !== id);
+        if (state.activeSubjectId === id) { state.activeSubjectId = null; state.activeTopicId = null; }
+        saveData();
+      }
+    }
+
+    // Topic CRUD
+    function openTopicModal(subId, topicId = null, event = null) {
+      if (event) event.stopPropagation();
+      state.activeSubjectId = subId;
+      state.editingTopicId = topicId;
+      const input = document.getElementById('topicTitleInput');
+      document.getElementById('topicModalTitle').innerText = topicId ? 'Edit Topic' : 'Add Topic';
+
+      if (topicId) {
+        const sub = state.subjects.find(s => s.id === subId);
+        const top = sub.topics.find(t => t.id === topicId);
+        input.value = top.title;
+      } else {
+        input.value = '';
+      }
+      openModal('topicModal');
+    }
+
+    function saveTopic() {
+      const title = document.getElementById('topicTitleInput').value.trim();
+      if (!title) return;
+
+      const sub = state.subjects.find(s => s.id === state.activeSubjectId);
+      if (state.editingTopicId) {
+        const top = sub.topics.find(t => t.id === state.editingTopicId);
+        top.title = title;
+      } else {
+        const newTopic = { id: 'top_' + Date.now(), title, modules: [] };
+        sub.topics.push(newTopic);
+        state.activeTopicId = newTopic.id;
+      }
+      closeModal('topicModal');
+      saveData();
+    }
+
+    function deleteTopic(subId, topicId, event) {
+      event.stopPropagation();
+      if (confirm('Delete this topic and all its modules?')) {
+        const sub = state.subjects.find(s => s.id === subId);
+        sub.topics = sub.topics.filter(t => t.id !== topicId);
+        if (state.activeTopicId === topicId) state.activeTopicId = null;
+        saveData();
+      }
+    }
+
+    // Module CRUD
+    function openModuleModal(moduleId = null) {
+      state.editingModuleId = moduleId;
+      document.getElementById('moduleModalTitle').innerText = moduleId ? 'Edit Module' : 'Add Module';
+      
+      const titleInput = document.getElementById('moduleTitleInput');
+      const notesInput = document.getElementById('moduleNotesInput');
+      const ytInput = document.getElementById('moduleYtInput');
+
+      if (moduleId) {
+        const topic = getActiveTopic();
+        const mod = topic.modules.find(m => m.id === moduleId);
+        titleInput.value = mod.title;
+        notesInput.value = mod.notes || '';
+        ytInput.value = (mod.youtubeLinks || []).join('\n');
+      } else {
+        titleInput.value = '';
+        notesInput.value = '';
+        ytInput.value = '';
+      }
+      openModal('moduleModal');
+    }
+
+    function saveModule() {
+      const title = document.getElementById('moduleTitleInput').value.trim();
+      const notes = document.getElementById('moduleNotesInput').value.trim();
+      const ytRaw = document.getElementById('moduleYtInput').value.trim();
+      if (!title) return;
+
+      const ytLinks = ytRaw ? ytRaw.split('\n').map(l => l.trim()).filter(l => l.length > 0) : [];
+      const topic = getActiveTopic();
+
+      if (state.editingModuleId) {
+        const mod = topic.modules.find(m => m.id === state.editingModuleId);
+        mod.title = title;
+        mod.notes = notes;
+        mod.youtubeLinks = ytLinks;
+      } else {
+        topic.modules.push({
+          id: 'mod_' + Date.now(),
+          title,
+          notes,
+          youtubeLinks: ytLinks,
+          completed: false
+        });
+      }
+      closeModal('moduleModal');
+      saveData();
+    }
+
+    function toggleModuleComplete(moduleId) {
+      const topic = getActiveTopic();
+      const mod = topic.modules.find(m => m.id === moduleId);
+      mod.completed = !mod.completed;
+      saveData();
+    }
+
+    function deleteModule(moduleId) {
+      if (confirm('Delete this module?')) {
+        const topic = getActiveTopic();
+        topic.modules = topic.modules.filter(m => m.id !== moduleId);
+        saveData();
+      }
+    }
+
+    // Search Feature
+    function handleSearch() {
+      const q = document.getElementById('searchInput').value.toLowerCase().trim();
+      if (!q) { render(); return; }
+
+      const moduleList = document.getElementById('moduleList');
+      moduleList.innerHTML = '';
+
+      let matches = 0;
+      state.subjects.forEach(s => {
+        s.topics.forEach(t => {
+          t.modules.forEach(m => {
+            if (m.title.toLowerCase().includes(q) || (m.notes && m.notes.toLowerCase().includes(q))) {
+              matches++;
+              const card = document.createElement('div');
+              card.className = 'module-card';
+              card.innerHTML = `
+                <div style="font-size:0.75rem; color:var(--accent-color); font-weight:600;">${escapeHTML(s.title)} &rarr; ${escapeHTML(t.title)}</div>
+                <div class="module-title">${escapeHTML(m.title)}</div>
+                ${m.notes ? `<div class="module-notes">${escapeHTML(m.notes)}</div>` : ''}
+              `;
+              moduleList.appendChild(card);
+            }
+          });
+        });
+      });
+
+      if (matches === 0) {
+        moduleList.innerHTML = `<p style="color:var(--text-secondary); text-align:center; padding:2rem;">No matching notes or modules found.</p>`;
+      }
+    }
+
+    // Export/Import System
+    function exportJSON() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `study_curriculum_backup_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    function triggerImport() { document.getElementById('importFile').click(); }
+
+    function importJSON(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const importedData = JSON.parse(e.target.result);
+          if (importedData.subjects) {
+            state = importedData;
+            saveData();
+            alert('Curriculum successfully imported!');
+          } else {
+            alert('Invalid backup file format.');
+          }
+        } catch (err) {
+          alert('Error parsing JSON file.');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // Helper Utils
+    function escapeHTML(str) {
+      return str.replace(/[&<>'"]/g, 
+        tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+      );
+    }
+
+    // Start App
+    init();
+  </script>
+</body>
+</html>
